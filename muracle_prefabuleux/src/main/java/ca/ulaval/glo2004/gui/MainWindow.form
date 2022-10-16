@@ -12,13 +12,227 @@
       <grid id="3d3ae" binding="propertiesPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="West"/>
         <properties>
-          <background color="-7368817"/>
+          <background color="-8882056"/>
           <enabled value="true"/>
-          <minimumSize width="200" height="0"/>
-          <preferredSize width="200" height="0"/>
+          <minimumSize width="235" height="0"/>
+          <preferredSize width="235" height="0"/>
         </properties>
         <border type="none"/>
-        <children/>
+        <children>
+          <grid id="d1cb5" binding="DimensionsPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="0">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints border-constraint="North"/>
+            <properties>
+              <background color="-8882056"/>
+              <minimumSize width="221" height="240"/>
+              <preferredSize width="221" height="240"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="4ba8c" class="javax.swing.JButton" binding="btnDimensionsCollapse">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="1" anchor="1" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="220" height="-1"/>
+                    <maximum-size width="220" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-8224126"/>
+                  <borderPainted value="false"/>
+                  <focusPainted value="false"/>
+                  <font size="11"/>
+                  <hideActionText value="true"/>
+                  <horizontalAlignment value="2"/>
+                  <horizontalTextPosition value="10"/>
+                  <icon value="buttons/collapse-up.png"/>
+                  <iconTextGap value="0"/>
+                  <label value="DIMENSIONS DE LA SALLE"/>
+                  <text value="DIMENSIONS DE LA SALLE"/>
+                </properties>
+              </component>
+              <grid id="4fad1" binding="dimensionPanelContent" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                    <minimum-size width="220" height="-1"/>
+                    <preferred-size width="220" height="-1"/>
+                    <maximum-size width="220" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <background color="-4408132"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="77fb" binding="dimLargeurPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints/>
+                    <properties>
+                      <background color="-4408132"/>
+                      <preferredSize width="200" height="24"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="30a74" class="javax.swing.JLabel">
+                        <constraints border-constraint="West"/>
+                        <properties>
+                          <background color="-4408132"/>
+                          <foreground color="-16777216"/>
+                          <text value="LARGEUR :"/>
+                        </properties>
+                      </component>
+                      <component id="c86ae" class="javax.swing.JTextField" binding="tbLargeur">
+                        <constraints border-constraint="East"/>
+                        <properties>
+                          <background color="-1"/>
+                          <foreground color="-16777216"/>
+                          <preferredSize width="60" height="30"/>
+                          <text value="48&quot;"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="e24ef" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints/>
+                    <properties>
+                      <background color="-4408132"/>
+                      <preferredSize width="200" height="24"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="ade76" class="javax.swing.JLabel">
+                        <constraints border-constraint="West"/>
+                        <properties>
+                          <background color="-4408132"/>
+                          <foreground color="-16777216"/>
+                          <maximumSize width="64" height="300"/>
+                          <minimumSize width="64" height="300"/>
+                          <preferredSize width="120" height="300"/>
+                          <text value="PROFONDEUR :"/>
+                        </properties>
+                      </component>
+                      <component id="45739" class="javax.swing.JTextField" binding="tbProfondeur">
+                        <constraints border-constraint="East"/>
+                        <properties>
+                          <background color="-1"/>
+                          <foreground color="-16777216"/>
+                          <preferredSize width="60" height="30"/>
+                          <text value="48&quot;"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="b6fe8" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints/>
+                    <properties>
+                      <background color="-4408132"/>
+                      <preferredSize width="200" height="24"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="8742d" class="javax.swing.JLabel">
+                        <constraints border-constraint="West"/>
+                        <properties>
+                          <background color="-4408132"/>
+                          <foreground color="-16777216"/>
+                          <text value="HAUTEUR :"/>
+                        </properties>
+                      </component>
+                      <component id="22b14" class="javax.swing.JTextField" binding="tbHauteur">
+                        <constraints border-constraint="East"/>
+                        <properties>
+                          <background color="-1"/>
+                          <foreground color="-16777216"/>
+                          <preferredSize width="60" height="30"/>
+                          <text value="96&quot;"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="84c61" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints/>
+                    <properties>
+                      <background color="-4408132"/>
+                      <preferredSize width="200" height="24"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="8f762" class="javax.swing.JLabel">
+                        <constraints border-constraint="West"/>
+                        <properties>
+                          <background color="-4408132"/>
+                          <foreground color="-16777216"/>
+                          <text value="ÉPAISSEUR MURS :"/>
+                        </properties>
+                      </component>
+                      <component id="c2c36" class="javax.swing.JTextField" binding="tbEpaisseurMurs">
+                        <constraints border-constraint="East"/>
+                        <properties>
+                          <background color="-1"/>
+                          <foreground color="-16777216"/>
+                          <preferredSize width="60" height="30"/>
+                          <text value="4&quot;"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="efbca" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints/>
+                    <properties>
+                      <background color="-4408132"/>
+                      <preferredSize width="200" height="24"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="d4d57" class="javax.swing.JLabel">
+                        <constraints border-constraint="West"/>
+                        <properties>
+                          <background color="-4408132"/>
+                          <foreground color="-16777216"/>
+                          <text value="LARGEUR DE PLI :"/>
+                        </properties>
+                      </component>
+                      <component id="6b4f0" class="javax.swing.JTextField" binding="tbLargeurPli">
+                        <constraints border-constraint="East"/>
+                        <properties>
+                          <background color="-1"/>
+                          <foreground color="-16777216"/>
+                          <preferredSize width="60" height="30"/>
+                          <text value="2&quot;"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="58f33" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints/>
+                    <properties>
+                      <background color="-4408132"/>
+                      <preferredSize width="200" height="24"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="75a71" class="javax.swing.JLabel">
+                        <constraints border-constraint="West"/>
+                        <properties>
+                          <background color="-4408132"/>
+                          <foreground color="-16777216"/>
+                          <text value="PLI DE SOUDURE :"/>
+                        </properties>
+                      </component>
+                      <component id="d7d22" class="javax.swing.JTextField" binding="tbPliSoudure">
+                        <constraints border-constraint="East"/>
+                        <properties>
+                          <background color="-1"/>
+                          <foreground color="-16777216"/>
+                          <preferredSize width="60" height="30"/>
+                          <text value="45°"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
       </grid>
       <grid id="6df" binding="rightPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
@@ -187,6 +401,8 @@
             <properties>
               <autoscrolls value="true"/>
               <background color="-1"/>
+              <minimumSize width="200" height="24"/>
+              <preferredSize width="200" height="24"/>
             </properties>
             <border type="none"/>
             <children/>
