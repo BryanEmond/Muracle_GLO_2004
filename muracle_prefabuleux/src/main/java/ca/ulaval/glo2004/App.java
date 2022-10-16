@@ -14,7 +14,7 @@ public class App {
     // Par contre vous aurez a creer les actions listener pour vos boutons et etc.
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame("MainWindow");
+        JFrame frame = new JFrame("Muracle Prefabuleux");
 
         MainWindow mainWindow = new MainWindow();
         MainMenu menu = new MainMenu();
