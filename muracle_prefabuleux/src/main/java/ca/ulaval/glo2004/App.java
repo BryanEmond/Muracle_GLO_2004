@@ -1,6 +1,7 @@
 package ca.ulaval.glo2004;
 
 
+import ca.ulaval.glo2004.gui.MainMenu;
 import ca.ulaval.glo2004.gui.MainWindow;
 
 import javax.swing.*;
@@ -16,9 +17,11 @@ public class App {
         JFrame frame = new JFrame("MainWindow");
 
         MainWindow mainWindow = new MainWindow();
+        MainMenu menu = new MainMenu();
 
         frame.setMinimumSize(new Dimension(800, 500));
         frame.setContentPane(mainWindow.rootPanel);
+        frame.setJMenuBar(menu);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
