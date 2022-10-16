@@ -6,7 +6,6 @@ import ca.ulaval.glo2004.gui.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 
 public class App {
