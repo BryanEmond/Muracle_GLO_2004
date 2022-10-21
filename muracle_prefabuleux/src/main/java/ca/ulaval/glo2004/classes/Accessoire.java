@@ -8,7 +8,7 @@ int largeur;
 int positionX;
 int positionY;
 
-ArrayList<ArrayList<Integer>> positions = new Arraylist<ArrayList<Integer>>();
+ArrayList<ArrayList<Integer>> positions = new ArrayList<ArrayList<Integer>>();
 ArrayList<Integer> point = new ArrayList<Integer>();
 ArrayList<Integer> point2 = new ArrayList<Integer>();
     private Accessoire (int hauteur, int largeur, int positionX, int positionY){
@@ -19,7 +19,7 @@ ArrayList<Integer> point2 = new ArrayList<Integer>();
     }
 
 
-    public ArrayList getZone() {
+    public ArrayList<ArrayList<Integer>> getZone() {
 
         //option 1: positionX et Y = point au centre
         point.add(positionX - largeur/2);
