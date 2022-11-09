@@ -1,11 +1,16 @@
 package ca.ulaval.glo2004.gestion;
 
+import ca.ulaval.glo2004.classes.Imperial;
+import ca.ulaval.glo2004.classes.Salle;
+
 public class GestionnaireSalle {
 
+    private Salle salleActive;
 
-    public void creerSalle()
+    public void creerSalle(Imperial tailleX, Imperial tailleY)
     {
-
+        Salle salle = new Salle(tailleX, tailleY);
+        salleActive = salle;
     }
 
     public void enregistrerSalle()
