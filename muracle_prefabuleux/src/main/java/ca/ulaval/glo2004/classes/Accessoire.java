@@ -1,16 +1,25 @@
 package ca.ulaval.glo2004.classes;
 
 import java.util.ArrayList;
-
+//as un impacte sur le poid du mur...
 public class Accessoire {
-int hauteur;
-int largeur;
-int positionX;
-int positionY;
+    int hauteur;
+    int largeur;
+    int positionX;
+    int positionY;
+    boolean contrainte;
+
+    public Accessoire() {
+    }
+
+    public static void accessoire() {
+        Accessoire accessoireObjet = new Accessoire(); //call constructor
+    }
+
 
 ArrayList<ArrayList<Integer>> positions = new ArrayList<ArrayList<Integer>>();
-ArrayList<Integer> point = new ArrayList<Integer>();
-ArrayList<Integer> point2 = new ArrayList<Integer>();
+ArrayList<Integer> point = new ArrayList<>();
+ArrayList<Integer> point2 = new ArrayList<>();
     private Accessoire (int hauteur, int largeur, int positionX, int positionY){
         this.hauteur = hauteur;
         this.largeur = largeur;
@@ -31,8 +40,12 @@ ArrayList<Integer> point2 = new ArrayList<Integer>();
         positions.add(point2);
         return positions;}
 
-    public boolean validerContrainte() {
-        //a précisé pour chaque type d'accessoire
-return true;
+
+    public boolean getContrainte() {
+        //return vrai si les contraintes de l'accessoire sont respecté,
+        return contrainte;
     }
+
+
+
 }
