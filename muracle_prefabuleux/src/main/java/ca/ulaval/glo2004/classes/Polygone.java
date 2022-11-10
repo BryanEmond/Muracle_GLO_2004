@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Polygone {
     String mCouleur;
-
     Element mElement;
     ArrayList<PointImperial> point;
 

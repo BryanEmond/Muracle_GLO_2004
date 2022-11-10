@@ -8,7 +8,6 @@ public class Cote extends Element{
     Imperial mPolygoneElevation;
 
     ArrayList<Mur> murs;
-
     ArrayList<Accessoire> accessoires;
 
     ArrayList<Separateur> separateurs;
