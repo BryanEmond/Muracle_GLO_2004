@@ -1,5 +1,6 @@
 package ca.ulaval.glo2004.classes;
 
+import javax.lang.model.type.ArrayType;
 import java.util.ArrayList;
 import java.util.UUID;
 
