@@ -7,10 +7,7 @@ package ca.ulaval.glo2004.classes;
 public class RetourAir extends Accessoire{
 
 
-    private void retourAir(int largeur, int hauteur) {
-        RetourAir retourAirObjet = new RetourAir(); //call constructor
-        this.hauteur= hauteur;
-        this.largeur = largeur;
+    public RetourAir(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, Polygone mPolygonePlan, Polygone mPolygoneElevation, String mNom) {
+        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mPolygonePlan, mPolygoneElevation, mNom);
     }
-
 }

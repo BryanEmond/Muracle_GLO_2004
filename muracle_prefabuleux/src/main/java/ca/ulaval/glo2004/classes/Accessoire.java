@@ -2,50 +2,55 @@ package ca.ulaval.glo2004.classes;
 
 import java.util.ArrayList;
 //as un impacte sur le poid du mur...
-public class Accessoire {
-    int hauteur;
-    int largeur;
-    int positionX;
-    int positionY;
-    boolean contrainte;
+public class Accessoire extends Element{
 
-    public Accessoire() {
+    private boolean mPerceExtérieur;
+    private boolean mPerceInterieur;
+    private Imperial mLargeur;
+    private Imperial mHauteur;
+    private Polygone mPolygonePlan;
+    private Polygone mPolygoneElevation;
+    private String mNom;
+
+    public Accessoire(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur,
+                      Imperial mLargeur, Imperial mHauteur,Polygone mPolygonePlan, Polygone mPolygoneElevation,
+                      String mNom) {
+        super(mY, mX);
+        this.mPerceExtérieur = mPerceExtérieur;
+        this.mPerceInterieur = mPerceInterieur;
+        this.mLargeur = mLargeur;
+        this.mHauteur = mHauteur;
+        this.mPolygonePlan = mPolygonePlan;
+        this.mPolygoneElevation = mPolygoneElevation;
+        this.mNom = mNom;
     }
 
-    public static void accessoire() {
-        Accessoire accessoireObjet = new Accessoire(); //call constructor
+
+    public Salle salle(){
+    return new Salle(new Imperial(1, 1, 1),new Imperial(1, 1, 1),
+            new Imperial(1, 1, 1),new Imperial(1, 1, 1),
+            new Imperial(1, 1, 1),new Imperial(1, 1, 1),
+            new Imperial(1, 1, 1), new Boolean(true), new ArrayList<Cote>()) ;
     }
 
-
-ArrayList<ArrayList<Integer>> positions = new ArrayList<ArrayList<Integer>>();
-ArrayList<Integer> point = new ArrayList<>();
-ArrayList<Integer> point2 = new ArrayList<>();
-    private Accessoire (int hauteur, int largeur, int positionX, int positionY){
-        this.hauteur = hauteur;
-        this.largeur = largeur;
-        this.positionX = positionX;
-        this.positionY = positionY;
+    public Cote cote(){
+    return new Cote(new Imperial(1,1,1),new Imperial(1,1,1),new Imperial(1,1,1),
+            new Imperial(1,1,1),new Imperial(1,1,1) );
     }
 
-
-    public ArrayList<ArrayList<Integer>> getZone() {
-
-        //option 1: positionX et Y = point au centre
-        point.add(positionX - largeur/2);
-        point.add(positionY + hauteur/2);
-        point2.add(positionX +largeur/2);
-        point2.add(positionY - hauteur/2);
-
-        positions.add(point);
-        positions.add(point2);
-        return positions;}
-
-
-    public boolean getContrainte() {
-        //return vrai si les contraintes de l'accessoire sont respecté,
-        return contrainte;
+    public Mur mur(){
+    return new Mur(new Imperial(1, 1, 1),new Imperial(1, 1, 1));
     }
 
+    public void calculeDisposition(){ }
+
+    public ArrayList<Polygone> polygonesElevation(boolean exterieur) {
+        return exterieur ? new ArrayList<Polygone>() : new ArrayList<Polygone>();
+    }
+
+    public ArrayList<Polygone>polygonesPlan() {
+    return new ArrayList<Polygone>();
+    }
 
 
 }

@@ -2,10 +2,9 @@ package ca.ulaval.glo2004.classes;
 //import Accessoire as parent
 public class Fenetre extends Accessoire{
 
-    private void fenetre(int  largeur, int hauteur) {
-        Fenetre fenetreObjet = new Fenetre(); //call constructor
-        this.largeur =largeur;
-        this.hauteur = hauteur;
+
+    public Fenetre(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, Polygone mPolygonePlan, Polygone mPolygoneElevation, String mNom) {
+        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mPolygonePlan, mPolygoneElevation, mNom);
     }
 }
 

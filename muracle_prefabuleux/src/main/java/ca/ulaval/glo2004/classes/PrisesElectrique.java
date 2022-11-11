@@ -8,14 +8,13 @@ public class PrisesElectrique extends Accessoire {
     int largeur = 2;
     int hauteur = 4;
 
-    private void priseElectrique(int largeur, int hauteur) {
-PrisesElectrique prise = new PrisesElectrique(); //call constructor
-        this.largeur = largeur;
-        this.hauteur = hauteur;
+    public PrisesElectrique(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, Polygone mPolygonePlan, Polygone mPolygoneElevation, String mNom) {
+        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mPolygonePlan, mPolygoneElevation, mNom);
     }
 
+
     public boolean getContrainte() {
-        return contrainte;
+        return true;
     }
 
 }

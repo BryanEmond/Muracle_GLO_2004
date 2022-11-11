@@ -3,13 +3,13 @@ package ca.ulaval.glo2004.classes;
 
 public class Porte extends Accessoire{
 
-    int largeur = 38;
-    int hauteur = 88;
+    Imperial largeur = new Imperial(38,0,0);
+    Imperial hauteur = new Imperial(88,0,0);
 
-    private void porte(int largeur, int hauteur) {
-        Porte porteObjet = new Porte(); //call constructor
-        this.largeur=largeur;
-        this.hauteur = hauteur;
 
+    public Porte(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, Polygone mPolygonePlan, Polygone mPolygoneElevation, String mNom) {
+        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mPolygonePlan, mPolygoneElevation, mNom);
+    this.largeur = mLargeur;
+    this.hauteur = mHauteur;
     }
 }
