@@ -2,8 +2,10 @@ package ca.ulaval.glo2004.classes;
 
 import java.util.ArrayList;
 //as un impacte sur le poid du mur...
+
 public class Accessoire extends Element{
 
+    Mur mur;
     private boolean mPerceExtérieur;
     private boolean mPerceInterieur;
     private Imperial mLargeur;
@@ -30,7 +32,7 @@ public class Accessoire extends Element{
     return new Salle(new Imperial(1, 1, 1),new Imperial(1, 1, 1),
             new Imperial(1, 1, 1),new Imperial(1, 1, 1),
             new Imperial(1, 1, 1),new Imperial(1, 1, 1),
-            new Imperial(1, 1, 1), new Boolean(true), new ArrayList<Cote>()) ;
+            new Imperial(1, 1, 1), true, new ArrayList<Cote>()) ;
     }
 
     public Cote cote(){
@@ -39,7 +41,17 @@ public class Accessoire extends Element{
     }
 
     public Mur mur(){
-    return new Mur(new Imperial(1, 1, 1),new Imperial(1, 1, 1));
+        Imperial imperial = new Imperial(1,1,1);
+
+        ArrayList<PointImperial> pointImperials = new ArrayList<PointImperial>();
+        pointImperials.add(new PointImperial(new Imperial(1,1,1),
+                new Imperial(1,1,1)));
+
+        Polygone polygone =new Polygone("FFFFF", pointImperials);
+
+
+    return new Mur(imperial, imperial, cote(), salle(), polygone, polygone, imperial, imperial, imperial, imperial,
+            imperial, imperial,imperial,imperial);
     }
 
     public void calculeDisposition(){ }
