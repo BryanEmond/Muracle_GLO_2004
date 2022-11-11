@@ -9,8 +9,8 @@ public class GestionnaireSalle {
 
     public void creerSalle(Imperial tailleX, Imperial tailleY)
     {
-        Salle salle = new Salle(tailleX, tailleY);
-        salleActive = salle;
+//        Salle salle = new Salle(tailleX, tailleY);
+//        salleActive = salle;
     }
 
     public void enregistrerSalle()
