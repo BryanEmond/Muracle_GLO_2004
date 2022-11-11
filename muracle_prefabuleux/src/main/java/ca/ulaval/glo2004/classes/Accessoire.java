@@ -3,6 +3,7 @@ package ca.ulaval.glo2004.classes;
 import java.util.ArrayList;
 //as un impacte sur le poid du mur...
 public class Accessoire {
+    Mur mur;
     int hauteur;
     int largeur;
     int positionX;
