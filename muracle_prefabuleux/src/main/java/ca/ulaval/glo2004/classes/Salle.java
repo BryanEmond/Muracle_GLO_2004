@@ -22,19 +22,18 @@ public class Salle extends Element{
         this.vuePlan = vuePlan;
         this.cotes = cotes;
     }
-
-    public ArrayList<Polygone> polygonesPlan() {
-        return cotes;
+    public ArrayList<Polygone> polygonePlan(){
+        return new ArrayList<Polygone>();
     }
 
-    public ArrayList<Polygone> polygonesElevation() {
-        return cotes;
+    public Element selection(){
+        Imperial imp = new Imperial(1,1,1);
+        return new Element(imp, imp);
     }
 
-    public Cote cote(PointImperial point) {
-        return ;
+    public ArrayList<Polygone> polygonesElevation(){
+        return new ArrayList<Polygone>();
     }
-
     public Separateur separateur(PointImperial point) {
         return new Separateur();
     }

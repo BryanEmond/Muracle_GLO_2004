@@ -18,16 +18,12 @@ public class Cote extends Element{
         this.mPolygonePlan = mPolygonePlan;
         this.mPolygoneElevation = mPolygoneElevation;
     }
-
-    public Accessoire AjouterAccessoire(PointImperial pointImperial) {
-        for (Accessoire customer : accessoires) {
-            if (true) {
-                return customer;
-            }
-        }
-        return null;
-
+    @Override
+    public void calculeDisposition() {
+        super.calculeDisposition();
     }
+
+    public void AjouterSeparateur(Separateur separateur) {separateurs.add(separateur);}
 
     public Imperial getmZ() {
         return mZ;
@@ -78,21 +74,10 @@ public class Cote extends Element{
     }
 
 
-    public void AjouterAccessoire(Accessoire accessoire) {
+    public void SupprimerSeparateur(Separateur separateur) {separateurs.remove(separateur);}
 
-    }
-
-    public void AjouterSeparateur(Accessoire accessoire) {
-
-    }
-
-    public void SupprimerSeparateur(PointImperial point) {
-
-    }
-
-    public void SupprimerAccessoire(PointImperial point) {
-
-    }
+    public void AjouterAccessoire(Accessoire accessoire) {accessoires.add(accessoire);}
+    public void SupprimerAccessoire(Accessoire accessoire) {accessoires.remove(accessoire);}
 
 
 }
