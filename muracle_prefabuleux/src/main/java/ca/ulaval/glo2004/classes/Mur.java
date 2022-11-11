@@ -8,16 +8,8 @@ public class Mur extends Element {
     int uniqueID;
     Cote mCote;
     Salle mSalle;
-    Polygone mPolygoneElevation;
-    Polygone mPolygonePlan;
-    Imperial mEpaisseurMur1;
-    Imperial mEpaisseurMur2;
-    Imperial mBandeSoudage1;
-    Imperial mBandeSoudage2;
-    Imperial mPolygoneMarge1;
-    Imperial mPolygoneMarge12;
-    Imperial mPolygoneMarge2;
-    Imperial mPolygoneMarge22;
+    Polygone mPolygoneElevation, mPolygonePlan;
+    Imperial mEpaisseurMur1, mEpaisseurMur2, mBandeSoudage1, mBandeSoudage2, mPolygoneMarge1, mPolygoneMarge12, mPolygoneMarge2, mPolygoneMarge22;
 
     public Mur(Imperial mY, Imperial mX, Cote mCote, Salle mSalle, Polygone mPolygoneElevation, Polygone mPolygonePlan, Imperial mEpaisseurMur1, Imperial mEpaisseurMur2, Imperial mBandeSoudage1, Imperial mBandeSoudage2, Imperial mPolygoneMarge1, Imperial mPolygoneMarge12, Imperial mPolygoneMarge2, Imperial mPolygoneMarge22) {
         super(mY, mX);
@@ -72,7 +64,7 @@ public class Mur extends Element {
                 listAccessoires.add(var);
             };
         }
-
+        return new Accessoire();
         // TODO méthode dans accessoires pour determiner zone par rapport point
     }
 }
