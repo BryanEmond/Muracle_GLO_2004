@@ -21,7 +21,7 @@ public class Separateur extends Element {
     }
 
     public ArrayList<Polygone> getPolygones() {
-        return ;
+        return null;
     }
 
     public Imperial getDistanceBordDeReference() {

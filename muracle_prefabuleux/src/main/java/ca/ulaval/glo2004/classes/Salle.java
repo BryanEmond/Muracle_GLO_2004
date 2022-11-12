@@ -38,4 +38,59 @@ public class Salle extends Element{
         return new Separateur();
     }
 
+    public Imperial getEpaisseurMurs() {
+        return epaisseurMurs;
+    }
+
+    public void setEpaisseurMurs(Imperial epaisseurMurs) {
+        this.epaisseurMurs = epaisseurMurs;
+    }
+
+    public Imperial getMarge() {
+        return marge;
+    }
+
+    public void setMarge(Imperial marge) {
+        this.marge = marge;
+    }
+
+    public Imperial getHauteur() {
+        return hauteur;
+    }
+
+    public void setHauteur(Imperial hauteur) {
+        this.hauteur = hauteur;
+    }
+
+    public Imperial getLargeur() {
+        return largeur;
+    }
+
+    public void setLargeur(Imperial largeur) {
+        this.largeur = largeur;
+    }
+
+    public Imperial getProfondeur() {
+        return profondeur;
+    }
+
+    public void setProfondeur(Imperial profondeur) {
+        this.profondeur = profondeur;
+    }
+
+    public boolean isVuePlan() {
+        return vuePlan;
+    }
+
+    public void setVuePlan(boolean vuePlan) {
+        this.vuePlan = vuePlan;
+    }
+
+    public ArrayList<Cote> getCotes() {
+        return cotes;
+    }
+
+    public void setCotes(ArrayList<Cote> cotes) {
+        this.cotes = cotes;
+    }
 }

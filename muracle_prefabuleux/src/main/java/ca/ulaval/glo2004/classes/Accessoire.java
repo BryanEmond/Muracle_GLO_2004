@@ -6,13 +6,13 @@ import java.util.ArrayList;
 public class Accessoire extends Element{
 
     Mur mur;
-    private boolean mPerceExtérieur;
-    private boolean mPerceInterieur;
-    private Imperial mLargeur;
-    private Imperial mHauteur;
-    private Polygone mPolygonePlan;
-    private Polygone mPolygoneElevation;
-    private String mNom;
+    boolean mPerceExtérieur;
+    boolean mPerceInterieur;
+    Imperial mLargeur;
+    Imperial mHauteur;
+    Polygone mPolygonePlan;
+    Polygone mPolygoneElevation;
+    String mNom;
 
     public Accessoire(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur,
                       Imperial mLargeur, Imperial mHauteur,Polygone mPolygonePlan, Polygone mPolygoneElevation,
@@ -64,5 +64,67 @@ public class Accessoire extends Element{
     return new ArrayList<Polygone>();
     }
 
+    public Mur getMur() {
+        return mur;
+    }
 
+    public void setMur(Mur mur) {
+        this.mur = mur;
+    }
+
+    public boolean ismPerceExtérieur() {
+        return mPerceExtérieur;
+    }
+
+    public void setmPerceExtérieur(boolean mPerceExtérieur) {
+        this.mPerceExtérieur = mPerceExtérieur;
+    }
+
+    public boolean ismPerceInterieur() {
+        return mPerceInterieur;
+    }
+
+    public void setmPerceInterieur(boolean mPerceInterieur) {
+        this.mPerceInterieur = mPerceInterieur;
+    }
+
+    public Imperial getmLargeur() {
+        return mLargeur;
+    }
+
+    public void setmLargeur(Imperial mLargeur) {
+        this.mLargeur = mLargeur;
+    }
+
+    public Imperial getmHauteur() {
+        return mHauteur;
+    }
+
+    public void setmHauteur(Imperial mHauteur) {
+        this.mHauteur = mHauteur;
+    }
+
+    public Polygone getmPolygonePlan() {
+        return mPolygonePlan;
+    }
+
+    public void setmPolygonePlan(Polygone mPolygonePlan) {
+        this.mPolygonePlan = mPolygonePlan;
+    }
+
+    public Polygone getmPolygoneElevation() {
+        return mPolygoneElevation;
+    }
+
+    public void setmPolygoneElevation(Polygone mPolygoneElevation) {
+        this.mPolygoneElevation = mPolygoneElevation;
+    }
+
+    public String getmNom() {
+        return mNom;
+    }
+
+    public void setmNom(String mNom) {
+        this.mNom = mNom;
+    }
 }

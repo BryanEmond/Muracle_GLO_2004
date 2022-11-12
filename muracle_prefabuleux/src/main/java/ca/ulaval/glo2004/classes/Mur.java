@@ -144,11 +144,11 @@ public class Mur extends Element {
     }
 
     public Polygone genererPlan() {
-        return ;
+        return null ;
     }
 
     public Polygone genererDecoupage() {
-        return ;
+        return null;
     }
 
     public ArrayList<Accessoire> accessoires() {
@@ -175,7 +175,7 @@ public class Mur extends Element {
                 listAccessoires.add(var);
             };
         }
-
+        return null;
         // TODO méthode dans accessoires pour determiner zone par rapport point
     }
 }
