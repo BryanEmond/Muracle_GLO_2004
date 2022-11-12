@@ -5,17 +5,22 @@ package ca.ulaval.glo2004.classes;
 
 public class PrisesElectrique extends Accessoire {
 
-    int largeur = 2;
-    int hauteur = 4;
+    Imperial largeur = new Imperial(2,0,0);
+    Imperial hauteur = new Imperial(4,0,0);
 
-    public PrisesElectrique(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, Polygone mPolygonePlan, Polygone mPolygoneElevation, String mNom) {
+    Boolean perceInterieur = true;
+    Boolean perceExterieur = false;
+
+
+    public PrisesElectrique(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur,
+                            Polygone mPolygonePlan, Polygone mPolygoneElevation, String mNom) {
         super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mPolygonePlan, mPolygoneElevation, mNom);
+    this.hauteur = mHauteur;
+    this.largeur = mLargeur;
+    this.perceExterieur = mPerceExtérieur;
+    this.perceInterieur = mPerceInterieur;
     }
 
-
-    public boolean getContrainte() {
-        return true;
-    }
 
 }
 
