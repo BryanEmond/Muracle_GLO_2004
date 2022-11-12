@@ -35,7 +35,7 @@ public class Salle extends Element{
         return new ArrayList<Polygone>();
     }
     public Separateur separateur(PointImperial point) {
-        return new Separateur();
+        return null;
     }
 
     public Imperial getEpaisseurMurs() {

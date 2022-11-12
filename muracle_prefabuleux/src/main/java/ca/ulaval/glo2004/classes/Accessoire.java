@@ -36,8 +36,7 @@ public class Accessoire extends Element{
     }
 
     public Cote cote(){
-    return new Cote(new Imperial(1,1,1),new Imperial(1,1,1),new Imperial(1,1,1),
-            new Imperial(1,1,1),new Imperial(1,1,1) );
+    return null;
     }
 
     public Mur mur(){
