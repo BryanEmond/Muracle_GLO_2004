@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Cote extends Element{
     Imperial mZ;
+
+    String mDirection;
     Imperial mPolygonePlan;
     Imperial mPolygoneElevation;
 
@@ -12,9 +14,10 @@ public class Cote extends Element{
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, Imperial mZ, Imperial mPolygonePlan, Imperial mPolygoneElevation) {
+    public Cote(Imperial mY, Imperial mX, Imperial mZ, Imperial mPolygonePlan, String mDirection,Imperial mPolygoneElevation) {
         super(mY, mX);
         this.mZ = mZ;
+        this.mDirection = mDirection;
         this.mPolygonePlan = mPolygonePlan;
         this.mPolygoneElevation = mPolygoneElevation;
     }
