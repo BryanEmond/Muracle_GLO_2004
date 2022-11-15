@@ -3,7 +3,7 @@ package ca.ulaval.glo2004.classes;
 import java.util.ArrayList;
 //as un impacte sur le poid du mur...
 
-public class Accessoire extends Element{
+public class Accessoire extends Element {
 
     Mur mur;
     boolean mPerceExtérieur;
@@ -46,11 +46,13 @@ public class Accessoire extends Element{
         pointImperials.add(new PointImperial(new Imperial(1,1,1),
                 new Imperial(1,1,1)));
 
-        Polygone polygone =new Polygone("FFFFF", pointImperials);
+        //Polygone polygone =new Polygone("FFFFF", pointImperials);
 
 
-    return new Mur(imperial, imperial, cote(), salle(), polygone, polygone, imperial, imperial, imperial, imperial,
-            imperial, imperial,imperial,imperial);
+    /*return new Mur(imperial, imperial, cote(), salle(), polygone, polygone, imperial, imperial, imperial, imperial,
+            imperial, imperial,imperial,imperial);*/
+
+        return null;
     }
 
     public void calculeDisposition(){ }

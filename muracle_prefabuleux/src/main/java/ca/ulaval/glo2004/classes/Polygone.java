@@ -1,22 +1,30 @@
 package ca.ulaval.glo2004.classes;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Polygone {
-    String mCouleur;
+    Color mCouleur;
     Element mElement;
-    ArrayList<PointImperial> point;
+    ArrayList<PointImperial> points;
 
-    public Polygone(String couleur, ArrayList<PointImperial> point) {
+    public Polygone(Color couleur, ArrayList<PointImperial> point) {
         this.mCouleur = couleur;
-        this.point = point;
+        this.points = point;
     }
 
-    public String getCouleur() {
+    public Polygone(Color couleur, PointImperial... points)
+    {
+        this(couleur, new ArrayList<>(Arrays.asList(points)));
+    }
+
+    public Color getCouleur() {
         return mCouleur;
     }
 
-    public void setCouleur(String couleur) {
+    public void setCouleur(Color couleur) {
         this.mCouleur = couleur;
     }
 
@@ -28,12 +36,12 @@ public class Polygone {
         this.mElement = mY;
     }
 
-    public ArrayList<PointImperial> getPoint() {
-        return point;
+    public ArrayList<PointImperial> getPoints() {
+        return points;
     }
 
-    public void setPoint(ArrayList<PointImperial> point) {
-        this.point = point;
+    public void setPoints(ArrayList<PointImperial> points) {
+        this.points = points;
     }
 
 

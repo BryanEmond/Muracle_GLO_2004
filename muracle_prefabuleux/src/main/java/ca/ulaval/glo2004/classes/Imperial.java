@@ -8,6 +8,13 @@ public class Imperial {
     int numerateur ;
     int denominateur ;
 
+    public Imperial(int entier)
+    {
+        this.entier = entier;
+        this.numerateur = 0;
+        this.denominateur = 1;
+    }
+
     public Imperial(int entier,int numerateur,int denominateur) {
         this.entier = entier;
         this.numerateur = numerateur;

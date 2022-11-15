@@ -13,7 +13,7 @@ public class MainWindow {
     private JPanel propertiesPanel;
     private JPanel rightPanel;
     private JPanel controlPanel;
-    private JPanel mainPanel;
+    public JPanel mainPanel;
     private JPanel buttonsPanel;
     private JButton btnSave;
     private JButton btnUndo;

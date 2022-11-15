@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class Conversion {
 
+    private static Conversion conversion;
+
     private float pixelPerInches;
     private int offsetX;
     private int offsetY;
@@ -15,7 +17,7 @@ public class Conversion {
     public Conversion(int pixelsX, int pixelsY)
     {
         //TODO Implement default pixelPerInches with screen size
-        this.pixelPerInches = 1;
+        this.pixelPerInches = 20;
         this.offsetX = 0;
         this.offsetY = 0;
     }
@@ -63,5 +65,13 @@ public class Conversion {
         int y = inchesToPixel(impY);
 
         return new Point(x, y);
+    }
+
+    public static Conversion getConversion()
+    {
+        if(conversion == null)
+            conversion = new Conversion(1920, 1080);
+
+        return conversion;
     }
 }

@@ -9,17 +9,14 @@ public class Cote extends Element{
     Imperial mPolygonePlan;
     Imperial mPolygoneElevation;
 
-    ArrayList<Mur> murs;
+    ArrayList<Mur> murs = new ArrayList<>();
     ArrayList<Accessoire> accessoires;
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, Imperial mZ, Imperial mPolygonePlan, String mDirection,Imperial mPolygoneElevation) {
+    public Cote(Imperial mY, Imperial mX, String mDirection) {
         super(mY, mX);
-        this.mZ = mZ;
         this.mDirection = mDirection;
-        this.mPolygonePlan = mPolygonePlan;
-        this.mPolygoneElevation = mPolygoneElevation;
     }
     @Override
     public void calculeDisposition() {
@@ -27,14 +24,6 @@ public class Cote extends Element{
     }
 
     public void AjouterSeparateur(Separateur separateur) {separateurs.add(separateur);}
-
-    public Imperial getmZ() {
-        return mZ;
-    }
-
-    public void setmZ(Imperial mZ) {
-        this.mZ = mZ;
-    }
 
     public Imperial getmPolygonePlan() {
         return mPolygonePlan;
@@ -76,6 +65,17 @@ public class Cote extends Element{
         this.separateurs = separateurs;
     }
 
+    public ArrayList<Polygone> getPolygonesPlan()
+    {
+        ArrayList<Polygone> polygones = new ArrayList<Polygone>();
+
+        for(int i = 0; i < murs.size(); i++)
+        {
+            polygones.add(murs.get(i).mPolygonePlan);
+        }
+
+        return polygones;
+    }
 
     public void SupprimerSeparateur(Separateur separateur) {separateurs.remove(separateur);}
 
