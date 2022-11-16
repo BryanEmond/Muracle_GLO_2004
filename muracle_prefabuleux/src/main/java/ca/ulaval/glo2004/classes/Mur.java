@@ -21,7 +21,7 @@ public class Mur extends Element {
     Imperial mPolygoneMargeGauche;
     Imperial mPolygoneMargeDroite;
 
-    public Mur(Salle mSalle, Cote mCote, Imperial x, Imperial y, Imperial largeur, Imperial mBandeSoudageVerticale, Imperial mBandeSoudageHorizontale, Imperial mPolygoneMargeHaut, Imperial mPolygoneMargeBas, Imperial mPolygoneMargeGauche, Imperial mPolygoneMargeDroite) {
+    public Mur(Salle mSalle, Cote mCote, Imperial y, Imperial x, Imperial largeur, Imperial mBandeSoudageVerticale, Imperial mBandeSoudageHorizontale, Imperial mPolygoneMargeHaut, Imperial mPolygoneMargeBas, Imperial mPolygoneMargeGauche, Imperial mPolygoneMargeDroite) {
         super(y, x);
         this.mLargeur = largeur;
 
@@ -82,11 +82,23 @@ public class Mur extends Element {
     public void genererPolygonePlan()
     {
         Imperial x1 = super.mX;
-        Imperial x2 = x1.add(mLargeur);
         Imperial y1 = super.mY;
-        Imperial y2 = y1.add(mSalle.epaisseurMurs);
+        Imperial x2;
+        Imperial y2;
 
-        this.mPolygonePlan = new Polygone(Color.BLACK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x1, y2));
+        if(mCote.mDirection == "NORD" || mCote.mDirection == "SUD")
+        {
+            x2 = x1.add(mLargeur);
+            y2 = y1.add(mSalle.epaisseurMurs);
+        }
+        else
+        {
+            x2 = x1.add(mSalle.epaisseurMurs);
+            y2 = y1.add(mLargeur);
+        }
+
+
+        this.mPolygonePlan = new Polygone(Color.BLACK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
     }
 
 }

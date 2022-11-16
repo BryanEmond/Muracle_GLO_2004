@@ -27,4 +27,9 @@ public class PointImperial {
     public Boolean EstDans(Imperial mY) {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "(" + mX.toString() + ", " + mY.toString() + ")";
+    }
 }

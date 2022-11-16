@@ -6,6 +6,7 @@ import ca.ulaval.glo2004.classes.Mur;
 import ca.ulaval.glo2004.classes.Salle;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,8 @@ public class DrawingPanel extends JPanel
     {
         this.mainWindow = mainWindow;
         mainWindow.mainPanel.add(this);
+
+        this.setBorder(new EmptyBorder(50, 10, 10, 10));
 
         Salle salle = GetTestingSalle();
         afficheur = new AfficheurVueDessus(salle);
@@ -59,13 +62,22 @@ public class DrawingPanel extends JPanel
         Mur mn1 = new Mur(salle, nord, new Imperial(0), new Imperial(0), new Imperial(10),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
 
-        Mur mn2 = new Mur(salle, nord, new Imperial(10), new Imperial(0), new Imperial(10),
+        Mur mn2 = new Mur(salle, nord, new Imperial(0), new Imperial(10), new Imperial(10),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
 
-        ArrayList<Mur> mursNord = new ArrayList<>();
-        mursNord.add(mn1);
-        mursNord.add(mn2);
-        nord.setMurs(mursNord);
+        nord.setMurs(new ArrayList<>(Arrays.asList(mn1, mn2)));
+
+        Mur ms1 = new Mur(salle, sud, new Imperial(19), new Imperial(0), new Imperial(20),
+                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
+        sud.setMurs(new ArrayList<>(Arrays.asList(ms1)));
+
+        Mur me1 = new Mur(salle, est, new Imperial(1), new Imperial(0), new Imperial(18),
+                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
+        est.setMurs(new ArrayList<>(Arrays.asList(me1)));
+
+        Mur mo1 = new Mur(salle, ouest, new Imperial(1), new Imperial(19), new Imperial(18),
+                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
+        ouest.setMurs(new ArrayList<>(Arrays.asList(mo1)));
 
         return salle;
     }

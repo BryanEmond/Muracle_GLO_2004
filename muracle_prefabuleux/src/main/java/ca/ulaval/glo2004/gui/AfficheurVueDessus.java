@@ -17,6 +17,8 @@ public class AfficheurVueDessus extends Afficheur {
 
     @Override
     public void affiche(Graphics g) {
+        setOffset(10, 10);
+
         ArrayList<Polygone> polygones = salle.getPolygonesPlan();
         dessinerPolygones(g, polygones);
     }

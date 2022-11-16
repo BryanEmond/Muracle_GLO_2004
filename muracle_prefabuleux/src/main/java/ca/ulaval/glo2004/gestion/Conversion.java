@@ -22,10 +22,10 @@ public class Conversion {
         this.offsetY = 0;
     }
 
-    private int inchesToPixel(Imperial inches)
+    private int inchesToPixel(Imperial inches, int pixelOffset)
     {
         float inchesValue = inches.getEntier() + (float) inches.getNumerateur() / inches.getDenominateur();
-        return (int) (inchesValue * pixelPerInches);
+        return (int) (inchesValue * pixelPerInches) - pixelOffset;
     }
 
     private Imperial pixelsToInches(int pixels, int pixelOffset)
@@ -61,8 +61,8 @@ public class Conversion {
 
     public Point trouverCoordonneePixel(Imperial impX, Imperial impY)
     {
-        int x = inchesToPixel(impX);
-        int y = inchesToPixel(impY);
+        int x = inchesToPixel(impX, offsetX);
+        int y = inchesToPixel(impY, offsetY);
 
         return new Point(x, y);
     }

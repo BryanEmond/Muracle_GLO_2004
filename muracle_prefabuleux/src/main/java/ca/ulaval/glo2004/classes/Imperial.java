@@ -1,7 +1,5 @@
 package ca.ulaval.glo2004.classes;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class Imperial {
 
     int entier ;
@@ -63,5 +61,10 @@ public class Imperial {
         int newNumerateur2 = (other.numerateur * 1000 / other.denominateur * newDenominateur / 1000);
 
         return new Imperial(newEntier, newNumerateur1 + newNumerateur2, newDenominateur);
+    }
+
+    @Override
+    public String toString() {
+        return entier + "\"" + numerateur + "/" + denominateur;
     }
 }

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public abstract class Afficheur {
 
+    private int offsetX = 0;
+    private int offsetY = 0 ;
+
     public abstract void affiche(Graphics g);
 
     public void dessinerPolygones(Graphics g, ArrayList<Polygone> polygones)
@@ -45,9 +48,24 @@ public abstract class Afficheur {
 
     public void dessinerLigne(Graphics g, PointImperial pointDebut, PointImperial pointFin)
     {
-        Point point1Pixel = Conversion.getConversion().trouverCoordonneePixel(pointDebut.getmX(), pointDebut.getmY());
-        Point point2Pixel = Conversion.getConversion().trouverCoordonneePixel(pointFin.getmX(), pointFin.getmY());
+        Point point1Pixel = trouverPixel(pointDebut);
+        Point point2Pixel = trouverPixel(pointFin);
 
         g.drawLine(point1Pixel.x, point1Pixel.y, point2Pixel.x, point2Pixel.y);
+    }
+
+    protected Point trouverPixel(PointImperial pointImperial)
+    {
+        Point pointPixel = Conversion.getConversion().trouverCoordonneePixel(pointImperial.getmX(), pointImperial.getmY());
+        pointPixel.x = pointPixel.x + offsetX;
+        pointPixel.y = pointPixel.y + offsetY;
+
+        return pointPixel;
+    }
+
+    public void setOffset(int x, int y)
+    {
+        this.offsetX = x;
+        this.offsetY = y;
     }
 }
