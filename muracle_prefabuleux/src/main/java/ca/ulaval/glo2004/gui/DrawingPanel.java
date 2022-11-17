@@ -28,6 +28,16 @@ public class DrawingPanel extends JPanel
         afficheur = new AfficheurVueDessus(salle);
     }
 
+    public DrawingPanel(MainWindow mainWindow,Salle salle){
+        this.mainWindow = mainWindow;
+        mainWindow.mainPanel.add(this);
+
+        this.setBorder(new EmptyBorder(50, 10, 10, 10));
+
+        afficheur = new AfficheurVueDessus(salle);
+    }
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -53,31 +63,12 @@ public class DrawingPanel extends JPanel
                 new Imperial(1),
                 "OUEST");
 
-        Salle salle = new Salle(new Imperial(0), new Imperial(0),
+        mainWindow.gestionnaireSalle.creerSalle(new Imperial(0), new Imperial(0),
                 new Imperial(1), new Imperial(1),
                 new Imperial(20),
                 new Imperial(20), new Imperial(20),
                 true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
-
-        Mur mn1 = new Mur(salle, nord, new Imperial(0), new Imperial(0), new Imperial(10),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-
-        Mur mn2 = new Mur(salle, nord, new Imperial(0), new Imperial(10), new Imperial(10),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-
-        nord.setMurs(new ArrayList<>(Arrays.asList(mn1, mn2)));
-
-        Mur ms1 = new Mur(salle, sud, new Imperial(19), new Imperial(0), new Imperial(20),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-        sud.setMurs(new ArrayList<>(Arrays.asList(ms1)));
-
-        Mur me1 = new Mur(salle, est, new Imperial(1), new Imperial(0), new Imperial(18),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-        est.setMurs(new ArrayList<>(Arrays.asList(me1)));
-
-        Mur mo1 = new Mur(salle, ouest, new Imperial(1), new Imperial(19), new Imperial(18),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-        ouest.setMurs(new ArrayList<>(Arrays.asList(mo1)));
+        Salle salle = mainWindow.gestionnaireSalle.getSalleActive();
 
         return salle;
     }

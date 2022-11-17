@@ -3,7 +3,9 @@ package ca.ulaval.glo2004.classes;
 //import Accessoire as parent
 //s'affiche uniquement a l'intérieur de la salle
 
-public class PrisesElectrique extends Accessoire {
+import java.io.Serializable;
+
+public class PrisesElectrique extends Accessoire implements Serializable {
 
     Imperial largeur = new Imperial(2,0,0);
     Imperial hauteur = new Imperial(4,0,0);

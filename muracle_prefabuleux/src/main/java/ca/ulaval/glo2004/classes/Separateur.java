@@ -1,8 +1,9 @@
 package ca.ulaval.glo2004.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Separateur extends Element {
+public class Separateur extends Element implements Serializable {
 
     Imperial distanceBordDeReference ;
 

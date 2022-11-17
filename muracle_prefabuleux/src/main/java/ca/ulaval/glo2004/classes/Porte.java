@@ -1,7 +1,9 @@
 package ca.ulaval.glo2004.classes;
 //import Accessoire as parent
 
-public class Porte extends Accessoire{
+import java.io.Serializable;
+
+public class Porte extends Accessoire implements Serializable {
 
     Imperial largeur = new Imperial(38,0,0);
     Imperial hauteur = new Imperial(88,0,0);
