@@ -54,9 +54,13 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 Component component = (Component) e.getComponent();
                 JFrame frame = (JFrame) SwingUtilities.getRoot(component);
-                frame.setContentPane(new MainWindow().rootPanel);
+                MainWindow mainWindow = new MainWindow();
+                frame.setContentPane(mainWindow.rootPanel);
                 frame.pack();
                 frame.setVisible(true);
+
+                DrawingPanel panel = new DrawingPanel(mainWindow);
+                mainWindow.mainPanel.add(panel);
             }
         });
         ouvrirUnProjectExistantButton.addMouseListener(new MouseAdapter() {

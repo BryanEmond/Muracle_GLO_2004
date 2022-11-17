@@ -22,9 +22,6 @@ public class App {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
-        DrawingPanel panel = new DrawingPanel(mainWindow);
-        mainWindow.mainPanel.add(panel);
     }
 }
 
