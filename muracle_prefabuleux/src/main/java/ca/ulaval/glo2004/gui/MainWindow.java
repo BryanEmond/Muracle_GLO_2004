@@ -57,6 +57,7 @@ public class MainWindow {
                 MainWindow mainWindow = new MainWindow();
                 frame.setContentPane(mainWindow.rootPanel);
                 frame.pack();
+                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
                 frame.setVisible(true);
 
                 DrawingPanel panel = new DrawingPanel(mainWindow);
