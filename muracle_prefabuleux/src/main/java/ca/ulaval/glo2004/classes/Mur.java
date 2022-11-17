@@ -1,10 +1,11 @@
 package ca.ulaval.glo2004.classes;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Mur extends Element {
+public class Mur extends Element implements Serializable {
 
     int uniqueID;
     Cote mCote;

@@ -1,5 +1,8 @@
 package ca.ulaval.glo2004.classes;
-public class PointImperial {
+
+import java.io.Serializable;
+
+public class PointImperial implements Serializable {
     Imperial mX;
     Imperial mY;
 

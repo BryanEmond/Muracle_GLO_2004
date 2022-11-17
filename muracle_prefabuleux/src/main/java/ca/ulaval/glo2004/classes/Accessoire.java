@@ -1,9 +1,10 @@
 package ca.ulaval.glo2004.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 //as un impacte sur le poid du mur...
 
-public class Accessoire extends Element {
+public class Accessoire extends Element implements Serializable {
 
     Mur mur;
     boolean mPerceExtérieur;

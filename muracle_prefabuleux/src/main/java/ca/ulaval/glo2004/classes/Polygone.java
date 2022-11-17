@@ -1,11 +1,12 @@
 package ca.ulaval.glo2004.classes;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Polygone {
+public class Polygone implements Serializable {
     Color mCouleur;
     Element mElement;
     ArrayList<PointImperial> points;

@@ -6,7 +6,9 @@ package ca.ulaval.glo2004.classes;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
-public class RetourAir extends Accessoire{
+import java.io.Serializable;
+
+public class RetourAir extends Accessoire implements Serializable {
 
         Boolean perceInterieur = true;
         Boolean perceExterieur = false;

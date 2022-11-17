@@ -1,6 +1,9 @@
 package ca.ulaval.glo2004.classes;
+
+import java.io.Serializable;
+
 //import Accessoire as parent
-public class Fenetre extends Accessoire {
+public class Fenetre extends Accessoire implements Serializable {
 
     Boolean perceInterieur = true;
     Boolean perceExterieur = true;

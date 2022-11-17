@@ -4,8 +4,9 @@ import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.PointImperial;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Conversion {
+public class Conversion implements Serializable {
 
     private static Conversion conversion;
 

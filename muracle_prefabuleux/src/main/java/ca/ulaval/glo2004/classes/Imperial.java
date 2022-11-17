@@ -1,6 +1,8 @@
 package ca.ulaval.glo2004.classes;
 
-public class Imperial {
+import java.io.Serializable;
+
+public class Imperial implements Serializable {
 
     int entier ;
     int numerateur ;
