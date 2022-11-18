@@ -47,7 +47,6 @@ public class MainWindow {
     private MainWindow mainWindow;
     private DrawingPanel panel;
     GestionnaireSalle gestionnaireSalle;
-    private String filePath;
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
         this.gestionnaireSalle = gestionnaireSalle;
         creerUnNouveauProjetButton.addMouseListener(new MouseAdapter() {
@@ -55,8 +54,19 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 mainWindow = new MainWindow(gestionnaireSalle);
                 setHomePage(e);
-                panel = new DrawingPanel(mainWindow);
-                mainWindow.mainPanel.add(panel);
+                JFileChooser fc = new JFileChooser();
+                fc.setSelectedFile(new File("sale.ser"));
+                int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
+                if(returnFcVal == JFileChooser.APPROVE_OPTION){
+                    try{
+                        File file = fc.getSelectedFile();
+                        panel = new DrawingPanel(mainWindow);
+                        mainWindow.gestionnaireSalle.enregistrerSalle(file.getPath());
+                        mainWindow.mainPanel.add(panel);
+                    }catch (Exception error){
+                        System.out.println(error);
+                    }
+                }
             }
         });
         ouvrirUnProjectExistantButton.addMouseListener(new MouseAdapter() {
@@ -69,6 +79,7 @@ public class MainWindow {
                 if(returnFcVal == JFileChooser.APPROVE_OPTION){
                     try{
                         File file = fc.getSelectedFile();
+
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
                         panel = new DrawingPanel(mainWindow,mainWindow.gestionnaireSalle.getSalleActive());
                         mainWindow.mainPanel.add(panel);
@@ -88,11 +99,11 @@ public class MainWindow {
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-//                gestionnaireSalle.enregistrerSalle();
+                gestionnaireSalle.enregistrerSalle(null);
             }
         });
         this.$$$getRootComponent$$$().registerKeyboardAction((ActionListener) e -> {
-//            gestionnaireSalle.enregistrerSalle();
+            gestionnaireSalle.enregistrerSalle(null);
         }, KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         this.mainPanel.addMouseWheelListener(e -> {
@@ -110,7 +121,7 @@ public class MainWindow {
         JFrame frame = (JFrame) SwingUtilities.getRoot(component);
         frame.setContentPane(mainWindow.rootPanel);
         frame.pack();
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
     /**

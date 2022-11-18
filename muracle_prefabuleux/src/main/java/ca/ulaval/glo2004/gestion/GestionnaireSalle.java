@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class GestionnaireSalle {
-
+    private String filePath;
     private Salle salleActive;
 
     public void creerSalle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes)
@@ -43,13 +43,14 @@ public class GestionnaireSalle {
 
     public void enregistrerSalle(String path)
     {
+        filePath  = filePath != null? filePath: path;
         try {
-            FileOutputStream fileOut = new FileOutputStream(path);
+            FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(salleActive);
             out.close();
             fileOut.close();
-            System.out.printf(path);
+            System.out.printf("Serialized data is saved in d:/sale.ser");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -59,6 +60,7 @@ public class GestionnaireSalle {
 
     public void chargerSalle(String path)
     {
+        filePath = path;
         try{
             FileInputStream fileInputStream = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
