@@ -14,7 +14,6 @@ public class Conversion implements Serializable {
     private int offsetX;
     private int offsetY;
 
-    // TODO : Make it a Singleton ?
     public Conversion(int pixelsX, int pixelsY)
     {
         //TODO Implement default pixelPerInches with screen size
@@ -42,15 +41,23 @@ public class Conversion implements Serializable {
         return new Imperial(entier, numerateur, denominateur);
     }
 
-    public void zoomer(float pixelPerInches)
+    public void zoomer(double quantity, int x, int y)
     {
-        this.pixelPerInches += pixelPerInches;
+        if(quantity < 0 && pixelPerInches < 5)
+            return;
+
+        double xInchVise = (x + offsetX) / pixelPerInches;
+        double yInchVise = (y + offsetY) / pixelPerInches;
+
+        this.pixelPerInches += quantity;
+
+        int xAfter = (int) (xInchVise * pixelPerInches) - offsetX;
+        int yAfter = (int) (yInchVise * pixelPerInches) - offsetY;
+
+        offsetX += xAfter - x;
+        offsetY += yAfter - y;
     }
 
-    public void dezoomer(float pixelPerInches)
-    {
-        this.pixelPerInches -= pixelPerInches;
-    }
 
     public PointImperial trouverCoordonneImperial(int pixelX, int pixelY)
     {

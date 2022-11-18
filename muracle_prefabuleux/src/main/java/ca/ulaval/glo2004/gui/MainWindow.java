@@ -94,6 +94,12 @@ public class MainWindow {
         this.$$$getRootComponent$$$().registerKeyboardAction((ActionListener) e -> {
 //            gestionnaireSalle.enregistrerSalle();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        this.mainPanel.addMouseWheelListener(e -> {
+            gestionnaireSalle.zoomer(-e.getWheelRotation(), e.getX(), e.getY());
+            this.mainPanel.validate();
+            this.mainPanel.repaint();
+        });
     }
 
     {

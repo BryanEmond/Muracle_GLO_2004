@@ -83,6 +83,11 @@ public class GestionnaireSalle {
         System.exit(0);
     }
 
+    public void zoomer(int quantite, int x, int y)
+    {
+        Conversion.getConversion().zoomer(quantite, x, y);
+    }
+
     public Salle getSalleActive(){
         return salleActive;
     }
