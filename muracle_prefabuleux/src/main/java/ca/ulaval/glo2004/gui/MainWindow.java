@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.awt.event.*;
 import java.io.File;
 import java.util.Locale;
@@ -36,6 +37,7 @@ public class MainWindow {
     private JTextField tbEpaisseurMurs;
     private JTextField tbLargeurPli;
     private JTextField tbPliSoudure;
+    private JButton btnElevationCote;
 
     public JPanel starterPanel;
     private JButton creerUnNouveauProjetButton;
@@ -417,6 +419,23 @@ public class MainWindow {
         mainPanel.setMinimumSize(new Dimension(200, 24));
         mainPanel.setPreferredSize(new Dimension(200, 24));
         rightPanel.add(mainPanel, BorderLayout.CENTER);
+
+        btnElevationCote = new JButton();
+        btnElevationCote.setBackground(new Color(0xCDCDCD));
+        btnElevationCote.setText("ELV");
+        btnElevationCote.setForeground(new Color(0x3D3D3D));
+        btnElevationCote.setMaximumSize(new Dimension(50,50));
+        btnElevationCote.setMinimumSize(new Dimension(50,50));
+        btnElevationCote.setPreferredSize(new Dimension(50,50));
+        gbc = new GridBagConstraints();
+        buttonsPanel.add(btnElevationCote,gbc);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 4;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        //gbc.insert = new Insets(2,2,2,2);
+
+
     }
 
     /**

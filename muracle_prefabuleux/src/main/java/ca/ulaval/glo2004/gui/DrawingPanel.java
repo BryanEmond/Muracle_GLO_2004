@@ -17,6 +17,8 @@ public class DrawingPanel extends JPanel
     private MainWindow mainWindow;
     private Afficheur afficheur;
 
+    private Afficheur afficheurCote;
+
     public DrawingPanel(MainWindow mainWindow)
     {
         this.mainWindow = mainWindow;
@@ -45,6 +47,8 @@ public class DrawingPanel extends JPanel
         afficheur.affiche(g);
     }
 
+
+
     private Salle GetTestingSalle()
     {
         Cote nord = new Cote(new Imperial(0),
@@ -72,4 +76,13 @@ public class DrawingPanel extends JPanel
 
         return salle;
     }
+
+    private Cote GetTestingCote() {
+        Cote coteTest = new Cote(new Imperial(96), new Imperial(60), "nord" );
+
+
+
+        return coteTest;
+    }
+
 }
