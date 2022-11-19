@@ -93,4 +93,6 @@ public class GestionnaireSalle {
     public Salle getSalleActive(){
         return salleActive;
     }
+
+    //TODO public Cote getCote() {return ;}
 }

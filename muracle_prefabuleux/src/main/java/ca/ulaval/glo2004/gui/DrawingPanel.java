@@ -28,6 +28,7 @@ public class DrawingPanel extends JPanel
 
         Salle salle = GetTestingSalle();
         afficheur = new AfficheurVueDessus(salle);
+
     }
 
     public DrawingPanel(MainWindow mainWindow,Salle salle){
@@ -39,6 +40,14 @@ public class DrawingPanel extends JPanel
         afficheur = new AfficheurVueDessus(salle);
     }
 
+    public DrawingPanel(MainWindow mainWindow, Cote cote){
+        this.mainWindow = mainWindow;
+        mainWindow.mainPanel.add(this);
+
+        this.setBorder(new EmptyBorder(50, 10, 10,10));
+
+        afficheur = new AfficheurElevationCote(cote);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -76,6 +85,7 @@ public class DrawingPanel extends JPanel
 
         return salle;
     }
+
 
     private Cote GetTestingCote() {
         Cote coteTest = new Cote(new Imperial(96), new Imperial(60), "nord" );

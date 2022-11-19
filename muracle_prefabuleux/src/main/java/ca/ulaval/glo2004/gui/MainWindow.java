@@ -120,6 +120,15 @@ public class MainWindow {
             this.mainPanel.validate();
             this.mainPanel.repaint();
         });
+
+        btnElvEstINT.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                gestionnaireSalle.getSalleActive();
+
+               //TODO panel = new DrawingPanel(mainWindow, mainWindow, gestionnaireSalle.getSalleActive());
+            }
+        });
     }
 
     {
