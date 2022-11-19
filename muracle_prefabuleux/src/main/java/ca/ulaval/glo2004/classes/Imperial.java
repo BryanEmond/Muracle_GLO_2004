@@ -2,8 +2,7 @@ package ca.ulaval.glo2004.classes;
 
 import java.io.Serializable;
 
-public class Imperial implements Serializable {
-public class Imperial implements Comparable<Imperial> {
+public class Imperial implements Comparable<Imperial>,Serializable {
 
     int entier ;
     int numerateur ;

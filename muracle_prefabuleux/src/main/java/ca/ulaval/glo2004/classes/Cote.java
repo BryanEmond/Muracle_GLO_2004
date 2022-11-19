@@ -15,7 +15,6 @@ public class Cote extends Element implements Serializable {
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, String mDirection) {
     public Cote(Imperial mY, Imperial mX, Imperial mZ, Polygone mPolygonePlan, String mDirection,Polygone mPolygoneElevation) {
         super(mY, mX);
         this.mZ = mZ;
@@ -30,7 +29,7 @@ public class Cote extends Element implements Serializable {
 
     public void AjouterSeparateur(Separateur separateur) {separateurs.add(separateur);}
 
-    public Imperial getmPolygonePlan() {
+    public Polygone getmPolygonePlan() {
         return mPolygonePlan;
     }
 
