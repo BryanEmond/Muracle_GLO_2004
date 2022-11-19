@@ -1,9 +1,10 @@
 package ca.ulaval.glo2004.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 //as un impacte sur le poid du mur...
 
-public class Accessoire extends Element{
+public class Accessoire extends Element implements Serializable {
 
     Mur mur;
     boolean mPerceExtérieur;
@@ -36,9 +37,7 @@ public class Accessoire extends Element{
     }
 
     public Cote cote(){
-        ArrayList<PointImperial> pointImperials = new ArrayList<PointImperial>();
-    return new Cote(new Imperial(1,1,1),new Imperial(1,1,1),new Imperial(1,1,1),
-            new Polygone("FFFFF", pointImperials),"NORD",new Polygone("FFFFF", pointImperials) );
+    return null;
     }
 
     public Mur mur(){
@@ -48,11 +47,13 @@ public class Accessoire extends Element{
         pointImperials.add(new PointImperial(new Imperial(1,1,1),
                 new Imperial(1,1,1)));
 
-        Polygone polygone =new Polygone("FFFFF", pointImperials);
+        //Polygone polygone =new Polygone("FFFFF", pointImperials);
 
 
-    return new Mur(imperial, imperial, cote(), salle(), polygone, polygone, imperial, imperial, imperial, imperial,
-            imperial, imperial,imperial,imperial);
+    /*return new Mur(imperial, imperial, cote(), salle(), polygone, polygone, imperial, imperial, imperial, imperial,
+            imperial, imperial,imperial,imperial);*/
+
+        return null;
     }
 
     public void calculeDisposition(){ }

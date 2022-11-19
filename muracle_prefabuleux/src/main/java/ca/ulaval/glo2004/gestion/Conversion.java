@@ -4,26 +4,28 @@ import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.PointImperial;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Conversion {
+public class Conversion implements Serializable {
+
+    private static Conversion conversion;
 
     private float pixelPerInches;
     private int offsetX;
     private int offsetY;
 
-    // TODO : Make it a Singleton ?
     public Conversion(int pixelsX, int pixelsY)
     {
         //TODO Implement default pixelPerInches with screen size
-        this.pixelPerInches = 1;
+        this.pixelPerInches = 20;
         this.offsetX = 0;
         this.offsetY = 0;
     }
 
-    private int inchesToPixel(Imperial inches)
+    private int inchesToPixel(Imperial inches, int pixelOffset)
     {
         float inchesValue = inches.getEntier() + (float) inches.getNumerateur() / inches.getDenominateur();
-        return (int) (inchesValue * pixelPerInches);
+        return (int) (inchesValue * pixelPerInches) - pixelOffset;
     }
 
     private Imperial pixelsToInches(int pixels, int pixelOffset)
@@ -39,15 +41,23 @@ public class Conversion {
         return new Imperial(entier, numerateur, denominateur);
     }
 
-    public void zoomer(float pixelPerInches)
+    public void zoomer(double quantity, int x, int y)
     {
-        this.pixelPerInches += pixelPerInches;
+        if(quantity < 0 && pixelPerInches < 5)
+            return;
+
+        double xInchVise = (x + offsetX) / pixelPerInches;
+        double yInchVise = (y + offsetY) / pixelPerInches;
+
+        this.pixelPerInches += quantity;
+
+        int xAfter = (int) (xInchVise * pixelPerInches) - offsetX;
+        int yAfter = (int) (yInchVise * pixelPerInches) - offsetY;
+
+        offsetX += xAfter - x;
+        offsetY += yAfter - y;
     }
 
-    public void dezoomer(float pixelPerInches)
-    {
-        this.pixelPerInches -= pixelPerInches;
-    }
 
     public PointImperial trouverCoordonneImperial(int pixelX, int pixelY)
     {
@@ -59,9 +69,17 @@ public class Conversion {
 
     public Point trouverCoordonneePixel(Imperial impX, Imperial impY)
     {
-        int x = inchesToPixel(impX);
-        int y = inchesToPixel(impY);
+        int x = inchesToPixel(impX, offsetX);
+        int y = inchesToPixel(impY, offsetY);
 
         return new Point(x, y);
+    }
+
+    public static Conversion getConversion()
+    {
+        if(conversion == null)
+            conversion = new Conversion(1920, 1080);
+
+        return conversion;
     }
 }

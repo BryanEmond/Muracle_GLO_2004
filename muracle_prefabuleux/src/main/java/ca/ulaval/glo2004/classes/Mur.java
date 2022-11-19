@@ -1,154 +1,53 @@
 package ca.ulaval.glo2004.classes;
 
+import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-
-
-public class Mur extends Element {
+public class Mur extends Element implements Serializable {
 
     int uniqueID;
     Cote mCote;
     Salle mSalle;
     Polygone mPolygoneElevation;
     Polygone mPolygonePlan;
-    Imperial mEpaisseurMur1;
-    Imperial mEpaisseurMur2;
-    Imperial mBandeSoudage1;
-    Imperial mBandeSoudage2;
-    Imperial mPolygoneMarge1;
-    Imperial mPolygoneMarge12;
-    Imperial mPolygoneMarge2;
-    Imperial mPolygoneMarge22;
 
-    public Mur(Imperial mY, Imperial mX, Cote mCote, Salle mSalle, Polygone mPolygoneElevation, Polygone mPolygonePlan, Imperial mEpaisseurMur1, Imperial mEpaisseurMur2, Imperial mBandeSoudage1, Imperial mBandeSoudage2, Imperial mPolygoneMarge1, Imperial mPolygoneMarge12, Imperial mPolygoneMarge2, Imperial mPolygoneMarge22) {
-        super(mY, mX);
-        String uniqueID = UUID.randomUUID().toString();
+    Imperial mLargeur;
+
+    Imperial mBandeSoudageVerticale;
+    Imperial mBandeSoudageHorizontale;
+    Imperial mPolygoneMargeHaut;
+    Imperial mPolygoneMargeBas;
+    Imperial mPolygoneMargeGauche;
+    Imperial mPolygoneMargeDroite;
+
+    public Mur(Salle mSalle, Cote mCote, Imperial y, Imperial x, Imperial largeur, Imperial mBandeSoudageVerticale, Imperial mBandeSoudageHorizontale, Imperial mPolygoneMargeHaut, Imperial mPolygoneMargeBas, Imperial mPolygoneMargeGauche, Imperial mPolygoneMargeDroite) {
+        super(y, x);
+        this.mLargeur = largeur;
+
         this.mCote = mCote;
         this.mSalle = mSalle;
-        this.mEpaisseurMur1 = mEpaisseurMur1;
-        this.mEpaisseurMur2 = mEpaisseurMur2;
-        this.mBandeSoudage1 = mBandeSoudage1;
-        this.mBandeSoudage2 = mBandeSoudage2;
-        this.mPolygoneMarge1 = mPolygoneMarge1;
-        this.mPolygoneMarge12 = mPolygoneMarge12;
-        this.mPolygoneMarge2 = mPolygoneMarge2;
-        this.mPolygoneMarge22 = mPolygoneMarge22;
-        this.mPolygoneElevation = mPolygoneElevation;
-        this.mPolygonePlan = mPolygonePlan;
+        this.mBandeSoudageVerticale = mBandeSoudageVerticale;
+        this.mBandeSoudageHorizontale = mBandeSoudageHorizontale;
+        this.mPolygoneMargeHaut = mPolygoneMargeHaut;
+        this.mPolygoneMargeBas = mPolygoneMargeBas;
+        this.mPolygoneMargeGauche = mPolygoneMargeGauche;
+        this.mPolygoneMargeDroite = mPolygoneMargeDroite;
+
+        genererPolygonePlan();
     }
 
-    @Override
-    public void calculeDisposition() {
-        super.calculeDisposition();
+    public void calculerDisposition() {
+
     }
 
-    public int getUniqueID() {
-        return uniqueID;
-    }
-
-    public Cote getmCote() {
-        return mCote;
-    }
-
-    public void setmCote(Cote mCote) {
-        this.mCote = mCote;
-    }
-
-    public Salle getmSalle() {
-        return mSalle;
-    }
-
-    public void setmSalle(Salle mSalle) {
-        this.mSalle = mSalle;
-    }
-
-    public Polygone getmPolygoneElevation() {
+    public Polygone polygonesElevation(boolean exterieur) {
         return mPolygoneElevation;
     }
 
-    public void setmPolygoneElevation(Polygone mPolygoneElevation) {
-        this.mPolygoneElevation = mPolygoneElevation;
-    }
+    public void polygonesElevationDecoupage(boolean exterieur) {
 
-    public Polygone getmPolygonePlan() {
-        return mPolygonePlan;
-    }
-
-    public void setmPolygonePlan(Polygone mPolygonePlan) {
-        this.mPolygonePlan = mPolygonePlan;
-    }
-
-    public Imperial getmEpaisseurMur1() {
-        return mEpaisseurMur1;
-    }
-
-    public void setmEpaisseurMur1(Imperial mEpaisseurMur1) {
-        this.mEpaisseurMur1 = mEpaisseurMur1;
-    }
-
-    public Imperial getmEpaisseurMur2() {
-        return mEpaisseurMur2;
-    }
-
-    public void setmEpaisseurMur2(Imperial mEpaisseurMur2) {
-        this.mEpaisseurMur2 = mEpaisseurMur2;
-    }
-
-    public Imperial getmBandeSoudage1() {
-        return mBandeSoudage1;
-    }
-
-    public void setmBandeSoudage1(Imperial mBandeSoudage1) {
-        this.mBandeSoudage1 = mBandeSoudage1;
-    }
-
-    public Imperial getmBandeSoudage2() {
-        return mBandeSoudage2;
-    }
-
-    public void setmBandeSoudage2(Imperial mBandeSoudage2) {
-        this.mBandeSoudage2 = mBandeSoudage2;
-    }
-
-    public Imperial getmPolygoneMarge1() {
-        return mPolygoneMarge1;
-    }
-
-    public void setmPolygoneMarge1(Imperial mPolygoneMarge1) {
-        this.mPolygoneMarge1 = mPolygoneMarge1;
-    }
-
-    public Imperial getmPolygoneMarge12() {
-        return mPolygoneMarge12;
-    }
-
-    public void setmPolygoneMarge12(Imperial mPolygoneMarge12) {
-        this.mPolygoneMarge12 = mPolygoneMarge12;
-    }
-
-    public Imperial getmPolygoneMarge2() {
-        return mPolygoneMarge2;
-    }
-
-    public void setmPolygoneMarge2(Imperial mPolygoneMarge2) {
-        this.mPolygoneMarge2 = mPolygoneMarge2;
-    }
-
-    public Imperial getmPolygoneMarge22() {
-        return mPolygoneMarge22;
-    }
-
-    public void setmPolygoneMarge22(Imperial mPolygoneMarge22) {
-        this.mPolygoneMarge22 = mPolygoneMarge22;
-    }
-
-    public Polygone genererPlan() {
-        return null ;
-    }
-
-    public Polygone genererDecoupage() {
-        return null;
     }
 
     public ArrayList<Accessoire> accessoires() {
@@ -175,7 +74,32 @@ public class Mur extends Element {
                 listAccessoires.add(var);
             };
         }
-        return null;
+
         // TODO méthode dans accessoires pour determiner zone par rapport point
+
+        return null;
     }
+
+    public void genererPolygonePlan()
+    {
+        Imperial x1 = super.mX;
+        Imperial y1 = super.mY;
+        Imperial x2;
+        Imperial y2;
+
+        if(mCote.mDirection == "NORD" || mCote.mDirection == "SUD")
+        {
+            x2 = x1.add(mLargeur);
+            y2 = y1.add(mSalle.epaisseurMurs);
+        }
+        else
+        {
+            x2 = x1.add(mSalle.epaisseurMurs);
+            y2 = y1.add(mLargeur);
+        }
+
+
+        this.mPolygonePlan = new Polygone(Color.BLACK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
+    }
+
 }

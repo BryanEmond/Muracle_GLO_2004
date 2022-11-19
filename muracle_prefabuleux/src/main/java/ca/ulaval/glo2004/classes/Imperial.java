@@ -1,9 +1,20 @@
 package ca.ulaval.glo2004.classes;
+
+import java.io.Serializable;
+
+public class Imperial implements Serializable {
 public class Imperial implements Comparable<Imperial> {
 
     int entier ;
     int numerateur ;
     int denominateur ;
+
+    public Imperial(int entier)
+    {
+        this.entier = entier;
+        this.numerateur = 0;
+        this.denominateur = 1;
+    }
 
     public Imperial(int entier,int numerateur,int denominateur) {
         this.entier = entier;
@@ -52,5 +63,30 @@ public class Imperial implements Comparable<Imperial> {
         }
 
         return result;
+    }
+
+    /***
+     * Trouver le plus grand commun diviseur
+     * https://stackoverflow.com/questions/4009198/java-get-greatest-common-divisor
+     */
+    public int PGCD(int a, int b)
+    {
+        if(b == 0) return a;
+        return PGCD(b, a%b);
+    }
+
+    public Imperial add(Imperial other)
+    {
+        int newEntier = entier + other.entier;
+        int newDenominateur = PGCD(denominateur, other.denominateur);
+        int newNumerateur1 = (numerateur * 1000 / denominateur * newDenominateur / 1000);
+        int newNumerateur2 = (other.numerateur * 1000 / other.denominateur * newDenominateur / 1000);
+
+        return new Imperial(newEntier, newNumerateur1 + newNumerateur2, newDenominateur);
+    }
+
+    @Override
+    public String toString() {
+        return entier + "\"" + numerateur + "/" + denominateur;
     }
 }

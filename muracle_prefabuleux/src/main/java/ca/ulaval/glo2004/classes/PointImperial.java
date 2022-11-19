@@ -1,5 +1,8 @@
 package ca.ulaval.glo2004.classes;
-public class PointImperial {
+
+import java.io.Serializable;
+
+public class PointImperial implements Serializable {
     Imperial mX;
     Imperial mY;
 
@@ -26,5 +29,10 @@ public class PointImperial {
 
     public Boolean EstDans(Imperial mY) {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + mX.toString() + ", " + mY.toString() + ")";
     }
 }

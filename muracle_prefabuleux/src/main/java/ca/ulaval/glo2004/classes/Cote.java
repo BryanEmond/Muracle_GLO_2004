@@ -1,19 +1,21 @@
 package ca.ulaval.glo2004.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cote extends Element{
+public class Cote extends Element implements Serializable {
     Imperial mZ;
 
     String mDirection;
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
-    ArrayList<Mur> murs;
+    ArrayList<Mur> murs = new ArrayList<>();
     ArrayList<Accessoire> accessoires;
 
     ArrayList<Separateur> separateurs;
 
+    public Cote(Imperial mY, Imperial mX, String mDirection) {
     public Cote(Imperial mY, Imperial mX, Imperial mZ, Polygone mPolygonePlan, String mDirection,Polygone mPolygoneElevation) {
         super(mY, mX);
         this.mZ = mZ;
@@ -28,15 +30,7 @@ public class Cote extends Element{
 
     public void AjouterSeparateur(Separateur separateur) {separateurs.add(separateur);}
 
-    public Imperial getmZ() {
-        return mZ;
-    }
-
-    public void setmZ(Imperial mZ) {
-        this.mZ = mZ;
-    }
-
-    public Polygone getmPolygonePlan() {
+    public Imperial getmPolygonePlan() {
         return mPolygonePlan;
     }
 
@@ -64,7 +58,7 @@ public class Cote extends Element{
         return accessoires;
     }
 
-    public void settrouvccessoires(ArrayList<Accessoire> accessoires) {
+    public void setAccessoires(ArrayList<Accessoire> accessoires) {
         this.accessoires = accessoires;
     }
 
@@ -76,6 +70,17 @@ public class Cote extends Element{
         this.separateurs = separateurs;
     }
 
+    public ArrayList<Polygone> getPolygonesPlan()
+    {
+        ArrayList<Polygone> polygones = new ArrayList<Polygone>();
+
+        for(int i = 0; i < murs.size(); i++)
+        {
+            polygones.add(murs.get(i).mPolygonePlan);
+        }
+
+        return polygones;
+    }
 
     public void SupprimerSeparateur(Separateur separateur) {separateurs.remove(separateur);}
 

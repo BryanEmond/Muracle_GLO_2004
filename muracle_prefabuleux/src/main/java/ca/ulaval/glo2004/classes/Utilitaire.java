@@ -1,6 +1,8 @@
 package ca.ulaval.glo2004.classes;
 
-public abstract class Utilitaire {
+import java.io.Serializable;
+
+public abstract class Utilitaire implements Serializable {
 
     enum Direction {
         NORD,

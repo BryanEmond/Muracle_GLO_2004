@@ -1,8 +1,11 @@
 package ca.ulaval.glo2004.classes;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Salle extends Element{
+public class Salle extends Element implements Serializable {
 
     Imperial epaisseurMurs;
     Imperial marge;
@@ -97,5 +100,17 @@ public class Salle extends Element{
 
     public void setCotes(ArrayList<Cote> cotes) {
         this.cotes = cotes;
+    }
+
+    public ArrayList<Polygone> getPolygonesPlan()
+    {
+        ArrayList<Polygone> polygones = new ArrayList<>();
+
+        for (Cote cote : cotes)
+        {
+            polygones.addAll(cote.getPolygonesPlan());
+        }
+
+        return polygones;
     }
 }
