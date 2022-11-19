@@ -1,11 +1,16 @@
 package ca.ulaval.glo2004.gestion;
 
-import ca.ulaval.glo2004.classes.Imperial;
-import ca.ulaval.glo2004.classes.Salle;
+import ca.ulaval.glo2004.classes.*;
+
+import java.awt.*;
 
 public class GestionnaireSalle {
 
-    private Salle salleActive;
+    private Salle mSalle;
+    private Cote mCoteCourant;
+    private Mur mMurCourant;
+    private Accessoire mAccessoire;
+    private boolean mDecoupage;
 
     public void creerSalle(Imperial tailleX, Imperial tailleY)
     {
@@ -23,10 +28,34 @@ public class GestionnaireSalle {
 
     }
 
-    public void exporerSVG(String cheminDossier)
+
+
+    public void VuePlan(String cheminDossier)
     {
 
     }
+
+    public void VueCote(String cheminDossier)
+    {
+
+    }
+
+    public Mur murSelectionne(Mur mur)
+    {
+        return this.mMurCourant;
+    }
+
+    public Accessoire accessoireSelectionne(String cheminDossier)
+    {
+        return this.mAccessoire;
+    }
+
+    public void AjouteSeparateurAPartirVuePlan(PointImperial point)
+    {
+        this.mSalle.separateur(point);
+    }
+
+
 
     public void quitter()
     {

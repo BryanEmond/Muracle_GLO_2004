@@ -36,8 +36,9 @@ public class Accessoire extends Element{
     }
 
     public Cote cote(){
+        ArrayList<PointImperial> pointImperials = new ArrayList<PointImperial>();
     return new Cote(new Imperial(1,1,1),new Imperial(1,1,1),new Imperial(1,1,1),
-            new Imperial(1,1,1),new Imperial(1,1,1) );
+            new Polygone("FFFFF", pointImperials),"NORD",new Polygone("FFFFF", pointImperials) );
     }
 
     public Mur mur(){

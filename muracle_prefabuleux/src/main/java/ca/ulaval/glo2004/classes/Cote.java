@@ -6,15 +6,15 @@ public class Cote extends Element{
     Imperial mZ;
 
     String mDirection;
-    Imperial mPolygonePlan;
-    Imperial mPolygoneElevation;
+    Polygone mPolygonePlan;
+    Polygone mPolygoneElevation;
 
     ArrayList<Mur> murs;
     ArrayList<Accessoire> accessoires;
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, Imperial mZ, Imperial mPolygonePlan, String mDirection,Imperial mPolygoneElevation) {
+    public Cote(Imperial mY, Imperial mX, Imperial mZ, Polygone mPolygonePlan, String mDirection,Polygone mPolygoneElevation) {
         super(mY, mX);
         this.mZ = mZ;
         this.mDirection = mDirection;
@@ -36,19 +36,19 @@ public class Cote extends Element{
         this.mZ = mZ;
     }
 
-    public Imperial getmPolygonePlan() {
+    public Polygone getmPolygonePlan() {
         return mPolygonePlan;
     }
 
-    public void setmPolygonePlan(Imperial mPolygonePlan) {
+    public void setmPolygonePlan(Polygone mPolygonePlan) {
         this.mPolygonePlan = mPolygonePlan;
     }
 
-    public Imperial getmPolygoneElevation() {
+    public Polygone getmPolygoneElevation() {
         return mPolygoneElevation;
     }
 
-    public void setmPolygoneElevation(Imperial mPolygoneElevation) {
+    public void setmPolygoneElevation(Polygone mPolygoneElevation) {
         this.mPolygoneElevation = mPolygoneElevation;
     }
 
@@ -64,7 +64,7 @@ public class Cote extends Element{
         return accessoires;
     }
 
-    public void setAccessoires(ArrayList<Accessoire> accessoires) {
+    public void settrouvccessoires(ArrayList<Accessoire> accessoires) {
         this.accessoires = accessoires;
     }
 

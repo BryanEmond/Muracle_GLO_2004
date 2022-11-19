@@ -1,5 +1,5 @@
 package ca.ulaval.glo2004.classes;
-public class Imperial {
+public class Imperial implements Comparable<Imperial> {
 
     int entier ;
     int numerateur ;
@@ -33,5 +33,24 @@ public class Imperial {
 
     public void setDenominateur(int denominateur) {
         this.denominateur = denominateur;
+    }
+
+    @Override
+    public int compareTo(Imperial o) {
+        int result = 0;
+
+        if(this.entier < o.entier){
+            result = -1;
+        } else if (this.entier > o.entier) {
+            result = 1;
+        }
+
+        if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
+            result = -1;
+        } else if (this.denominateur/this.numerateur > o.denominateur/o.numerateur) {
+            result = 1;
+        }
+
+        return result;
     }
 }
