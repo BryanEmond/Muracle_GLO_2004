@@ -37,8 +37,13 @@ public class Salle extends Element implements Serializable {
     public ArrayList<Polygone> polygonesElevation(){
         return new ArrayList<Polygone>();
     }
-    public Separateur separateur(PointImperial point) {
-        return null;
+    public void separateur(PointImperial point) {
+        for (Cote var : cotes)
+        {
+           if(var.mPolygonePlan.EstDansPolygone(point)){
+               ;
+           };
+        }
     }
 
     public Imperial getEpaisseurMurs() {

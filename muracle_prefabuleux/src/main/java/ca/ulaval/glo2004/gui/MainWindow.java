@@ -37,7 +37,15 @@ public class MainWindow {
     private JTextField tbEpaisseurMurs;
     private JTextField tbLargeurPli;
     private JTextField tbPliSoudure;
-    private JButton btnElevationCote;
+
+    private JButton btnElvNordEXT;
+    private JButton btnElvNordINT;
+    private JButton btnElvEstEXT;
+    private JButton btnElvEstINT;
+    private JButton btnElvSudEXT;
+    private JButton btnELVSudINT;
+    private JButton btnElvOuestEXT;
+    private JButton btnElvOuestINT;
 
     public JPanel starterPanel;
     private JButton creerUnNouveauProjetButton;
@@ -55,8 +63,19 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 mainWindow = new MainWindow(gestionnaireSalle);
                 setHomePage(e);
-                panel = new DrawingPanel(mainWindow);
-                mainWindow.mainPanel.add(panel);
+                JFileChooser fc = new JFileChooser();
+                fc.setSelectedFile(new File("sale.ser"));
+                int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
+                if(returnFcVal == JFileChooser.APPROVE_OPTION){
+                    try{
+                        File file = fc.getSelectedFile();
+                        panel = new DrawingPanel(mainWindow);
+                        mainWindow.gestionnaireSalle.enregistrerSalle(file.getPath());
+                        mainWindow.mainPanel.add(panel);
+                    }catch (Exception error){
+                        System.out.println(error);
+                    }
+                }
             }
         });
         ouvrirUnProjectExistantButton.addMouseListener(new MouseAdapter() {
@@ -69,6 +88,7 @@ public class MainWindow {
                 if(returnFcVal == JFileChooser.APPROVE_OPTION){
                     try{
                         File file = fc.getSelectedFile();
+
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
                         panel = new DrawingPanel(mainWindow,mainWindow.gestionnaireSalle.getSalleActive());
                         mainWindow.mainPanel.add(panel);
@@ -88,17 +108,26 @@ public class MainWindow {
         btnSave.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-//                gestionnaireSalle.enregistrerSalle();
+                gestionnaireSalle.enregistrerSalle(null);
             }
         });
         this.$$$getRootComponent$$$().registerKeyboardAction((ActionListener) e -> {
-//            gestionnaireSalle.enregistrerSalle();
+            gestionnaireSalle.enregistrerSalle(null);
         }, KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         this.mainPanel.addMouseWheelListener(e -> {
             gestionnaireSalle.zoomer(-e.getWheelRotation(), e.getX(), e.getY());
             this.mainPanel.validate();
             this.mainPanel.repaint();
+        });
+
+        btnElvEstINT.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                gestionnaireSalle.getSalleActive();
+
+               //TODO panel = new DrawingPanel(mainWindow, mainWindow, gestionnaireSalle.getSalleActive());
+            }
         });
     }
 
@@ -110,7 +139,7 @@ public class MainWindow {
         JFrame frame = (JFrame) SwingUtilities.getRoot(component);
         frame.setContentPane(mainWindow.rootPanel);
         frame.pack();
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
     /**
@@ -294,9 +323,9 @@ public class MainWindow {
         rootPanel.add(rightPanel, BorderLayout.CENTER);
         controlPanel.setLayout(new BorderLayout(0, 0));
         controlPanel.setBackground(new Color(-12829632));
-        controlPanel.setMinimumSize(new Dimension(24, 105));
+        controlPanel.setMinimumSize(new Dimension(24, 230));
         controlPanel.setOpaque(true);
-        controlPanel.setPreferredSize(new Dimension(24, 105));
+        controlPanel.setPreferredSize(new Dimension(24, 230));
         rightPanel.add(controlPanel, BorderLayout.NORTH);
         buttonsPanel.setLayout(new GridBagLayout());
         buttonsPanel.setBackground(new Color(-12829633));
@@ -311,7 +340,7 @@ public class MainWindow {
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.NORTHEAST;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnSave, gbc);
@@ -324,7 +353,7 @@ public class MainWindow {
         btnUndo.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnUndo, gbc);
@@ -337,7 +366,7 @@ public class MainWindow {
         btnRedo.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnRedo, gbc);
@@ -350,7 +379,7 @@ public class MainWindow {
         btnGrille.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnGrille, gbc);
@@ -363,7 +392,7 @@ public class MainWindow {
         btnFenetre.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnFenetre, gbc);
@@ -376,7 +405,7 @@ public class MainWindow {
         btnPorte.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnPorte, gbc);
@@ -389,7 +418,7 @@ public class MainWindow {
         btnPrise.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 2;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnPrise, gbc);
@@ -402,7 +431,7 @@ public class MainWindow {
         btnRetourAir.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 3;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnRetourAir, gbc);
@@ -415,7 +444,7 @@ public class MainWindow {
         btnSupprimer.setText("");
         gbc = new GridBagConstraints();
         gbc.gridx = 4;
-        gbc.gridy = 1;
+        gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnSupprimer, gbc);
@@ -426,21 +455,126 @@ public class MainWindow {
         mainPanel.setPreferredSize(new Dimension(200, 24));
         rightPanel.add(mainPanel, BorderLayout.CENTER);
 
-        btnElevationCote = new JButton();
-        btnElevationCote.setBackground(new Color(0xCDCDCD));
-        btnElevationCote.setText("ELV");
-        btnElevationCote.setForeground(new Color(0x3D3D3D));
-        btnElevationCote.setMaximumSize(new Dimension(50,50));
-        btnElevationCote.setMinimumSize(new Dimension(50,50));
-        btnElevationCote.setPreferredSize(new Dimension(50,50));
+
+        btnElvOuestEXT = new JButton();
+        btnElvOuestEXT.setBackground(new Color(-12829636));
+        btnElvOuestEXT.setIcon(new ImageIcon(getClass().getResource("/buttons/exterieurOuest.png")));
+        btnElvOuestEXT.setMargin(new Insets(0,0,0,0));
+        btnElvOuestEXT.setMaximumSize(new Dimension(30,50));
+        btnElvOuestEXT.setMinimumSize(new Dimension(30,50));
+        btnElvOuestEXT.setPreferredSize(new Dimension(30,50));
+        btnElvOuestEXT.setText("");
         gbc = new GridBagConstraints();
-        buttonsPanel.add(btnElevationCote,gbc);
+        gbc.gridx = 11;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2,2,2,2);
+        buttonsPanel.add(btnElvOuestEXT, gbc);
+
+        btnElvOuestINT = new JButton();
+        btnElvOuestINT.setBackground(new Color(-12829636));
+        btnElvOuestINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEUROuest.png")));
+        btnElvOuestINT.setMargin(new Insets(0,0,0,0));
+        btnElvOuestINT.setMaximumSize(new Dimension(30,50));
+        btnElvOuestINT.setMinimumSize(new Dimension(30,50));
+        btnElvOuestINT.setPreferredSize(new Dimension(30,50));
+        btnElvOuestINT.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 4;
+        gbc.gridx = 12;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2,2,2,2);
+        buttonsPanel.add(btnElvOuestINT, gbc);
+
+        btnElvNordEXT = new JButton();
+        btnElvNordEXT.setBackground(new Color(-12829636));
+        btnElvNordEXT.setIcon(new ImageIcon(getClass().getResource("/buttons/exterieurNord.png")));
+        btnElvNordEXT.setMargin(new Insets(0,0,0,0));
+        btnElvNordEXT.setMaximumSize(new Dimension(30,30));
+        btnElvNordEXT.setMinimumSize(new Dimension(30,30));
+        btnElvNordEXT.setPreferredSize(new Dimension(30,30));
+        btnElvNordEXT.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 13;
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        //gbc.insert = new Insets(2,2,2,2);
+        gbc.insets = new Insets(50,2,0,2);
+        buttonsPanel.add(btnElvNordEXT, gbc);
 
+        btnElvNordINT = new JButton();
+        btnElvNordINT.setBackground(new Color(-12829636));
+        btnElvNordINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEURnord.png")));
+        btnElvNordINT.setMargin(new Insets(0,0,0,0));
+        btnElvNordINT.setMaximumSize(new Dimension(50,30));
+        btnElvNordINT.setMinimumSize(new Dimension(50,30));
+        btnElvNordINT.setPreferredSize(new Dimension(50,30));
+        btnElvNordINT.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 13;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2,2,18,2);
+        buttonsPanel.add(btnElvNordINT, gbc);
+
+        btnElvSudEXT = new JButton();
+        btnElvSudEXT.setBackground(new Color(-12829636));
+        btnElvSudEXT.setIcon(new ImageIcon(getClass().getResource("/buttons/exterieurSud.png")));
+        btnElvSudEXT.setMargin(new Insets(0,0,0,0));
+        btnElvSudEXT.setMaximumSize(new Dimension(30,30));
+        btnElvSudEXT.setMinimumSize(new Dimension(30,30));
+        btnElvSudEXT.setPreferredSize(new Dimension(30,30));
+        btnElvSudEXT.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 13;
+        gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(0,2,50,2);
+        buttonsPanel.add(btnElvSudEXT, gbc);
+
+        btnELVSudINT = new JButton();
+        btnELVSudINT.setBackground(new Color(-12829636));
+        btnELVSudINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEURsud.png")));
+        btnELVSudINT.setMargin(new Insets(0,0,0,0));
+        btnELVSudINT.setMaximumSize(new Dimension(50,30));
+        btnELVSudINT.setMinimumSize(new Dimension(50,30));
+        btnELVSudINT.setPreferredSize(new Dimension(50,30));
+        btnELVSudINT.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 13;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(18,2,2,2);
+        buttonsPanel.add(btnELVSudINT, gbc);
+
+        btnElvEstEXT = new JButton();
+        btnElvEstEXT.setBackground(new Color(-12829636));
+        btnElvEstEXT.setIcon(new ImageIcon(getClass().getResource("/buttons/exterieurest.png")));
+        btnElvEstEXT.setMargin(new Insets(0,0,0,0));
+        btnElvEstEXT.setMaximumSize(new Dimension(30,50));
+        btnElvEstEXT.setMinimumSize(new Dimension(30,50));
+        btnElvEstEXT.setPreferredSize(new Dimension(30,50));
+        btnElvEstEXT.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 15;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2,2,2,2);
+        buttonsPanel.add(btnElvEstEXT, gbc);
+
+        btnElvEstINT = new JButton();
+        btnElvEstINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEURest.png")));
+        btnElvEstINT.setBackground(new Color(-1));
+        btnElvEstINT.setMargin(new Insets(0,0,0,0));
+        btnElvEstINT.setMaximumSize(new Dimension(30,50));
+        btnElvEstINT.setMinimumSize(new Dimension(30,50));
+        btnElvEstINT.setPreferredSize(new Dimension(30,50));
+        btnElvEstINT.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 14;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2,2,2,2);
+        buttonsPanel.add(btnElvEstINT, gbc);
 
     }
 

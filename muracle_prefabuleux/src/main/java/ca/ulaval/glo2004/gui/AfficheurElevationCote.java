@@ -8,7 +8,10 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-public class AfficheurElevationCote extends Afficheur {
+public class AfficheurElevationCote extends Afficheur{
+    private Cote cote;
+
+    public AfficheurElevationCote(Cote cote) {this.cote = cote;}
 
     @Override
     public void affiche(Graphics g) {
@@ -18,7 +21,5 @@ public class AfficheurElevationCote extends Afficheur {
         dessinerPolygones(g, polygones);
 
     }
-    private Cote cote;
 
-    public AfficheurElevationCote(Cote cote){this.cote = cote;}
 }

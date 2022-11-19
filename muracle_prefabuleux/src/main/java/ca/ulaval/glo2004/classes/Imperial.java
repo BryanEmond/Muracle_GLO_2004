@@ -2,7 +2,7 @@ package ca.ulaval.glo2004.classes;
 
 import java.io.Serializable;
 
-public class Imperial implements Serializable {
+public class Imperial implements Comparable<Imperial>,Serializable {
 
     int entier ;
     int numerateur ;
@@ -43,6 +43,25 @@ public class Imperial implements Serializable {
 
     public void setDenominateur(int denominateur) {
         this.denominateur = denominateur;
+    }
+
+    @Override
+    public int compareTo(Imperial o) {
+        int result = 0;
+
+        if(this.entier < o.entier){
+            result = -1;
+        } else if (this.entier > o.entier) {
+            result = 1;
+        }
+
+        if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
+            result = -1;
+        } else if (this.denominateur/this.numerateur > o.denominateur/o.numerateur) {
+            result = 1;
+        }
+
+        return result;
     }
 
     /***

@@ -1,9 +1,6 @@
 package ca.ulaval.glo2004.gui;
 
-import ca.ulaval.glo2004.classes.Cote;
-import ca.ulaval.glo2004.classes.Imperial;
-import ca.ulaval.glo2004.classes.Mur;
-import ca.ulaval.glo2004.classes.Salle;
+import ca.ulaval.glo2004.classes.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -28,6 +25,7 @@ public class DrawingPanel extends JPanel
 
         Salle salle = GetTestingSalle();
         afficheur = new AfficheurVueDessus(salle);
+
     }
 
     public DrawingPanel(MainWindow mainWindow,Salle salle){
@@ -39,6 +37,14 @@ public class DrawingPanel extends JPanel
         afficheur = new AfficheurVueDessus(salle);
     }
 
+    public DrawingPanel(MainWindow mainWindow, Cote cote){
+        this.mainWindow = mainWindow;
+        mainWindow.mainPanel.add(this);
+
+        this.setBorder(new EmptyBorder(50, 10, 10,10));
+
+        afficheur = new AfficheurElevationCote(cote);
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -52,20 +58,23 @@ public class DrawingPanel extends JPanel
     private Salle GetTestingSalle()
     {
         Cote nord = new Cote(new Imperial(0),
-                            new Imperial(0),
-                            "NORD");
+                            new Imperial(0),new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
+                            "NORD",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         Cote est = new Cote(new Imperial(0),
                 new Imperial(1),
-                "EST");
+                new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
+            "EST",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         Cote sud = new Cote(new Imperial(20),
                 new Imperial(0),
-                "SUD");
+                new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
+                "SUD",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         Cote ouest = new Cote(new Imperial(20),
                 new Imperial(1),
-                "OUEST");
+                new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
+                "OUEST",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         mainWindow.gestionnaireSalle.creerSalle(new Imperial(0), new Imperial(0),
                 new Imperial(1), new Imperial(1),
@@ -77,8 +86,10 @@ public class DrawingPanel extends JPanel
         return salle;
     }
 
+
     private Cote GetTestingCote() {
-        Cote coteTest = new Cote(new Imperial(96), new Imperial(60), "nord" );
+        Cote coteTest = new Cote(new Imperial(96), new Imperial(60), new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
+                "NORD",new Polygone(Color.BLACK,new ArrayList<PointImperial>()) );
 
 
 

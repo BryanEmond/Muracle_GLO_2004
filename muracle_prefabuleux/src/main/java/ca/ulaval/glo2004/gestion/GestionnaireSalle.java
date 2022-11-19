@@ -11,6 +11,12 @@ import java.util.Arrays;
 
 public class GestionnaireSalle {
 
+    private Salle mSalle;
+    private Cote mCoteCourant;
+    private Mur mMurCourant;
+    private Accessoire mAccessoire;
+    private boolean mDecoupage;
+    private String filePath;
     private Salle salleActive;
 
     public void creerSalle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes)
@@ -43,13 +49,14 @@ public class GestionnaireSalle {
 
     public void enregistrerSalle(String path)
     {
+        filePath  = filePath != null? filePath: path;
         try {
-            FileOutputStream fileOut = new FileOutputStream(path);
+            FileOutputStream fileOut = new FileOutputStream(filePath);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(salleActive);
             out.close();
             fileOut.close();
-            System.out.printf(path);
+            System.out.printf("Serialized data is saved in d:/sale.ser");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -59,6 +66,7 @@ public class GestionnaireSalle {
 
     public void chargerSalle(String path)
     {
+        filePath = path;
         try{
             FileInputStream fileInputStream = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileInputStream);
@@ -77,6 +85,28 @@ public class GestionnaireSalle {
 
     }
 
+    public void VueCote(String cheminDossier)
+    {
+
+    }
+
+    public Mur murSelectionne(Mur mur)
+    {
+        return this.mMurCourant;
+    }
+
+    public Accessoire accessoireSelectionne(String cheminDossier)
+    {
+        return this.mAccessoire;
+    }
+
+    public void AjouteSeparateurAPartirVuePlan(PointImperial point)
+    {
+        this.mSalle.separateur(point);
+    }
+
+
+
     public void quitter()
     {
         //TODO Ne pas oublier d'implémenter la vérification de sauvegarde un jour
@@ -91,4 +121,6 @@ public class GestionnaireSalle {
     public Salle getSalleActive(){
         return salleActive;
     }
+
+    //TODO public Cote getCote() {return ;}
 }
