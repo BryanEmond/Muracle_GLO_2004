@@ -1,12 +1,14 @@
 package ca.ulaval.glo2004.classes;
 
+import ca.ulaval.glo2004.enums.Direction;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Cote extends Element implements Serializable {
     Imperial mZ;
 
-    String mDirection;
+    Direction mDirection;
     Imperial mPolygonePlan;
     Imperial mPolygoneElevation;
 
@@ -15,7 +17,7 @@ public class Cote extends Element implements Serializable {
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, String mDirection) {
+    public Cote(Imperial mY, Imperial mX, Direction mDirection) {
         super(mY, mX);
         this.mDirection = mDirection;
     }
@@ -83,5 +85,19 @@ public class Cote extends Element implements Serializable {
     public void AjouterAccessoire(Accessoire accessoire) {accessoires.add(accessoire);}
     public void SupprimerAccessoire(Accessoire accessoire) {accessoires.remove(accessoire);}
 
+    public Mur getPremierMur()
+    {
+        if(murs.size() == 0)
+            return null;
 
+        return murs.get(0);
+    }
+
+    public Mur getDernierMur()
+    {
+        if(murs.size() == 0)
+            return null;
+
+        return murs.get(murs.size() - 1);
+    }
 }
