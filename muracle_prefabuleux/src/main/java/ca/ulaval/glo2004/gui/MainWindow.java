@@ -131,8 +131,72 @@ public class MainWindow {
                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
             }
         });
+
+        btnElvEstEXT.addMouseListener(new MouseAdapter() {
+            //TODO enlever : retour d'air et prise de courant des accessoires
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Salle salle = gestionnaireSalle.getSalleActive();
+
+                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
+            }
+        });
+
+        btnELVSudINT.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Salle salle = gestionnaireSalle.getSalleActive();
+
+                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
+            }
+        });
+        btnElvSudEXT.addMouseListener(new MouseAdapter() {
+            //TODO enlever : retour d'air et prise de courant des accessoires
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Salle salle = gestionnaireSalle.getSalleActive();
+
+                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
+            }
+        });
+        btnElvOuestINT.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Salle salle = gestionnaireSalle.getSalleActive();
+
+                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
+            }
+        });
+        btnElvOuestEXT.addMouseListener(new MouseAdapter() {
+            //TODO enlever : retour d'air et prise de courant des accessoires
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Salle salle = gestionnaireSalle.getSalleActive();
+
+                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
+            }
+        });
+
+        btnElvNordINT.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Salle salle = gestionnaireSalle.getSalleActive();
+
+                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
+            }
+        });
+
+        btnElvNordEXT.addMouseListener(new MouseAdapter() {
+            //TODO enlever : retour d'air et prise de courant des accessoires
+            @Override
+            public void mousePressed(MouseEvent e) {
+                Salle salle = gestionnaireSalle.getSalleActive();
+
+                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
+            }
+        });
     }
- 
+
     {
         $$$setupUI$$$();
     }
