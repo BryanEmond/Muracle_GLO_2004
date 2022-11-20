@@ -59,22 +59,22 @@ public class DrawingPanel extends JPanel
     {
         Cote nord = new Cote(new Imperial(0),
                             new Imperial(0),new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                            "NORD",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+                            Utilitaire.Direction.NORD,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         Cote est = new Cote(new Imperial(0),
                 new Imperial(1),
                 new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-            "EST",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+            Utilitaire.Direction.EST,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         Cote sud = new Cote(new Imperial(20),
                 new Imperial(0),
                 new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                "SUD",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+                Utilitaire.Direction.SUD,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         Cote ouest = new Cote(new Imperial(20),
                 new Imperial(1),
                 new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                "OUEST",new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+                Utilitaire.Direction.OUEST,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
 
         mainWindow.gestionnaireSalle.creerSalle(new Imperial(0), new Imperial(0),
                 new Imperial(1), new Imperial(1),
@@ -89,7 +89,7 @@ public class DrawingPanel extends JPanel
 
     private Cote GetTestingCote() {
         Cote coteTest = new Cote(new Imperial(96), new Imperial(60), new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                "NORD",new Polygone(Color.BLACK,new ArrayList<PointImperial>()) );
+                Utilitaire.Direction.NORD,new Polygone(Color.BLACK,new ArrayList<PointImperial>()) );
 
 
 

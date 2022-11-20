@@ -87,7 +87,7 @@ public class Mur extends Element implements Serializable {
         Imperial x2;
         Imperial y2;
 
-        if(mCote.mDirection == "NORD" || mCote.mDirection == "SUD")
+        if(mCote.mDirection.equals(Utilitaire.Direction.NORD) || mCote.mDirection.equals(Utilitaire.Direction.SUD))
         {
             x2 = x1.add(mLargeur);
             y2 = y1.add(mSalle.epaisseurMurs);

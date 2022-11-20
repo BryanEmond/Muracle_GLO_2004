@@ -1,5 +1,7 @@
 package ca.ulaval.glo2004.gui;
 
+import ca.ulaval.glo2004.classes.Salle;
+import ca.ulaval.glo2004.classes.Utilitaire;
 import ca.ulaval.glo2004.gestion.GestionnaireSalle;
 
 import javax.swing.*;
@@ -124,13 +126,13 @@ public class MainWindow {
         btnElvEstINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                gestionnaireSalle.getSalleActive();
+                Salle salle = gestionnaireSalle.getSalleActive();
 
-               //TODO panel = new DrawingPanel(mainWindow, mainWindow, gestionnaireSalle.getSalleActive());
+               panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
             }
         });
     }
-
+ 
     {
         $$$setupUI$$$();
     }
