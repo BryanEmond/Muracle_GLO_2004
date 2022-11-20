@@ -48,6 +48,7 @@ public class MainWindow {
     private JButton btnELVSudINT;
     private JButton btnElvOuestEXT;
     private JButton btnElvOuestINT;
+    private JButton btnPlan;
 
     public JPanel starterPanel;
     private JButton creerUnNouveauProjetButton;
@@ -126,9 +127,9 @@ public class MainWindow {
         btnElvEstINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
+                mainWindow.mainPanel.add(panel);
             }
         });
 
@@ -136,53 +137,53 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                 panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
+                mainWindow.mainPanel.add(panel);
             }
         });
 
         btnELVSudINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                 panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
+                mainWindow.mainPanel.add(panel);
             }
         });
         btnElvSudEXT.addMouseListener(new MouseAdapter() {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                 panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
+                mainWindow.mainPanel.add(panel);
             }
         });
         btnElvOuestINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                 panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
+                mainWindow.mainPanel.add(panel);
             }
         });
         btnElvOuestEXT.addMouseListener(new MouseAdapter() {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                 panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
+                mainWindow.mainPanel.add(panel);
             }
         });
 
         btnElvNordINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                 panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
+                mainWindow.mainPanel.add(panel);
             }
         });
 
@@ -190,9 +191,18 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-                Salle salle = gestionnaireSalle.getSalleActive();
 
                 panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
+                mainWindow.mainPanel.add(panel);
+            }
+        });
+
+        btnPlan.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+                panel = new DrawingPanel(mainWindow,mainWindow.gestionnaireSalle.getSalleActive());
+                mainWindow.mainPanel.add(panel);
             }
         });
     }
@@ -641,6 +651,21 @@ public class MainWindow {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2,2,2,2);
         buttonsPanel.add(btnElvEstINT, gbc);
+
+        btnPlan = new JButton();
+        btnPlan.setIcon(new ImageIcon(getClass().getResource("/buttons/plan.png")));
+        btnPlan.setBackground(new Color(-1));
+        btnPlan.setMargin(new Insets(0,0,0,0));
+        btnPlan.setMaximumSize(new Dimension(30,50));
+        btnPlan.setMinimumSize(new Dimension(30,50));
+        btnPlan.setPreferredSize(new Dimension(30,50));
+        btnPlan.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 13;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2,2,2,2);
+        buttonsPanel.add(btnPlan, gbc);
 
     }
 
