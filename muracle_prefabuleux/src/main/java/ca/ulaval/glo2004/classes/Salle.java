@@ -1,5 +1,6 @@
 package ca.ulaval.glo2004.classes;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class Salle extends Element implements Serializable {
         for (Cote var : cotes)
         {
            if(var.mPolygonePlan.EstDansPolygone(point)){
-               ;
+               //var.separateurs.add(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,)))
            };
         }
     }

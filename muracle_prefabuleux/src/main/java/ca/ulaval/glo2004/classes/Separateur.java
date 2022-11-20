@@ -9,15 +9,12 @@ public class Separateur extends Element implements Serializable {
 
     Cote mCote ;
 
-    Salle mSalle ;
-
     Polygone mPolygonePlan;
 
-    public Separateur(Imperial mY, Imperial mX, Imperial distanceBordDeReference, Cote mCote, Salle mSalle, Polygone mPolygonePlan) {
+    public Separateur(Imperial mY, Imperial mX, Imperial distanceBordDeReference, Cote mCote, Polygone mPolygonePlan) {
         super(mY, mX);
         this.distanceBordDeReference = distanceBordDeReference;
         this.mCote = mCote;
-        this.mSalle = mSalle;
         this.mPolygonePlan = mPolygonePlan;
     }
 
@@ -39,14 +36,6 @@ public class Separateur extends Element implements Serializable {
 
     public void setmCote(Cote mCote) {
         this.mCote = mCote;
-    }
-
-    public Salle getmSalle() {
-        return mSalle;
-    }
-
-    public void setmSalle(Salle mSalle) {
-        this.mSalle = mSalle;
     }
 
     public Polygone getmPolygonePlan() {
