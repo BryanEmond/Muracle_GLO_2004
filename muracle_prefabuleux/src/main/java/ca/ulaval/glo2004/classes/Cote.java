@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Cote extends Element implements Serializable {
     Imperial mZ;
 
-    String mDirection;
+    Utilitaire.Direction mDirection;
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
@@ -15,7 +15,7 @@ public class Cote extends Element implements Serializable {
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, Imperial mZ, Polygone mPolygonePlan, String mDirection,Polygone mPolygoneElevation) {
+    public Cote(Imperial mY, Imperial mX, Imperial mZ, Polygone mPolygonePlan, Utilitaire.Direction mDirection,Polygone mPolygoneElevation) {
         super(mY, mX);
         this.mZ = mZ;
         this.mDirection = mDirection;
@@ -85,6 +85,5 @@ public class Cote extends Element implements Serializable {
 
     public void AjouterAccessoire(Accessoire accessoire) {accessoires.add(accessoire);}
     public void SupprimerAccessoire(Accessoire accessoire) {accessoires.remove(accessoire);}
-
 
 }
