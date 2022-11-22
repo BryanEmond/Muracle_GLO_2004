@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public abstract class Utilitaire implements Serializable {
 
-    enum Direction {
+    public enum Direction {
         NORD,
         SUD,
         EST,

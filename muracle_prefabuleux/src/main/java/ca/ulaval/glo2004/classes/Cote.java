@@ -15,9 +15,12 @@ public class Cote extends Element implements Serializable {
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, Utilitaire.Direction mDirection) {
+    public Cote(Imperial mY, Imperial mX, Imperial mZ, Polygone mPolygonePlan, Utilitaire.Direction mDirection,Polygone mPolygoneElevation) {
         super(mY, mX);
+        this.mZ = mZ;
         this.mDirection = mDirection;
+        this.mPolygonePlan = mPolygonePlan;
+        this.mPolygoneElevation = mPolygoneElevation;
     }
     @Override
     public void calculeDisposition() {

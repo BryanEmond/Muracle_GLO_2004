@@ -113,4 +113,16 @@ public class Salle extends Element implements Serializable {
 
         return polygones;
     }
+
+    public Cote getCote(Utilitaire.Direction direction){
+
+        for ( Cote cote : cotes){
+            if (cote.mDirection.equals(direction)) {
+                return cote;
+            }
+        }
+    return null;
+    }
+
+
 }

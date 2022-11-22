@@ -1,9 +1,6 @@
 package ca.ulaval.glo2004.gestion;
 
-import ca.ulaval.glo2004.classes.Cote;
-import ca.ulaval.glo2004.classes.Imperial;
-import ca.ulaval.glo2004.classes.Mur;
-import ca.ulaval.glo2004.classes.Salle;
+import ca.ulaval.glo2004.classes.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -45,6 +42,7 @@ public class GestionnaireSalle {
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
         salleActive = salle;
+
     }
 
     public void enregistrerSalle(String path)
@@ -122,5 +120,5 @@ public class GestionnaireSalle {
         return salleActive;
     }
 
-    //TODO public Cote getCote() {return ;}
+
 }
