@@ -17,7 +17,7 @@ public class AfficheurElevationCote extends Afficheur{
     public void affiche(Graphics g) {
         setOffset(10,10);
 
-        ArrayList<Polygone> polygones = cote.getPolygonesPlan();
+        ArrayList<Polygone> polygones = cote.getPolygoneElevation();
         dessinerPolygones(g, polygones);
 
     }

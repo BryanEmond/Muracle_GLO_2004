@@ -79,6 +79,18 @@ public class Cote extends Element implements Serializable {
         return polygones;
     }
 
+    public ArrayList<Polygone> getPolygoneElevation()
+    {
+        ArrayList<Polygone> polygones = new ArrayList<Polygone>();
+
+        for(int i = 0; i < murs.size(); i++)
+        {
+            polygones.add(murs.get(i).mPolygoneElevation);
+        }
+
+        return polygones;
+    }
+
     public void SupprimerSeparateur(Separateur separateur) {separateurs.remove(separateur);}
 
     public void AjouterAccessoire(Accessoire accessoire) {accessoires.add(accessoire);}

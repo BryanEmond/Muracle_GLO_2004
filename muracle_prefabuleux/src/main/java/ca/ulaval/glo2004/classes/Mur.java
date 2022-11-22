@@ -36,6 +36,7 @@ public class Mur extends Element implements Serializable {
         this.mPolygoneMargeDroite = mPolygoneMargeDroite;
 
         genererPolygonePlan();
+        genererPolygoneELV();
     }
 
     public void calculerDisposition() {
@@ -101,5 +102,18 @@ public class Mur extends Element implements Serializable {
 
         this.mPolygonePlan = new Polygone(Color.BLACK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
     }
+
+    public void genererPolygoneELV(){
+        Imperial x1 = super.mX;
+        Imperial y1 = super.mY;
+        Imperial x2;
+        Imperial y2;
+
+        x2 = x1.add(mLargeur);
+        y2 = y1.add(mSalle.getHauteur());
+
+        this.mPolygoneElevation = new Polygone(Color.BLACK, new PointImperial(x1,y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
+    }
+
 
 }
