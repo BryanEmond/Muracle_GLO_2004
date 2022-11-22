@@ -15,12 +15,10 @@ public class Cote extends Element implements Serializable {
 
     ArrayList<Separateur> separateurs;
 
-    public Cote(Imperial mY, Imperial mX, Imperial mZ, Polygone mPolygonePlan, Utilitaire.Direction mDirection,Polygone mPolygoneElevation) {
+    public Cote(Imperial mY, Imperial mX, Imperial mZ, Utilitaire.Direction mDirection) {
         super(mY, mX);
         this.mZ = mZ;
         this.mDirection = mDirection;
-        this.mPolygonePlan = mPolygonePlan;
-        this.mPolygoneElevation = mPolygoneElevation;
     }
     @Override
     public void calculeDisposition() {
@@ -86,4 +84,19 @@ public class Cote extends Element implements Serializable {
     public void AjouterAccessoire(Accessoire accessoire) {accessoires.add(accessoire);}
     public void SupprimerAccessoire(Accessoire accessoire) {accessoires.remove(accessoire);}
 
+    public Mur getPremierMur()
+    {
+        if(murs.size() == 0)
+            return null;
+
+        return murs.get(0);
+    }
+
+    public Mur getDernierMur()
+    {
+        if(murs.size() == 0)
+            return null;
+
+        return murs.get(murs.size() - 1);
+    }
 }

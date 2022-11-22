@@ -1,6 +1,5 @@
 package ca.ulaval.glo2004.gui;
 
-import ca.ulaval.glo2004.classes.Salle;
 import ca.ulaval.glo2004.classes.Utilitaire;
 import ca.ulaval.glo2004.gestion.GestionnaireSalle;
 
@@ -8,7 +7,6 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.MouseListener;
 import java.awt.event.*;
 import java.io.File;
 import java.util.Locale;
@@ -61,6 +59,7 @@ public class MainWindow {
     private String filePath;
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
         this.gestionnaireSalle = gestionnaireSalle;
+        mainWindow = this;
         creerUnNouveauProjetButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -549,7 +548,7 @@ public class MainWindow {
 
         btnElvOuestINT = new JButton();
         btnElvOuestINT.setBackground(new Color(-12829636));
-        btnElvOuestINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEUROuest.png")));
+        btnElvOuestINT.setIcon(new ImageIcon(getClass().getResource("/buttons/interieurOuest.png")));
         btnElvOuestINT.setMargin(new Insets(0,0,0,0));
         btnElvOuestINT.setMaximumSize(new Dimension(30,50));
         btnElvOuestINT.setMinimumSize(new Dimension(30,50));
@@ -579,7 +578,7 @@ public class MainWindow {
 
         btnElvNordINT = new JButton();
         btnElvNordINT.setBackground(new Color(-12829636));
-        btnElvNordINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEURnord.png")));
+        btnElvNordINT.setIcon(new ImageIcon(getClass().getResource("/buttons/interieurNord.png")));
         btnElvNordINT.setMargin(new Insets(0,0,0,0));
         btnElvNordINT.setMaximumSize(new Dimension(50,30));
         btnElvNordINT.setMinimumSize(new Dimension(50,30));
@@ -609,7 +608,7 @@ public class MainWindow {
 
         btnELVSudINT = new JButton();
         btnELVSudINT.setBackground(new Color(-12829636));
-        btnELVSudINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEURsud.png")));
+        btnELVSudINT.setIcon(new ImageIcon(getClass().getResource("/buttons/interieurSud.png")));
         btnELVSudINT.setMargin(new Insets(0,0,0,0));
         btnELVSudINT.setMaximumSize(new Dimension(50,30));
         btnELVSudINT.setMinimumSize(new Dimension(50,30));
@@ -624,7 +623,7 @@ public class MainWindow {
 
         btnElvEstEXT = new JButton();
         btnElvEstEXT.setBackground(new Color(-12829636));
-        btnElvEstEXT.setIcon(new ImageIcon(getClass().getResource("/buttons/exterieurest.png")));
+        btnElvEstEXT.setIcon(new ImageIcon(getClass().getResource("/buttons/exterieurEst.png")));
         btnElvEstEXT.setMargin(new Insets(0,0,0,0));
         btnElvEstEXT.setMaximumSize(new Dimension(30,50));
         btnElvEstEXT.setMinimumSize(new Dimension(30,50));
@@ -638,7 +637,7 @@ public class MainWindow {
         buttonsPanel.add(btnElvEstEXT, gbc);
 
         btnElvEstINT = new JButton();
-        btnElvEstINT.setIcon(new ImageIcon(getClass().getResource("/buttons/INTERIEURest.png")));
+        btnElvEstINT.setIcon(new ImageIcon(getClass().getResource("/buttons/interieurEst.png")));
         btnElvEstINT.setBackground(new Color(-1));
         btnElvEstINT.setMargin(new Insets(0,0,0,0));
         btnElvEstINT.setMaximumSize(new Dimension(30,50));
