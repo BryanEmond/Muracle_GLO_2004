@@ -84,6 +84,11 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return new Imperial(newEntier, newNumerateur1 + newNumerateur2, newDenominateur);
     }
 
+    public Imperial negative()
+    {
+        return new Imperial(-this.entier, -this.numerateur, this.denominateur);
+    }
+
     @Override
     public String toString() {
         return entier + "\"" + numerateur + "/" + denominateur;

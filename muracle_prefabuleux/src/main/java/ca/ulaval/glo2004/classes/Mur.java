@@ -1,6 +1,9 @@
 package ca.ulaval.glo2004.classes;
 
+import sun.nio.ch.Util;
+
 import java.awt.*;
+import java.io.Console;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -35,7 +38,7 @@ public class Mur extends Element implements Serializable {
         this.mPolygoneMargeGauche = mPolygoneMargeGauche;
         this.mPolygoneMargeDroite = mPolygoneMargeDroite;
 
-        genererPolygonePlan();
+        //genererPolygonePlan();
         genererPolygoneELV();
     }
 
@@ -88,6 +91,9 @@ public class Mur extends Element implements Serializable {
         Imperial x2;
         Imperial y2;
 
+        boolean estPremierMur = mCote.getPremierMur() == this;
+        boolean estDernierMur = mCote.getDernierMur() == this;
+
         if(mCote.mDirection.equals(Utilitaire.Direction.NORD) || mCote.mDirection.equals(Utilitaire.Direction.SUD))
         {
             x2 = x1.add(mLargeur);
@@ -99,8 +105,41 @@ public class Mur extends Element implements Serializable {
             y2 = y1.add(mLargeur);
         }
 
+        PointImperial p1 = new PointImperial(x1, y1);
+        PointImperial p2 = new PointImperial(x1, y2);
+        PointImperial p3 = new PointImperial(x2, y2);
+        PointImperial p4 = new PointImperial(x2, y1);
 
-        this.mPolygonePlan = new Polygone(Color.BLACK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
+        if(mCote.mDirection == Utilitaire.Direction.NORD)
+        {
+            if(estPremierMur)
+                p2.mX = p2.mX.add(mSalle.epaisseurMurs);
+            if(estDernierMur)
+                p3.mX = p3.mX.add(mSalle.epaisseurMurs.negative());
+        }
+        else if(mCote.mDirection == Utilitaire.Direction.SUD)
+        {
+            if(estPremierMur)
+                p1.mX = p1.mX.add(mSalle.epaisseurMurs);
+            if (estDernierMur)
+                p4.mX = p4.mX.add(mSalle.epaisseurMurs.negative());
+        }
+        else if(mCote.mDirection == Utilitaire.Direction.EST)
+        {
+            if(estPremierMur)
+                p1.mY = p1.mY.add(mSalle.epaisseurMurs.negative());
+            if(estDernierMur)
+                p2.mY = p2.mY.add(mSalle.epaisseurMurs);
+        }
+        else if(mCote.mDirection == Utilitaire.Direction.OUEST)
+        {
+            if(estPremierMur)
+                p4.mY = p4.mY.add(mSalle.epaisseurMurs.negative());
+            if(estDernierMur)
+                p3.mY = p3.mY.add(mSalle.epaisseurMurs);
+        }
+
+        this.mPolygonePlan = new Polygone(Color.BLACK, p1, p2, p3, p4);
     }
 
     public void genererPolygoneELV(){

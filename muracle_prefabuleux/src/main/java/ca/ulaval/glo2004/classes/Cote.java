@@ -49,6 +49,11 @@ public class Cote extends Element implements Serializable {
 
     public void setMurs(ArrayList<Mur> murs) {
         this.murs = murs;
+
+        for(Mur mur : murs)
+        {
+            mur.genererPolygonePlan();
+        }
     }
 
     public ArrayList<Accessoire> getAccessoires() {
