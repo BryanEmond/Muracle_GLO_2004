@@ -58,23 +58,23 @@ public class DrawingPanel extends JPanel
     private Salle GetTestingSalle()
     {
         Cote nord = new Cote(new Imperial(0),
-                            new Imperial(0),new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                            Utilitaire.Direction.NORD,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+                            new Imperial(0),new Imperial(0),
+                Utilitaire.Direction.NORD);
 
         Cote est = new Cote(new Imperial(0),
                 new Imperial(1),
-                new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-            Utilitaire.Direction.EST,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+                new Imperial(0),
+                Utilitaire.Direction.EST);
 
         Cote sud = new Cote(new Imperial(20),
                 new Imperial(0),
-                new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                Utilitaire.Direction.SUD,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+                new Imperial(0),
+                Utilitaire.Direction.SUD);
 
         Cote ouest = new Cote(new Imperial(20),
                 new Imperial(1),
-                new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                Utilitaire.Direction.OUEST,new Polygone(Color.BLACK,new ArrayList<PointImperial>()));
+                new Imperial(0),
+                Utilitaire.Direction.OUEST);
 
         mainWindow.gestionnaireSalle.creerSalle(new Imperial(0), new Imperial(0),
                 new Imperial(1), new Imperial(1),
@@ -88,8 +88,8 @@ public class DrawingPanel extends JPanel
 
 
     private Cote GetTestingCote() {
-        Cote coteTest = new Cote(new Imperial(96), new Imperial(60), new Imperial(0),new Polygone(Color.BLACK,new ArrayList<PointImperial>()),
-                Utilitaire.Direction.NORD,new Polygone(Color.BLACK,new ArrayList<PointImperial>()) );
+        Cote coteTest = new Cote(new Imperial(96), new Imperial(60), new Imperial(0),
+                Utilitaire.Direction.NORD);
 
 
 

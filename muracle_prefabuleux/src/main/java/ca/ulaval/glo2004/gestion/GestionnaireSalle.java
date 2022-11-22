@@ -2,6 +2,7 @@ package ca.ulaval.glo2004.gestion;
 
 import ca.ulaval.glo2004.classes.*;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,20 @@ public class GestionnaireSalle {
     private boolean mDecoupage;
     private String filePath;
     private Salle salleActive;
+
+    public GestionnaireSalle()
+    {
+        Cote nord = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.NORD);
+        Cote est = new Cote(new Imperial(0), new Imperial(1), new Imperial(0), Utilitaire.Direction.EST);
+        Cote sud = new Cote(new Imperial(20), new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
+        Cote ouest = new Cote(new Imperial(20), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
+
+        creerSalle(new Imperial(0), new Imperial(0),
+                new Imperial(1), new Imperial(1),
+                new Imperial(20),
+                new Imperial(20), new Imperial(20),
+                true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
+    }
 
     public void creerSalle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes)
     {
@@ -42,7 +57,6 @@ public class GestionnaireSalle {
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
         salleActive = salle;
-
     }
 
     public void enregistrerSalle(String path)

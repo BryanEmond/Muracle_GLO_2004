@@ -46,7 +46,7 @@ public class Polygone implements Serializable {
     }
 
     public ArrayList<PointImperial> trier(ArrayList<PointImperial> points) {
-        int conteur = 1;
+        /*int conteur = 1;
         PointImperial pointModif;
 
         while (points.get(0).mY != points.get(1).mY) {
@@ -66,7 +66,7 @@ public class Polygone implements Serializable {
             pointModif = points.get(2);
             points.set(2, points.get(3));
             points.set(3, pointModif);
-        }
+        }*/
 
         return  points;
     }

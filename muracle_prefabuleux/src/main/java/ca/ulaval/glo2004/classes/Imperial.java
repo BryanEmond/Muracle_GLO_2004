@@ -55,11 +55,11 @@ public class Imperial implements Comparable<Imperial>,Serializable {
             result = 1;
         }
 
-        if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
+/*        if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
             result = -1;
         } else if (this.denominateur/this.numerateur > o.denominateur/o.numerateur) {
             result = 1;
-        }
+        }*/
 
         return result;
     }
