@@ -4,7 +4,6 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Polygone implements Serializable {
     Color mCouleur;
@@ -72,8 +71,14 @@ public class Polygone implements Serializable {
     }
 
 
-    public boolean EstDansPolygone(PointImperial point) {
+    public boolean PointEstDansPolygone(PointImperial point) {
         return point.mX.compareTo(this.points.get(0).mX) >= 0 && point.mY.compareTo(this.points.get(3).mY) <= 0;
+    }
+
+    public boolean PolygoneEstDansPolygone(Polygone polygone) {
+
+
+        return false;
     }
 
 

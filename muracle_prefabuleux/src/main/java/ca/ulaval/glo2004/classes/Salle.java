@@ -2,9 +2,7 @@ package ca.ulaval.glo2004.classes;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Salle extends Element implements Serializable {
 
@@ -39,10 +37,29 @@ public class Salle extends Element implements Serializable {
         return new ArrayList<Polygone>();
     }
     public void separateur(PointImperial point) {
+
+        ArrayList<PointImperial> points = new ArrayList<>();
+
         for (Cote var : cotes)
         {
-           if(var.mPolygonePlan.EstDansPolygone(point)){
-               //var.separateurs.add(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,)))
+           if(var.mPolygonePlan.PointEstDansPolygone(point)){
+
+               for (Accessoire accessoire : var.accessoires) {
+                   if(accessoire.mPolygonePlan.PointEstDansPolygone(point)) return;
+               }
+
+               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(0).mY));
+               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(0).mY));
+               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(2).mY));
+               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(2).mY));
+
+               for (PointImperial pointCoinSeparateur : points) {
+                   for (Accessoire accessoire : var.accessoires) {
+                       if(accessoire.mPolygonePlan.PointEstDansPolygone(pointCoinSeparateur)) return;
+                   }
+               }
+
+               var.separateurs.add(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,points)));
            };
         }
     }

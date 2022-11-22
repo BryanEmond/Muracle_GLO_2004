@@ -25,6 +25,10 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return entier;
     }
 
+    public int getFormeNormal() {
+        return entier + (numerateur/denominateur);
+    }
+
     public void setEntier(int entier) {
         this.entier = entier;
     }
