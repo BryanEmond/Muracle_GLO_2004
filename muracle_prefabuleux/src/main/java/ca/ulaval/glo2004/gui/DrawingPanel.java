@@ -26,28 +26,10 @@ public class DrawingPanel extends JPanel {
 
     }
 
-    public DrawingPanel(MainWindow mainWindow, Salle salle) {
-        this.mainWindow = mainWindow;
-        mainWindow.mainPanel.add(this);
-
-        this.setBorder(new EmptyBorder(50, 10, 10, 10));
-
-        afficheur = new AfficheurVueDessus(salle);
-    }
-
-    public DrawingPanel(MainWindow mainWindow, Cote cote) {
-        this.mainWindow = mainWindow;
-        mainWindow.mainPanel.add(this);
-
-        this.setBorder(new EmptyBorder(50, 10, 10, 10));
-
-        afficheur = new AfficheurElevationCote(cote);
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        g.clearRect(0, 0, this.getWidth(), this.getHeight());
         afficheur.affiche(g);
     }
 
@@ -90,7 +72,6 @@ public class DrawingPanel extends JPanel {
     }
 
     public void setAfficheur(Afficheur afficheur) {
-
         this.afficheur = afficheur;
         mainWindow.mainPanel.validate();
         mainWindow.mainPanel.repaint();

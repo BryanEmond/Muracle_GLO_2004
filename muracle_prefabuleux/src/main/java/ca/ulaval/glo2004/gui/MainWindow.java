@@ -72,9 +72,8 @@ public class MainWindow {
                 if(returnFcVal == JFileChooser.APPROVE_OPTION){
                     try{
                         File file = fc.getSelectedFile();
-                        panel = new DrawingPanel(mainWindow);
+                        //panel = new DrawingPanel(mainWindow);
                         mainWindow.gestionnaireSalle.enregistrerSalle(file.getPath());
-                        mainWindow.mainPanel.add(panel);
                     }catch (Exception error){
                         System.out.println(error);
                     }
@@ -94,8 +93,7 @@ public class MainWindow {
                         File file = fc.getSelectedFile();
 
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
-                        panel = new DrawingPanel(mainWindow,mainWindow.gestionnaireSalle.getSalleActive());
-                        mainWindow.mainPanel.add(panel);
+                        //panel = new DrawingPanel(mainWindow);
                     }catch (Exception error){
                         System.out.println(error);
                     }
