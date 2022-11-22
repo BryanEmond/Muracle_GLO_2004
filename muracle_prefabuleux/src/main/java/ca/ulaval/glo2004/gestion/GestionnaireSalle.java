@@ -26,7 +26,7 @@ public class GestionnaireSalle {
 
         creerSalle(new Imperial(0), new Imperial(0),
                 new Imperial(1), new Imperial(1),
-                new Imperial(20),
+                new Imperial(100),
                 new Imperial(20), new Imperial(20),
                 true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
     }

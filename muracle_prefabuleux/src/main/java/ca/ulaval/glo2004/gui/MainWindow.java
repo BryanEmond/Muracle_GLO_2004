@@ -60,6 +60,7 @@ public class MainWindow {
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
         this.gestionnaireSalle = gestionnaireSalle;
         mainWindow = this;
+        panel = new DrawingPanel(this);
         creerUnNouveauProjetButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -80,6 +81,7 @@ public class MainWindow {
                 }
             }
         });
+
         ouvrirUnProjectExistantButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -127,8 +129,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-               panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
-                mainWindow.mainPanel.add(panel);
+               panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
             }
         });
 
@@ -137,8 +138,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
             }
         });
 
@@ -146,8 +146,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
             }
         });
         btnElvSudEXT.addMouseListener(new MouseAdapter() {
@@ -155,16 +154,16 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
+
             }
         });
         btnElvOuestINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
+
             }
         });
         btnElvOuestEXT.addMouseListener(new MouseAdapter() {
@@ -172,8 +171,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
             }
         });
 
@@ -181,8 +179,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
             }
         });
 
@@ -191,8 +188,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
             }
         });
 
@@ -200,8 +196,8 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow,mainWindow.gestionnaireSalle.getSalleActive());
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
+
             }
         });
     }

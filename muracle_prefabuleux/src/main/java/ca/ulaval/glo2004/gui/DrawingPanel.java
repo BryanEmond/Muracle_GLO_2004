@@ -8,16 +8,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class DrawingPanel extends JPanel
-{
+public class DrawingPanel extends JPanel {
 
     private MainWindow mainWindow;
     private Afficheur afficheur;
 
     private Afficheur afficheurCote;
 
-    public DrawingPanel(MainWindow mainWindow)
-    {
+    public DrawingPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         mainWindow.mainPanel.add(this);
 
@@ -28,7 +26,7 @@ public class DrawingPanel extends JPanel
 
     }
 
-    public DrawingPanel(MainWindow mainWindow,Salle salle){
+    public DrawingPanel(MainWindow mainWindow, Salle salle) {
         this.mainWindow = mainWindow;
         mainWindow.mainPanel.add(this);
 
@@ -37,11 +35,11 @@ public class DrawingPanel extends JPanel
         afficheur = new AfficheurVueDessus(salle);
     }
 
-    public DrawingPanel(MainWindow mainWindow, Cote cote){
+    public DrawingPanel(MainWindow mainWindow, Cote cote) {
         this.mainWindow = mainWindow;
         mainWindow.mainPanel.add(this);
 
-        this.setBorder(new EmptyBorder(50, 10, 10,10));
+        this.setBorder(new EmptyBorder(50, 10, 10, 10));
 
         afficheur = new AfficheurElevationCote(cote);
     }
@@ -54,11 +52,9 @@ public class DrawingPanel extends JPanel
     }
 
 
-
-    private Salle GetTestingSalle()
-    {
+    private Salle GetTestingSalle() {
         Cote nord = new Cote(new Imperial(0),
-                            new Imperial(0),new Imperial(0),
+                new Imperial(0), new Imperial(0),
                 Utilitaire.Direction.NORD);
 
         Cote est = new Cote(new Imperial(0),
@@ -90,10 +86,13 @@ public class DrawingPanel extends JPanel
     private Cote GetTestingCote() {
         Cote coteTest = new Cote(new Imperial(96), new Imperial(60), new Imperial(0),
                 Utilitaire.Direction.NORD);
-
-
-
         return coteTest;
     }
 
+    public void setAfficheur(Afficheur afficheur) {
+
+        this.afficheur = afficheur;
+        mainWindow.mainPanel.validate();
+        mainWindow.mainPanel.repaint();
+    }
 }
