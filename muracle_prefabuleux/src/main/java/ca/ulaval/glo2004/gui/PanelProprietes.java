@@ -1,5 +1,7 @@
 package ca.ulaval.glo2004.gui;
 
+import ca.ulaval.glo2004.classes.Imperial;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -128,6 +130,35 @@ public class PanelProprietes extends JPanel
             return null;
 
         return values.get(propertyName);
+    }
+
+    public Imperial getImperial(String propertyName)
+    {
+        return getImperial(propertyName, true);
+    }
+
+    public Imperial getImperial(String propertyName, boolean shouldBePositive)
+    {
+        if(!values.containsKey(propertyName))
+            return null;
+
+        String value = values.get(propertyName);
+        Imperial valueImp = Imperial.fromString(value);
+        boolean isValid = valueImp != null;
+        setError(propertyName, !isValid);
+
+        if(isValid && shouldBePositive)
+        {
+            if(valueImp.getValue() < 0)
+            {
+                setError(propertyName, true);
+                return null;
+            }
+            else
+                setError(propertyName, false);
+        }
+
+        return valueImp;
     }
 
     public void setValue(String propertyName, String value)

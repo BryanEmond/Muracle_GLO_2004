@@ -55,13 +55,32 @@ public class Imperial implements Comparable<Imperial>,Serializable {
             result = 1;
         }
 
-/*        if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
+        /*if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
             result = -1;
         } else if (this.denominateur/this.numerateur > o.denominateur/o.numerateur) {
             result = 1;
         }*/
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Imperial))
+            return false;
+
+        Imperial other = (Imperial) obj;
+
+        int newDenominateur = PGCD(denominateur, other.getDenominateur());
+        int newNumerateur1 = (numerateur * 1000 / denominateur * newDenominateur / 1000);
+        int newNumerateur2 = (other.numerateur * 1000 / other.denominateur * newDenominateur / 1000);
+
+        return other.entier == entier && newNumerateur1 == newNumerateur2;
+    }
+
+    public long getValue()
+    {
+        return entier + ((long)numerateur / denominateur);
     }
 
     /***

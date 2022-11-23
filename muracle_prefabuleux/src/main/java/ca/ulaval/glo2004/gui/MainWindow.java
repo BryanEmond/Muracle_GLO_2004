@@ -3,6 +3,7 @@ package ca.ulaval.glo2004.gui;
 import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.Utilitaire;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
+import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 import ca.ulaval.glo2004.gestion.GestionnaireSalle;
 
 import javax.swing.*;
@@ -59,7 +60,7 @@ public class MainWindow {
     private PanelProprietes proprietesSalle;
     private PanelProprietes proprietesMur;
     private PanelProprietes proprietesAccessoire;
-
+    private PanelProprietes proprietesSeparateur;
 
     private MainWindow mainWindow;
     private DrawingPanel panel;
@@ -233,6 +234,11 @@ public class MainWindow {
         proprietesMur.setValue("y", murSelect.getY().toString());
         proprietesMur.setValue("largeur", murSelect.getLargeur().toString());
         proprietesMur.updateValues();
+
+        SeparateurDTO sepSelect = gestionnaireSalle.getSeparateurSelectionne();
+        proprietesSeparateur.setValue("pos", sepSelect.getPosition().toString());
+        proprietesSeparateur.setValue("posRel", sepSelect.getPositionRelative().toString());
+        proprietesSeparateur.updateValues();
     }
 
     {
@@ -325,23 +331,32 @@ public class MainWindow {
         proprietesSalle.generateLayout();
         propertiesPanel.add(proprietesSalle);
 
-
-        proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 200);
+        proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 0);
         proprietesMur.addProperty("x", "POSITION X :", "", true);
         proprietesMur.addProperty("y", "POSITION Y :", "", true);
-        proprietesMur.addProperty("largeur", "LARGEUR :");
+        proprietesMur.addProperty("largeur", "LARGEUR :", "", true);
         proprietesMur.generateLayout();
         propertiesPanel.add(proprietesMur);
 
-        proprietesMur.setOnChangeListener(values -> {
-            String strLargeur = values.get("largeur");
+        proprietesSeparateur = new PanelProprietes("SÉPARATEUR", 100);
+        proprietesSeparateur.addProperty("pos", "POSITION :", "", true);
+        proprietesSeparateur.addProperty("posRel", "SEP. PRÉCÉDENT :");
+        proprietesSeparateur.generateLayout();
+        propertiesPanel.add(proprietesSeparateur);
 
-            Imperial largeur = Imperial.fromString(strLargeur);
-            boolean erreurLargeur = largeur == null;
-            proprietesMur.setError("largeur", erreurLargeur);
+        proprietesSeparateur.setOnChangeListener(values -> {
 
-            if(largeur != null)
-                gestionnaireSalle.editMurSelectionne(largeur);
+            Imperial posRel = proprietesSeparateur.getImperial("posRel", true);
+
+            if(posRel != null)
+            {
+                gestionnaireSalle.editSeparateurSelectionne(posRel);
+                SeparateurDTO newValue = gestionnaireSalle.getSeparateurSelectionne();
+                proprietesSeparateur.setValue("pos", newValue.getPosition().toString());
+
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
         });
 
         rightPanel.setLayout(new BorderLayout(0, 0));
