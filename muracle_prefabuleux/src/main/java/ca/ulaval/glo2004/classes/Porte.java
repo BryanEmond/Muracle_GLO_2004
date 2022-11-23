@@ -26,7 +26,7 @@ public class Porte extends Accessoire implements Serializable {
 
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
-        //TODO CHANGER LE X PAR POSITION DU CLICK ET LE Y DOIT ETRE A 0 (TOUJOURS AU SOL)
+        //TODO largeur et hauteur configurable
         Imperial x1 = super.mX;
         Imperial y1;
         Imperial x2;

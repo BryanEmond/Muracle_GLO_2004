@@ -29,9 +29,11 @@ public class RetourAir extends Accessoire implements Serializable {
 
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
-        //TODO toujours centré sur le panneau, largeur configurable, seulement sur les panneau interieur
-        //TODO ont tous la même hauteur et même distance avec le sol
-        //TODO crée aussi un trou en haut du panneau qui sera visible de la vue PLAN
+        //TODO toujours centré sur le mur,
+        // largeur configurable,
+        // seulement sur les panneau interieur (on le vois pas en vue extérieur)
+        // ont tous la même hauteur et même distance avec le sol
+        // crée aussi un trou en haut du panneau qui sera visible de la vue PLAN
 
         Imperial x1 = super.mX;
         Imperial y1 = super.mY;

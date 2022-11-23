@@ -23,7 +23,7 @@ public class Fenetre extends Accessoire implements Serializable {
 
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
-        //TODO avoir un polygone autour à 1/8" pour faire le cadre
+       //TODO CADRE DE BASE 1/8 CONFIGURABLE
         Imperial x1 = super.mX;
         Imperial y1 = super.mY;
         Imperial x2;
