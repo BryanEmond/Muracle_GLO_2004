@@ -91,6 +91,50 @@ public class Imperial implements Comparable<Imperial>,Serializable {
 
     @Override
     public String toString() {
-        return entier + "\"" + numerateur + "/" + denominateur;
+        if(numerateur == 0)
+            return entier + "\"";
+
+        return entier + "\" " + numerateur + "/" + denominateur;
     }
+
+    public static Imperial fromString(String imperial)
+    {
+        int entier = 0;
+        int numerateur = 0;
+        int denominateur = 1;
+        String[] parts = imperial.trim().split(" ");
+
+        if(parts.length < 1)
+            return null;
+
+        try
+        {
+            entier = Integer.parseInt(parts[0].replace("\"", "").trim());
+
+            if(parts.length == 2)
+            {
+                String[] partsFraction = parts[1].trim().split("/");
+                if(partsFraction.length != 2)
+                    return null;
+
+                numerateur = Integer.parseInt(partsFraction[0]);
+                denominateur = Integer.parseInt(partsFraction[1]);
+            }
+
+        }catch (NumberFormatException e)
+        {
+            return null;
+        }
+
+        if(denominateur == 0)
+            return null;
+
+        return new Imperial(entier, numerateur, denominateur);
+    }
+
+    public Imperial clone()
+    {
+        return new Imperial(entier, numerateur, denominateur);
+    }
+
 }

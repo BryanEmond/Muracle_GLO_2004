@@ -1,8 +1,8 @@
 package ca.ulaval.glo2004.gestion;
 
+import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
 
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +57,8 @@ public class GestionnaireSalle {
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
         salleActive = salle;
+
+        this.mMurCourant = mn1;
     }
 
     public void enregistrerSalle(String path)
@@ -102,9 +104,22 @@ public class GestionnaireSalle {
 
     }
 
-    public Mur murSelectionne(Mur mur)
+
+
+    public MurDTO getMurSelectionne()
     {
-        return this.mMurCourant;
+        if(this.mMurCourant == null)
+            return null;
+
+        return new MurDTO(this.mMurCourant);
+    }
+
+    public void editMurSelectionne(Imperial largeur)
+    {
+        //this.mMurCourant.setmX(x);
+        //this.mMurCourant.setmY(y);
+        this.mMurCourant.setmLargeur(largeur);
+        System.out.println("Mur modifier à : " + largeur);
     }
 
     public Accessoire accessoireSelectionne(String cheminDossier)
