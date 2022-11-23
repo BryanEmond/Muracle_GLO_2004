@@ -7,6 +7,8 @@ import java.io.Console;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
+import ca.ulaval.glo2004.classes.Porte;
+import ca.ulaval.glo2004.classes.Accessoire;
 
 public class Mur extends Element implements Serializable {
 
@@ -92,7 +94,7 @@ public class Mur extends Element implements Serializable {
         return listAccessoires;
     }
 
-    public Accessoire accessoire(PointImperial point) {
+    public Accessoire getaccessoire(PointImperial point) {
 
         ArrayList<Accessoire> listAccessoires = new ArrayList<>();
 
@@ -102,6 +104,8 @@ public class Mur extends Element implements Serializable {
                 listAccessoires.add(var);
             };
         }
+
+
 
         // TODO méthode dans accessoires pour determiner zone par rapport point
 
@@ -178,5 +182,14 @@ public class Mur extends Element implements Serializable {
         this.mPolygoneElevation = new Polygone(Color.BLACK, new PointImperial(x1,y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
     }
 
-    //public
-}
+    public ArrayList<Polygone> getPolygoneAccessoires(){
+        ArrayList<Polygone> polygonesAccessoires = new ArrayList<>();
+
+        for(Accessoire accessoire : mCote.accessoires){
+                polygonesAccessoires.addAll(accessoire.genererPolygoneELV());
+            }
+        return polygonesAccessoires;
+        };
+
+    }
+

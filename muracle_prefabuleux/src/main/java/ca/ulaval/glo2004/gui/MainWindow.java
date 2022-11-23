@@ -200,6 +200,34 @@ public class MainWindow {
             }
         });
 
+        btnPorte.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
+
+        btnPrise.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
+
+        btnRetourAir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
+
+        btnFenetre.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
+
         MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
         proprietesMur.setValue("x", murSelect.getX().toString());
         proprietesMur.setValue("y", murSelect.getY().toString());
