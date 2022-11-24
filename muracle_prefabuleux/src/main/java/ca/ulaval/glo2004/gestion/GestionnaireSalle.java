@@ -1,8 +1,9 @@
 package ca.ulaval.glo2004.gestion;
 
+import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
+import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ public class GestionnaireSalle {
     private Cote mCoteCourant;
     private Mur mMurCourant;
     private Accessoire mAccessoire;
+    private Separateur mSeparateur;
     private boolean mDecoupage;
     private String filePath;
     private Salle salleActive;
@@ -26,7 +28,7 @@ public class GestionnaireSalle {
 
         creerSalle(new Imperial(0), new Imperial(0),
                 new Imperial(1), new Imperial(1),
-                new Imperial(20),
+                new Imperial(100),
                 new Imperial(20), new Imperial(20),
                 true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
     }
@@ -46,10 +48,17 @@ public class GestionnaireSalle {
         Mur mn1 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(0), new Imperial(10),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
 
-        Mur mn2 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(10), new Imperial(10),
+        Mur mn2 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(10), new Imperial(5),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
 
-        cotes.get(0).setMurs(new ArrayList<>(Arrays.asList(mn1, mn2)));
+        Mur mn3 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(15), new Imperial(5),
+                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
+
+        Separateur sn1 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(10), cotes.get(0), salle, null);
+        Separateur sn2 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(15), cotes.get(0), salle, null);
+
+        cotes.get(0).setSeparateurs(new ArrayList<>(Arrays.asList(sn1, sn2)));
+        cotes.get(0).setMurs(new ArrayList<>(Arrays.asList(mn1, mn2, mn3)));
 
         Mur ms1 = new Mur(salle, cotes.get(2), new Imperial(19), new Imperial(0), new Imperial(20),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
@@ -63,6 +72,9 @@ public class GestionnaireSalle {
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
         salleActive = salle;
+
+        this.mMurCourant = mn1;
+        this.mSeparateur = sn2;
     }
 
     public void enregistrerSalle(String path)
@@ -108,9 +120,52 @@ public class GestionnaireSalle {
 
     }
 
-    public Mur murSelectionne(Mur mur)
+
+
+    public MurDTO getMurSelectionne()
     {
-        return this.mMurCourant;
+        if(this.mMurCourant == null)
+            return null;
+
+        return new MurDTO(this.mMurCourant);
+    }
+
+    public void editMurSelectionne(Imperial largeur)
+    {
+        //this.mMurCourant.setmX(x);
+        //this.mMurCourant.setmY(y);
+        if(this.mMurCourant != null)
+        {
+            this.mMurCourant.setmLargeur(largeur);
+            System.out.println("Mur modifier à : " + largeur);
+        }
+    }
+
+    public SeparateurDTO getSeparateurSelectionne()
+    {
+        if(this.mSeparateur == null)
+            return null;
+
+        Separateur separateurPrec = mSeparateur.getSeparateurPrecedent();
+        Imperial position = mSeparateur.getDistanceBordDeReference().clone();
+        Imperial positionRelative;
+
+        if(separateurPrec == null)
+            positionRelative = position.clone();
+        else
+            positionRelative = position.add(separateurPrec.getDistanceBordDeReference().negative());
+
+        return new SeparateurDTO(position, positionRelative);
+    }
+
+    public void editSeparateurSelectionne(Imperial posRelative)
+    {
+        Separateur sepPrec = mSeparateur.getSeparateurPrecedent();
+
+        if(sepPrec == null)
+            mSeparateur.setDistanceBordDeReference(posRelative.clone());
+        else
+            mSeparateur.setDistanceBordDeReference(sepPrec.getDistanceBordDeReference().add(posRelative));
     }
 
     public Accessoire accessoireSelectionne(String cheminDossier)

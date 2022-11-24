@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 //as un impacte sur le poid du mur...
 
-public class Accessoire extends Element implements Serializable {
+public abstract class Accessoire extends Element implements Serializable {
 
     Mur mur;
     boolean mPerceExtérieur;
@@ -16,17 +16,16 @@ public class Accessoire extends Element implements Serializable {
     String mNom;
 
     public Accessoire(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur,
-                      Imperial mLargeur, Imperial mHauteur,Polygone mPolygonePlan, Polygone mPolygoneElevation,
-                      String mNom) {
+                      Imperial mLargeur, Imperial mHauteur, String mNom) {
         super(mY, mX);
         this.mPerceExtérieur = mPerceExtérieur;
         this.mPerceInterieur = mPerceInterieur;
         this.mLargeur = mLargeur;
         this.mHauteur = mHauteur;
-        this.mPolygonePlan = mPolygonePlan;
-        this.mPolygoneElevation = mPolygoneElevation;
         this.mNom = mNom;
     }
+
+    public abstract ArrayList<Polygone> genererPolygoneELV();
 
 
     public Salle salle(){

@@ -1,5 +1,6 @@
 package ca.ulaval.glo2004.classes;
 
+import java.awt.*;
 import ca.ulaval.glo2004.enums.Direction;
 
 import java.io.Serializable;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 
 public class Cote extends Element implements Serializable {
     Imperial mZ;
+
     Utilitaire.Direction mDirection;
     Direction mDirectionL;
     Polygone mPolygonePlan;
@@ -51,6 +53,11 @@ public class Cote extends Element implements Serializable {
 
     public void setMurs(ArrayList<Mur> murs) {
         this.murs = murs;
+
+        for(Mur mur : murs)
+        {
+            mur.genererPolygonePlan();
+        }
     }
 
     public ArrayList<Accessoire> getAccessoires() {
@@ -69,6 +76,16 @@ public class Cote extends Element implements Serializable {
         this.separateurs = separateurs;
     }
 
+    public Separateur getSeparateurPrecedent(Separateur separateur)
+    {
+        int index = separateurs.indexOf(separateur);
+
+        if (index == 0)
+            return null;
+
+        return separateurs.get(index - 1);
+    }
+
     public ArrayList<Polygone> getPolygonesPlan()
     {
         ArrayList<Polygone> polygones = new ArrayList<Polygone>();
@@ -76,6 +93,30 @@ public class Cote extends Element implements Serializable {
         for(int i = 0; i < murs.size(); i++)
         {
             polygones.add(murs.get(i).mPolygonePlan);
+        }
+
+        //TODO THIS IS JUST FOR TESTS, JUSTE POUR LE CÔTÉ NORD
+        if(separateurs != null)
+        {
+            for(Separateur s : separateurs)
+            {
+                PointImperial p1 = new PointImperial(s.getDistanceBordDeReference(), new Imperial(0));
+                PointImperial p2 = new PointImperial(s.getDistanceBordDeReference(), new Imperial(1));
+                Polygone p = new Polygone(Color.pink, p1, p2, p1, p2);
+                polygones.add(p);
+            }
+        }
+
+        return polygones;
+    }
+
+    public ArrayList<Polygone> getPolygoneElevation()
+    {
+        ArrayList<Polygone> polygones = new ArrayList<Polygone>();
+
+        for(int i = 0; i < murs.size(); i++)
+        {
+            polygones.add(murs.get(i).mPolygoneElevation);
         }
 
         return polygones;

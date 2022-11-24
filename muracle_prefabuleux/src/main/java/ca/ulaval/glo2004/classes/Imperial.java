@@ -62,13 +62,32 @@ public class Imperial implements Comparable<Imperial>,Serializable {
             result = 1;
         }
 
-/*        if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
+        /*if(this.denominateur/this.numerateur < o.denominateur/o.numerateur){
             result = -1;
         } else if (this.denominateur/this.numerateur > o.denominateur/o.numerateur) {
             result = 1;
         }*/
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Imperial))
+            return false;
+
+        Imperial other = (Imperial) obj;
+
+        int newDenominateur = PGCD(denominateur, other.getDenominateur());
+        int newNumerateur1 = (numerateur * 1000 / denominateur * newDenominateur / 1000);
+        int newNumerateur2 = (other.numerateur * 1000 / other.denominateur * newDenominateur / 1000);
+
+        return other.entier == entier && newNumerateur1 == newNumerateur2;
+    }
+
+    public long getValue()
+    {
+        return entier + ((long)numerateur / denominateur);
     }
 
     /***
@@ -91,8 +110,62 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return new Imperial(newEntier, newNumerateur1 + newNumerateur2, newDenominateur);
     }
 
+    public Imperial substract(Imperial other)
+    {
+        return new Imperial(other.negative().entier );
+    }
+
+    public Imperial negative()
+    {
+        return new Imperial(-this.entier, -this.numerateur, this.denominateur);
+    }
+
     @Override
     public String toString() {
-        return entier + "\"" + numerateur + "/" + denominateur;
+        if(numerateur == 0)
+            return entier + "\"";
+
+        return entier + "\" " + numerateur + "/" + denominateur;
     }
+
+    public static Imperial fromString(String imperial)
+    {
+        int entier = 0;
+        int numerateur = 0;
+        int denominateur = 1;
+        String[] parts = imperial.trim().split(" ");
+
+        if(parts.length < 1)
+            return null;
+
+        try
+        {
+            entier = Integer.parseInt(parts[0].replace("\"", "").trim());
+
+            if(parts.length == 2)
+            {
+                String[] partsFraction = parts[1].trim().split("/");
+                if(partsFraction.length != 2)
+                    return null;
+
+                numerateur = Integer.parseInt(partsFraction[0]);
+                denominateur = Integer.parseInt(partsFraction[1]);
+            }
+
+        }catch (NumberFormatException e)
+        {
+            return null;
+        }
+
+        if(denominateur == 0)
+            return null;
+
+        return new Imperial(entier, numerateur, denominateur);
+    }
+
+    public Imperial clone()
+    {
+        return new Imperial(entier, numerateur, denominateur);
+    }
+
 }

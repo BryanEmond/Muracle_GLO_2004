@@ -1,6 +1,9 @@
 package ca.ulaval.glo2004.gui;
 
+import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.Utilitaire;
+import ca.ulaval.glo2004.classes.dto.MurDTO;
+import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 import ca.ulaval.glo2004.gestion.GestionnaireSalle;
 
 import javax.swing.*;
@@ -53,6 +56,12 @@ public class MainWindow {
     private JButton ouvrirUnProjectExistantButton;
     private JLabel title;
     private Box container;
+
+    private PanelProprietes proprietesSalle;
+    private PanelProprietes proprietesMur;
+    private PanelProprietes proprietesAccessoire;
+    private PanelProprietes proprietesSeparateur;
+
     private MainWindow mainWindow;
     private DrawingPanel panel;
     GestionnaireSalle gestionnaireSalle;
@@ -60,6 +69,7 @@ public class MainWindow {
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
         this.gestionnaireSalle = gestionnaireSalle;
         mainWindow = this;
+        panel = new DrawingPanel(this);
         creerUnNouveauProjetButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -71,15 +81,15 @@ public class MainWindow {
                 if(returnFcVal == JFileChooser.APPROVE_OPTION){
                     try{
                         File file = fc.getSelectedFile();
-                        panel = new DrawingPanel(mainWindow);
+                        //panel = new DrawingPanel(mainWindow);
                         mainWindow.gestionnaireSalle.enregistrerSalle(file.getPath());
-                        mainWindow.mainPanel.add(panel);
                     }catch (Exception error){
                         System.out.println(error);
                     }
                 }
             }
         });
+
         ouvrirUnProjectExistantButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -92,19 +102,11 @@ public class MainWindow {
                         File file = fc.getSelectedFile();
 
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
-                        panel = new DrawingPanel(mainWindow,mainWindow.gestionnaireSalle.getSalleActive());
-                        mainWindow.mainPanel.add(panel);
+                        //panel = new DrawingPanel(mainWindow);
                     }catch (Exception error){
                         System.out.println(error);
                     }
                 }
-            }
-        });
-        btnDimensionsCollapse.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                boolean isActivated = !dimensionPanelContent.isVisible();
-                dimensionPanelContent.setVisible(isActivated);
             }
         });
         btnSave.addMouseListener(new MouseAdapter() {
@@ -123,20 +125,11 @@ public class MainWindow {
             this.mainPanel.repaint();
         });
 
-        this.mainPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                gestionnaireSalle.test(e.getX(), e.getY());
-            }
-        });
-
-
         btnElvEstINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
 
-               panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
-                mainWindow.mainPanel.add(panel);
+               panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
             }
         });
 
@@ -145,8 +138,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
             }
         });
 
@@ -154,8 +146,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
             }
         });
         btnElvSudEXT.addMouseListener(new MouseAdapter() {
@@ -163,16 +154,16 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
+
             }
         });
         btnElvOuestINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
+
             }
         });
         btnElvOuestEXT.addMouseListener(new MouseAdapter() {
@@ -180,8 +171,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
             }
         });
 
@@ -189,8 +179,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
             }
         });
 
@@ -199,8 +188,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow, mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD));
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
             }
         });
 
@@ -208,12 +196,49 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel = new DrawingPanel(mainWindow,mainWindow.gestionnaireSalle.getSalleActive());
-                mainWindow.mainPanel.add(panel);
+                panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
+
             }
         });
 
+        btnPorte.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
 
+        btnPrise.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
+
+        btnRetourAir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
+
+        btnFenetre.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+            }
+        });
+
+        MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
+        proprietesMur.setValue("x", murSelect.getX().toString());
+        proprietesMur.setValue("y", murSelect.getY().toString());
+        proprietesMur.setValue("largeur", murSelect.getLargeur().toString());
+        proprietesMur.updateValues();
+
+        SeparateurDTO sepSelect = gestionnaireSalle.getSeparateurSelectionne();
+        proprietesSeparateur.setValue("pos", sepSelect.getPosition().toString());
+        proprietesSeparateur.setValue("posRel", sepSelect.getPositionRelative().toString());
+        proprietesSeparateur.updateValues();
     }
 
     {
@@ -285,125 +310,55 @@ public class MainWindow {
         rootPanel = new JPanel();
         rootPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.setBackground(new Color(-12763843));
-        propertiesPanel.setLayout(new BorderLayout(0, 0));
+        propertiesPanel.setLayout(new BoxLayout(propertiesPanel, BoxLayout.PAGE_AXIS));
         propertiesPanel.setBackground(new Color(-8882056));
         propertiesPanel.setEnabled(true);
         propertiesPanel.setMinimumSize(new Dimension(235, 0));
-        propertiesPanel.setPreferredSize(new Dimension(235, 0));
-        rootPanel.add(propertiesPanel, BorderLayout.WEST);
-        DimensionsPanel.setLayout(new BorderLayout(0, 0));
-        DimensionsPanel.setBackground(new Color(-8882056));
-        DimensionsPanel.setMinimumSize(new Dimension(221, 240));
-        DimensionsPanel.setPreferredSize(new Dimension(221, 240));
-        propertiesPanel.add(DimensionsPanel, BorderLayout.NORTH);
-        btnDimensionsCollapse.setBackground(new Color(-8224126));
-        btnDimensionsCollapse.setBorderPainted(false);
-        btnDimensionsCollapse.setFocusPainted(false);
-        Font btnDimensionsCollapseFont = this.$$$getFont$$$(null, -1, 11, btnDimensionsCollapse.getFont());
-        if (btnDimensionsCollapseFont != null) btnDimensionsCollapse.setFont(btnDimensionsCollapseFont);
-        btnDimensionsCollapse.setHideActionText(true);
-        btnDimensionsCollapse.setHorizontalAlignment(2);
-        btnDimensionsCollapse.setHorizontalTextPosition(10);
-        btnDimensionsCollapse.setIcon(new ImageIcon(getClass().getResource("/buttons/collapse-up.png")));
-        btnDimensionsCollapse.setIconTextGap(0);
-        btnDimensionsCollapse.setText("DIMENSIONS DE LA SALLE");
-        DimensionsPanel.add(btnDimensionsCollapse, BorderLayout.NORTH);
-        dimensionPanelContent.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        dimensionPanelContent.setBackground(new Color(-4408132));
-        DimensionsPanel.add(dimensionPanelContent, BorderLayout.CENTER);
-        dimLargeurPanel.setLayout(new BorderLayout(0, 0));
-        dimLargeurPanel.setBackground(new Color(-4408132));
-        dimLargeurPanel.setPreferredSize(new Dimension(200, 24));
-        dimensionPanelContent.add(dimLargeurPanel);
-        final JLabel label1 = new JLabel();
-        label1.setBackground(new Color(-4408132));
-        label1.setForeground(new Color(-16777216));
-        label1.setText("LARGEUR :");
-        dimLargeurPanel.add(label1, BorderLayout.WEST);
-        tbLargeur = new JTextField();
-        tbLargeur.setBackground(new Color(-1));
-        tbLargeur.setForeground(new Color(-16777216));
-        tbLargeur.setPreferredSize(new Dimension(60, 30));
-        tbLargeur.setText("45\"");
-        dimLargeurPanel.add(tbLargeur, BorderLayout.EAST);
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new BorderLayout(0, 0));
-        panel1.setBackground(new Color(-4408132));
-        panel1.setPreferredSize(new Dimension(200, 24));
-        dimensionPanelContent.add(panel1);
-        final JLabel label2 = new JLabel();
-        label2.setBackground(new Color(-4408132));
-        label2.setForeground(new Color(-16777216));
-        label2.setMaximumSize(new Dimension(64, 300));
-        label2.setMinimumSize(new Dimension(64, 300));
-        label2.setPreferredSize(new Dimension(120, 300));
-        label2.setText("PROFONDEUR :");
-        panel1.add(label2, BorderLayout.WEST);
-        tbProfondeur.setBackground(new Color(-1));
-        tbProfondeur.setForeground(new Color(-16777216));
-        tbProfondeur.setPreferredSize(new Dimension(60, 30));
-        tbProfondeur.setText("48\"");
-        panel1.add(tbProfondeur, BorderLayout.EAST);
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new BorderLayout(0, 0));
-        panel2.setBackground(new Color(-4408132));
-        panel2.setPreferredSize(new Dimension(200, 24));
-        dimensionPanelContent.add(panel2);
-        final JLabel label3 = new JLabel();
-        label3.setBackground(new Color(-4408132));
-        label3.setForeground(new Color(-16777216));
-        label3.setText("HAUTEUR :");
-        panel2.add(label3, BorderLayout.WEST);
-        tbHauteur.setBackground(new Color(-1));
-        tbHauteur.setForeground(new Color(-16777216));
-        tbHauteur.setPreferredSize(new Dimension(60, 30));
-        tbHauteur.setText("96\"");
-        panel2.add(tbHauteur, BorderLayout.EAST);
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new BorderLayout(0, 0));
-        panel3.setBackground(new Color(-4408132));
-        panel3.setPreferredSize(new Dimension(200, 24));
-        dimensionPanelContent.add(panel3);
-        final JLabel label4 = new JLabel();
-        label4.setBackground(new Color(-4408132));
-        label4.setForeground(new Color(-16777216));
-        label4.setText("ÉPAISSEUR MURS :");
-        panel3.add(label4, BorderLayout.WEST);
-        tbEpaisseurMurs.setBackground(new Color(-1));
-        tbEpaisseurMurs.setForeground(new Color(-16777216));
-        tbEpaisseurMurs.setPreferredSize(new Dimension(60, 30));
-        tbEpaisseurMurs.setText("4\"");
-        panel3.add(tbEpaisseurMurs, BorderLayout.EAST);
-        final JPanel panel4 = new JPanel();
-        panel4.setLayout(new BorderLayout(0, 0));
-        panel4.setBackground(new Color(-4408132));
-        panel4.setPreferredSize(new Dimension(200, 24));
-        dimensionPanelContent.add(panel4);
-        final JLabel label5 = new JLabel();
-        label5.setBackground(new Color(-4408132));
-        label5.setForeground(new Color(-16777216));
-        label5.setText("LARGEUR DE PLI :");
-        panel4.add(label5, BorderLayout.WEST);
-        tbLargeurPli.setBackground(new Color(-1));
-        tbLargeurPli.setForeground(new Color(-16777216));
-        tbLargeurPli.setPreferredSize(new Dimension(60, 30));
-        tbLargeurPli.setText("2\"");
-        panel4.add(tbLargeurPli, BorderLayout.EAST);
-        final JPanel panel5 = new JPanel();
-        panel5.setLayout(new BorderLayout(0, 0));
-        panel5.setBackground(new Color(-4408132));
-        panel5.setPreferredSize(new Dimension(200, 24));
-        dimensionPanelContent.add(panel5);
-        final JLabel label6 = new JLabel();
-        label6.setBackground(new Color(-4408132));
-        label6.setForeground(new Color(-16777216));
-        label6.setText("PLI DE SOUDURE :");
-        panel5.add(label6, BorderLayout.WEST);
-        tbPliSoudure.setBackground(new Color(-1));
-        tbPliSoudure.setForeground(new Color(-16777216));
-        tbPliSoudure.setPreferredSize(new Dimension(60, 30));
-        tbPliSoudure.setText("45°");
-        panel5.add(tbPliSoudure, BorderLayout.EAST);
+        propertiesPanel.setPreferredSize(new Dimension(235, 700));
+
+        JScrollPane propertiesScroll = new JScrollPane(propertiesPanel);
+        propertiesScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        propertiesScroll.setPreferredSize(new Dimension(235, 0));
+        rootPanel.add(propertiesScroll, BorderLayout.WEST);
+
+        proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 0);
+        proprietesSalle.addProperty("largeur", "LARGEUR 1:");
+        proprietesSalle.addProperty("profondeur", "PROFONDEUR :");
+        proprietesSalle.addProperty("hauteur", "HAUTEUR :");
+        proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :");
+        proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :");
+        proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :");
+        proprietesSalle.generateLayout();
+        propertiesPanel.add(proprietesSalle);
+
+        proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 0);
+        proprietesMur.addProperty("x", "POSITION X :", "", true);
+        proprietesMur.addProperty("y", "POSITION Y :", "", true);
+        proprietesMur.addProperty("largeur", "LARGEUR :", "", true);
+        proprietesMur.generateLayout();
+        propertiesPanel.add(proprietesMur);
+
+        proprietesSeparateur = new PanelProprietes("SÉPARATEUR", 100);
+        proprietesSeparateur.addProperty("pos", "POSITION :", "", true);
+        proprietesSeparateur.addProperty("posRel", "SEP. PRÉCÉDENT :");
+        proprietesSeparateur.generateLayout();
+        propertiesPanel.add(proprietesSeparateur);
+
+        proprietesSeparateur.setOnChangeListener(values -> {
+
+            Imperial posRel = proprietesSeparateur.getImperial("posRel", true);
+
+            if(posRel != null)
+            {
+                gestionnaireSalle.editSeparateurSelectionne(posRel);
+                SeparateurDTO newValue = gestionnaireSalle.getSeparateurSelectionne();
+                proprietesSeparateur.setValue("pos", newValue.getPosition().toString());
+
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+        });
+
         rightPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(rightPanel, BorderLayout.CENTER);
         controlPanel.setLayout(new BorderLayout(0, 0));

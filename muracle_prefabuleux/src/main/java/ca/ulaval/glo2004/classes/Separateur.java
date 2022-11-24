@@ -50,4 +50,9 @@ public class Separateur extends Element implements Serializable {
     public void calculeDisposition() {
         super.calculeDisposition();
     }
+
+    public Separateur getSeparateurPrecedent()
+    {
+        return mCote.getSeparateurPrecedent(this);
+    }
 }
