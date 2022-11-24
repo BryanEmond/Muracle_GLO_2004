@@ -25,11 +25,11 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return entier;
     }
 
-    public int getFormeNormal() {
-        if(denominateur != 0)
-            return entier + (numerateur/denominateur);
+    public Double getFormeNormal() {
+        if(denominateur != 0 && numerateur != 0)
+            return (double)entier + (numerateur/denominateur);
 
-        return entier;
+        return (double)entier;
     }
 
     public void setEntier(int entier) {

@@ -8,9 +8,7 @@ import java.util.ArrayList;
 
 public class Cote extends Element implements Serializable {
     Imperial mZ;
-
     Utilitaire.Direction mDirection;
-    Direction mDirectionL;
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
@@ -23,6 +21,7 @@ public class Cote extends Element implements Serializable {
         super(mY, mX);
         this.mZ = mZ;
         this.mDirection = mDirection;
+        separateurs = new ArrayList<>();
     }
     @Override
     public void calculeDisposition() {

@@ -45,25 +45,28 @@ public class Salle extends Element implements Serializable {
             for (Polygone polygone:var.getPolygonesPlan()) {
                 if(polygone.PointEstDansPolygone(point)){
 
-                  /*  ArrayList<Polygone> mursPLan = var.getPolygonesPlan();
+                    if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
 
 
-                    PointImperial point1 = mursPLan.get(0).points.get(0);
-                    PointImperial point2 = mursPLan.get(0).points.get(2);*/
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
 
+                        // distanceBord = var.getPremierMur().mPolygonePlan.getCoins().get(0);
 
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                        var.AjouterSeparateur(new Separateur(point.mY,point.mX,point.mX,var,new Polygone(Color.BLACK,points)));
+                    }else {
 
-                    //for (PointImperial pointCoinSeparateur : points) {
-                       // for (Accessoire accessoire : var.accessoires) {
-                        //    if(accessoire.mPolygonePlan.PointEstDansPolygone(pointCoinSeparateur)) return;
-                       // }
-                    //}
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
 
-                    var.AjouterSeparateur(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,points)));
+                        //double distanceBord = var.getDernierMur().mPolygonePlan.getCoins().get(2);
+
+                        var.AjouterSeparateur(new Separateur(point.mY,point.mX,point.mX,var,new Polygone(Color.BLACK,points)));
+                    }
                 };
             }
         }

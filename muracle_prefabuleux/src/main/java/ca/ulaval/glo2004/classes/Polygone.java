@@ -4,17 +4,18 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Polygone implements Serializable {
     Color mCouleur;
     Element mElement;
     ArrayList<PointImperial> points;
+
     ArrayList<PointImperial> pointsTrier;
 
     public Polygone(Color couleur, ArrayList<PointImperial> points) {
         this.mCouleur = couleur;
         this.points = points;
-        this.pointsTrier = trier(points);
     }
 
     public Polygone(Color couleur, PointImperial... points)
@@ -46,35 +47,78 @@ public class Polygone implements Serializable {
         this.points = point;
     }
 
-    public ArrayList<PointImperial> trier(ArrayList<PointImperial> points) {
-        int conteur = 1;
-        PointImperial pointModif;
+    public ArrayList<Double> getCoinsDouble() {
 
-        while (points.get(0).mY != points.get(1).mY) {
-            pointModif = points.get(3);
-            points.set(3, points.get(2));
-            points.set(2, points.get(1));
-            points.set(1, pointModif);
+        ArrayList<Double> pointsX = new ArrayList<>();
+        ArrayList<Double> pointsY = new ArrayList<>();
+
+        pointsX.add(this.points.get(0).mX.getFormeNormal());
+        pointsX.add(this.points.get(1).mX.getFormeNormal());
+        pointsX.add(this.points.get(2).mX.getFormeNormal());
+        pointsX.add(this.points.get(3).mX.getFormeNormal());
+
+        pointsY.add(this.points.get(0).mY.getFormeNormal());
+        pointsY.add(this.points.get(1).mY.getFormeNormal());
+        pointsY.add(this.points.get(2).mY.getFormeNormal());
+        pointsY.add(this.points.get(3).mY.getFormeNormal());
+
+        ArrayList<Double> pointsCoin = new ArrayList<>();
+
+        pointsCoin.add(Collections.min(pointsX));
+        pointsCoin.add(Collections.max(pointsX));
+        pointsCoin.add(Collections.min(pointsY));
+        pointsCoin.add(Collections.max(pointsY));
+
+        return  pointsCoin;
+    }
+
+    public ArrayList<Imperial> getCoinsImperial() {
+
+        ArrayList<Double> pointsX = new ArrayList<>();
+        ArrayList<Double> pointsY = new ArrayList<>();
+
+        pointsX.add(this.points.get(0).mX.getFormeNormal());
+        pointsX.add(this.points.get(1).mX.getFormeNormal());
+        pointsX.add(this.points.get(2).mX.getFormeNormal());
+        pointsX.add(this.points.get(3).mX.getFormeNormal());
+
+        pointsY.add(this.points.get(0).mY.getFormeNormal());
+        pointsY.add(this.points.get(1).mY.getFormeNormal());
+        pointsY.add(this.points.get(2).mY.getFormeNormal());
+        pointsY.add(this.points.get(3).mY.getFormeNormal());
+
+        ArrayList<Imperial> pointsCoin = new ArrayList<>();
+
+        for (PointImperial point:this.points) {
+            if(Collections.min(pointsX) == point.mX.getFormeNormal()) pointsCoin.add(point.mX);
+            break;
         }
 
-        if(points.get(0).mX.compareTo(points.get(1).mX) > 0){
-            pointModif = points.get(0);
-            points.set(0, points.get(1));
-            points.set(1, pointModif);
+        for (PointImperial point:this.points) {
+            if(Collections.min(pointsX) == point.mX.getFormeNormal()) pointsCoin.add(point.mX);
+            break;
         }
 
-        if(points.get(2).mY.compareTo(points.get(3).mY) > 0){
-            pointModif = points.get(2);
-            points.set(2, points.get(3));
-            points.set(3, pointModif);
+        for (PointImperial point:this.points) {
+            if(Collections.min(pointsX) == point.mX.getFormeNormal()) pointsCoin.add(point.mX);
+            break;
         }
 
-        return  points;
+        for (PointImperial point:this.points) {
+            if(Collections.min(pointsX) == point.mX.getFormeNormal()) pointsCoin.add(point.mX);
+            break;
+        }
+
+
+        return pointsCoin;
     }
 
 
     public boolean PointEstDansPolygone(PointImperial point) {
-        return point.mX.compareTo(this.points.get(0).mX) >= 0 && point.mY.compareTo(this.points.get(3).mY) <= 0;
+        ArrayList<Double> coins = getCoinsDouble();
+
+        return point.mX.getFormeNormal() >= coins.get(0) && point.mX.getFormeNormal() <= coins.get(1) &&
+                point.mY.getFormeNormal() >= coins.get(2) && point.mY.getFormeNormal() <= coins.get(3);
     }
 
     public boolean PolygoneEstDansPolygone(Polygone polygone) {
