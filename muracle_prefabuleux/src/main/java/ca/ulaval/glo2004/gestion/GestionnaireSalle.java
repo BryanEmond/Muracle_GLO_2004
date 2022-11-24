@@ -54,8 +54,8 @@ public class GestionnaireSalle {
         Mur mn3 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(15), new Imperial(5),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
 
-        Separateur sn1 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(10), cotes.get(0), salle, null);
-        Separateur sn2 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(15), cotes.get(0), salle, null);
+        Separateur sn1 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(10), cotes.get(0), null);
+        Separateur sn2 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(15), cotes.get(0), null);
 
         cotes.get(0).setSeparateurs(new ArrayList<>(Arrays.asList(sn1, sn2)));
         cotes.get(0).setMurs(new ArrayList<>(Arrays.asList(mn1, mn2, mn3)));

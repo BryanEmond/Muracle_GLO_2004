@@ -96,7 +96,7 @@ public class Cote extends Element implements Serializable {
         }
 
         //TODO THIS IS JUST FOR TESTS, JUSTE POUR LE CÔTÉ NORD
-        if(separateurs != null)
+        /*if(separateurs != null)
         {
             for(Separateur s : separateurs)
             {
@@ -105,7 +105,7 @@ public class Cote extends Element implements Serializable {
                 Polygone p = new Polygone(Color.pink, p1, p2, p1, p2);
                 polygones.add(p);
             }
-        }
+        }*/
 
         return polygones;
     }

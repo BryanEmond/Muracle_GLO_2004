@@ -44,6 +44,14 @@ public class Salle extends Element implements Serializable {
         {
             for (Polygone polygone:var.getPolygonesPlan()) {
                 if(polygone.PointEstDansPolygone(point)){
+
+                  /*  ArrayList<Polygone> mursPLan = var.getPolygonesPlan();
+
+
+                    PointImperial point1 = mursPLan.get(0).points.get(0);
+                    PointImperial point2 = mursPLan.get(0).points.get(2);*/
+
+
                     points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
                     points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
                     points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
@@ -58,21 +66,6 @@ public class Salle extends Element implements Serializable {
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,points)));
                 };
             }
-
-
-
-
-
-           if(var.mPolygonePlan.PointEstDansPolygone(point)){
-
-               if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
-
-               }else{
-
-               }
-
-               //var.separateurs.add(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,points)));
-           };
         }
     }
 

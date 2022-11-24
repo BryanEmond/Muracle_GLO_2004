@@ -229,6 +229,13 @@ public class MainWindow {
             }
         });
 
+        this.mainPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                gestionnaireSalle.test(e.getX(), e.getY());
+            }
+        });
+
         MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
         proprietesMur.setValue("x", murSelect.getX().toString());
         proprietesMur.setValue("y", murSelect.getY().toString());
