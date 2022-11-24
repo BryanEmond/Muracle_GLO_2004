@@ -31,6 +31,12 @@ public class GestionnaireSalle {
                 true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
     }
 
+    public void test(int pixelX, int pixelY)
+    {
+        PointImperial point = Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY);
+        salleActive.separateur(point);
+    }
+
     public void creerSalle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes)
     {
 

@@ -123,6 +123,14 @@ public class MainWindow {
             this.mainPanel.repaint();
         });
 
+        this.mainPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                gestionnaireSalle.test(e.getX(), e.getY());
+            }
+        });
+
+
         btnElvEstINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -204,6 +212,8 @@ public class MainWindow {
                 mainWindow.mainPanel.add(panel);
             }
         });
+
+
     }
 
     {

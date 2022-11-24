@@ -42,24 +42,36 @@ public class Salle extends Element implements Serializable {
 
         for (Cote var : cotes)
         {
+            for (Polygone polygone:var.getPolygonesPlan()) {
+                if(polygone.PointEstDansPolygone(point)){
+                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+
+                    //for (PointImperial pointCoinSeparateur : points) {
+                       // for (Accessoire accessoire : var.accessoires) {
+                        //    if(accessoire.mPolygonePlan.PointEstDansPolygone(pointCoinSeparateur)) return;
+                       // }
+                    //}
+
+                    var.AjouterSeparateur(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,points)));
+                };
+            }
+
+
+
+
+
            if(var.mPolygonePlan.PointEstDansPolygone(point)){
 
-               for (Accessoire accessoire : var.accessoires) {
-                   if(accessoire.mPolygonePlan.PointEstDansPolygone(point)) return;
+               if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
+
+               }else{
+
                }
 
-               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(0).mY));
-               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(0).mY));
-               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(2).mY));
-               points.add(new PointImperial(point.mX,var.mPolygonePlan.points.get(2).mY));
-
-               for (PointImperial pointCoinSeparateur : points) {
-                   for (Accessoire accessoire : var.accessoires) {
-                       if(accessoire.mPolygonePlan.PointEstDansPolygone(pointCoinSeparateur)) return;
-                   }
-               }
-
-               var.separateurs.add(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,points)));
+               //var.separateurs.add(new Separateur(point.mY,point.mX,point.mY,var,new Polygone(Color.BLACK,points)));
            };
         }
     }
