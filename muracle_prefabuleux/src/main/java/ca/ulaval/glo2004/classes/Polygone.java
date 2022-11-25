@@ -91,19 +91,19 @@ public class Polygone implements Serializable {
         ArrayList<Imperial> pointsCoin = new ArrayList<>();
 
         for (PointImperial point:this.points) {
-            if(Objects.equals(Collections.min(pointsX), point.mX.getFormeNormal())) pointsCoin.add(point.mX); break ;
+            if(Objects.equals(Collections.min(pointsX), point.mX.getFormeNormal())) {pointsCoin.add(point.mX); break ;}
         }
 
         for (PointImperial point:this.points) {
-            if(Objects.equals(Collections.max(pointsX), point.mX.getFormeNormal())) pointsCoin.add(point.mX); break ;
+            if(Objects.equals(Collections.max(pointsX), point.mX.getFormeNormal())) {pointsCoin.add(point.mX); break ;}
         }
 
         for (PointImperial point:this.points) {
-            if(Objects.equals(Collections.min(pointsY), point.mY.getFormeNormal())) pointsCoin.add(point.mX); break ;
+            if(Objects.equals(Collections.min(pointsY), point.mY.getFormeNormal())) {pointsCoin.add(point.mX); break ;}
         }
 
         for (PointImperial point:this.points) {
-            if(Objects.equals(Collections.max(pointsY), point.mY.getFormeNormal())) pointsCoin.add(point.mX); break ;
+            if(Objects.equals(Collections.max(pointsY), point.mY.getFormeNormal())) {pointsCoin.add(point.mX); break ;}
         }
 
         return pointsCoin;
