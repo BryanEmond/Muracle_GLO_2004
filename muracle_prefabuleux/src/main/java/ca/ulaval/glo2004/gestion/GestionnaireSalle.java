@@ -225,8 +225,34 @@ public class GestionnaireSalle {
         return new SalleDTO(salleActive);
     }
 
-    public boolean editSalleSelectionne(SalleDTO salle)
+    public int editSalleSelectionne(SalleDTO salle)
     {
+        double largeurMin = 0;
+        double profondeurMin = 0;
+
+        for(Cote cote : salleActive.getCotes())
+        {
+            Separateur dernierSep = cote.getDernierSeparateur();
+            double distValue = (dernierSep != null ? dernierSep.getDistanceBordDeReference().getValue() : 0) + 2 * salle.getEpaisseurMurs().getValue() + 5;
+
+            if(cote.getDirection().estHorizontal())
+            {
+                if(distValue > largeurMin)
+                    largeurMin = distValue;
+            }
+            else
+            {
+                if(distValue > profondeurMin)
+                    profondeurMin = distValue;
+            }
+        }
+
+        if(salle.getLargeur().getValue() < largeurMin)
+            return 1;
+
+        if(salle.getProfondeur().getValue() < profondeurMin)
+            return 2;
+
         this.salleActive.setHauteur(salle.getHauteur());
         this.salleActive.setLargeur(salle.getLargeur());
         this.salleActive.setProfondeur(salle.getProfondeur());
@@ -235,7 +261,7 @@ public class GestionnaireSalle {
         this.salleActive.setLargeurPliSoudure(salle.getLargeurPli());
 
         updateSalle();
-        return true;
+        return 0;
     }
 
     public MurDTO getMurSelectionne()
@@ -282,11 +308,11 @@ public class GestionnaireSalle {
         Utilitaire.Direction direction = mSeparateur.getmCote().getDirection();
         Imperial tailleSalle = direction.estHorizontal() ? salleActive.getLargeur() : salleActive.getProfondeur();
 
-        double min = sepPrec == null ? 0 : sepPrec.getDistanceBordDeReference().getValue();
-        double max = sepSuivant == null ? tailleSalle.getValue() : sepSuivant.getDistanceBordDeReference().getValue();
+        double min = (sepPrec == null ? 0 : sepPrec.getDistanceBordDeReference().getValue());
+        double max = (sepSuivant == null ? tailleSalle.getValue() : sepSuivant.getDistanceBordDeReference().getValue()) - salleActive.getEpaisseurMurs().getValue();
         double value = posRelative.getValue();
 
-        if(value <= 0 || (value + min) > max)
+        if(value <= 5 || (value + min) > (max - 5))
             return false;
 
         if(sepPrec == null)

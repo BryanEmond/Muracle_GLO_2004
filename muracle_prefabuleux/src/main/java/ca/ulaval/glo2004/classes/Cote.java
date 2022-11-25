@@ -269,6 +269,22 @@ public class Cote extends Element implements Serializable {
     public void AjouterAccessoire(Accessoire accessoire) {accessoires.add(accessoire);}
     public void SupprimerAccessoire(Accessoire accessoire) {accessoires.remove(accessoire);}
 
+    public Separateur getPremierSeparateur()
+    {
+        if(separateurs.size() == 0)
+            return null;
+
+        return separateurs.get(0);
+    }
+
+    public Separateur getDernierSeparateur()
+    {
+        if(separateurs.size() == 0)
+            return null;
+
+        return separateurs.get(separateurs.size() - 1);
+    }
+
     public Mur getPremierMur()
     {
         if(murs.size() == 0)
