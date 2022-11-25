@@ -87,9 +87,9 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return other.entier == entier && newNumerateur1 == newNumerateur2;
     }
 
-    public double getValue()
+    public long getValue()
     {
-        return entier + ((double)numerateur / denominateur);
+        return entier + ((long)numerateur / denominateur);
     }
 
     /***
@@ -118,7 +118,7 @@ public class Imperial implements Comparable<Imperial>,Serializable {
 
     public Imperial substract(Imperial other)
     {
-        return this.add(other.negative());
+        return new Imperial(other.negative().entier );
     }
 
     public Imperial negative()
@@ -167,6 +167,7 @@ public class Imperial implements Comparable<Imperial>,Serializable {
             return null;
 
         Imperial imp = new Imperial(entier, numerateur, denominateur);
+        System.out.println(imp);
         return imp;
     }
 

@@ -23,25 +23,12 @@ public class Mur extends Element implements Serializable {
 
     Imperial mLargeur;
 
-    Imperial mBandeSoudageVerticale;
-    Imperial mBandeSoudageHorizontale;
-    Imperial mPolygoneMargeHaut;
-    Imperial mPolygoneMargeBas;
-    Imperial mPolygoneMargeGauche;
-    Imperial mPolygoneMargeDroite;
-
-    public Mur(Salle mSalle, Cote mCote, Imperial y, Imperial x, Imperial largeur, Imperial mBandeSoudageVerticale, Imperial mBandeSoudageHorizontale, Imperial mPolygoneMargeHaut, Imperial mPolygoneMargeBas, Imperial mPolygoneMargeGauche, Imperial mPolygoneMargeDroite) {
+    public Mur(Salle mSalle, Cote mCote, Imperial y, Imperial x, Imperial largeur) {
         super(y, x);
         this.mLargeur = largeur;
 
         this.mCote = mCote;
         this.mSalle = mSalle;
-        this.mBandeSoudageVerticale = mBandeSoudageVerticale;
-        this.mBandeSoudageHorizontale = mBandeSoudageHorizontale;
-        this.mPolygoneMargeHaut = mPolygoneMargeHaut;
-        this.mPolygoneMargeBas = mPolygoneMargeBas;
-        this.mPolygoneMargeGauche = mPolygoneMargeGauche;
-        this.mPolygoneMargeDroite = mPolygoneMargeDroite;
 
         //genererPolygonePlan();
         genererPolygoneELV();
@@ -55,23 +42,6 @@ public class Mur extends Element implements Serializable {
         this.mLargeur = mLargeur;
     }
 
-    public Imperial getmBandeSoudageVerticale() {
-        return mBandeSoudageVerticale;
-    }
-
-
-
-    public void setmBandeSoudageVerticale(Imperial mBandeSoudageVerticale) {
-        this.mBandeSoudageVerticale = mBandeSoudageVerticale;
-    }
-
-    public Imperial getmBandeSoudageHorizontale() {
-        return mBandeSoudageHorizontale;
-    }
-
-    public void setmBandeSoudageHorizontale(Imperial mBandeSoudageHorizontale) {
-        this.mBandeSoudageHorizontale = mBandeSoudageHorizontale;
-    }
 
     public void calculerDisposition() {
 
@@ -196,24 +166,9 @@ public class Mur extends Element implements Serializable {
         return polygonesAccessoires;
         };
 
-    public Imperial getmPolygoneMargeHaut(){
-        return mPolygoneMargeHaut;
-    }
 
-    public Imperial getmPolygoneMargeBas(){
-        return mPolygoneMargeBas;
-    }
-
-    public Imperial getmPolygoneMargeGauche(){
-        return mPolygoneMargeGauche;
-    }
-
-    public Imperial getmPolygoneMargeDroite(){
-        return mPolygoneMargeDroite;
-    }
     public Mur copieMur(Mur other){
-        Mur copieMur = new Mur(mSalle, mCote, getmY(), getmX(), getmLargeur(), getmBandeSoudageVerticale(),
-                getmBandeSoudageHorizontale(), getmPolygoneMargeHaut(), getmPolygoneMargeBas(),getmPolygoneMargeGauche(),getmPolygoneMargeDroite());
+        Mur copieMur = new Mur(mSalle, mCote, getmY(), getmX(), getmLargeur());
         return copieMur;
     }
 

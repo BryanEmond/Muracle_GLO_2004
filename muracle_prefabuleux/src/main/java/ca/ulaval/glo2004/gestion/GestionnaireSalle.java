@@ -23,8 +23,8 @@ public class GestionnaireSalle {
     public GestionnaireSalle()
     {
         Cote nord = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.NORD);
-        Cote est = new Cote(new Imperial(20), new Imperial(1), new Imperial(0), Utilitaire.Direction.EST);
-        Cote sud = new Cote(new Imperial(20), new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
+        Cote est = new Cote(new Imperial(0), new Imperial(19), new Imperial(0), Utilitaire.Direction.EST);
+        Cote sud = new Cote(new Imperial(19), new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
         Cote ouest = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
 
         creerSalle(new Imperial(0), new Imperial(0),
@@ -34,43 +34,32 @@ public class GestionnaireSalle {
                 true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
     }
 
-    public void test(int pixelX, int pixelY)
-    {
-
-    }
-
     public void creerSalle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes)
     {
 
 
         Salle salle = new Salle(mY, mX,epaisseurMurs, marge,hauteur,largeur, profondeur, vuePlan, cotes);
 
-        Mur mn1 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(0), new Imperial(10),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
+        Mur mn1 = new Mur(salle, salle.getCote(Utilitaire.Direction.NORD), new Imperial(0), new Imperial(0), new Imperial(10));
 
-        Mur mn2 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(10), new Imperial(5),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
+        Mur mn2 = new Mur(salle, salle.getCote(Utilitaire.Direction.NORD), new Imperial(0), new Imperial(10), new Imperial(5));
 
-        Mur mn3 = new Mur(salle, cotes.get(0), new Imperial(0), new Imperial(15), new Imperial(5),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
+        Mur mn3 = new Mur(salle, salle.getCote(Utilitaire.Direction.NORD), new Imperial(0), new Imperial(15), new Imperial(5));
 
-        Separateur sn1 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(10), cotes.get(0), null);
-        Separateur sn2 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(15), cotes.get(0), null);
+        Separateur sn1 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(10), salle.getCote(Utilitaire.Direction.NORD), null);
+        Separateur sn2 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(15), salle.getCote(Utilitaire.Direction.NORD), null);
 
-        cotes.get(0).setSeparateurs(new ArrayList<>(Arrays.asList(sn1, sn2)));
-        cotes.get(0).setMurs(new ArrayList<>(Arrays.asList(mn1, mn2, mn3)));
+        salle.getCote(Utilitaire.Direction.NORD).setSeparateurs(new ArrayList<>(Arrays.asList(sn1, sn2)));
+        salle.getCote(Utilitaire.Direction.NORD).setMurs(new ArrayList<>(Arrays.asList(mn1, mn2, mn3)));
 
-        Mur ms1 = new Mur(salle, cotes.get(2), new Imperial(19), new Imperial(0), new Imperial(20),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-        cotes.get(2).setMurs(new ArrayList<>(Arrays.asList(ms1)));
+        Mur ms1 = new Mur(salle, salle.getCote(Utilitaire.Direction.SUD), new Imperial(19), new Imperial(0), new Imperial(20));
+        salle.getCote(Utilitaire.Direction.SUD).setMurs(new ArrayList<>(Arrays.asList(ms1)));
 
-        Mur me1 = new Mur(salle, cotes.get(1), new Imperial(1), new Imperial(19), new Imperial(18),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-        cotes.get(1).setMurs(new ArrayList<>(Arrays.asList(me1)));
+        Mur me1 = new Mur(salle, salle.getCote(Utilitaire.Direction.EST), new Imperial(1), new Imperial(19), new Imperial(18));
+        salle.getCote(Utilitaire.Direction.EST).setMurs(new ArrayList<>(Arrays.asList(me1)));
 
-        Mur mo1 = new Mur(salle, cotes.get(3), new Imperial(1), new Imperial(0), new Imperial(18),
-                new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
-        cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
+        Mur mo1 = new Mur(salle, salle.getCote(Utilitaire.Direction.OUEST), new Imperial(1), new Imperial(0), new Imperial(18));
+        salle.getCote(Utilitaire.Direction.OUEST).setMurs(new ArrayList<>(Arrays.asList(mo1)));
         this.salleActive = salle;
 
         for (Cote cote: salle.getCotes() ){
@@ -98,14 +87,32 @@ public class GestionnaireSalle {
             throw new RuntimeException(e);
         }
     }
-    public void updateSalleChange(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum, boolean interieur ){
+    public void onClickEvents(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum, boolean interieur ){
         if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur){
-            ArrayList<Cote> cote = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
-            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
-            this.salleActive = salle;
+            Utilitaire.Direction direction = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+            this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+//            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
         }
     }
-
+    public ArrayList<Mur> updateMurs(Utilitaire.Direction direction){
+        ArrayList<Mur> murs = new ArrayList<>();
+        ArrayList<Separateur> listSep = this.salleActive.getCote(direction).getSeparateurs();
+        for(int i = 0;i <= listSep.size(); i++){
+            if(direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD){
+                murs.add(new Mur(this.salleActive, this.salleActive.getCote(direction),
+                        direction == Utilitaire.Direction.NORD?this.salleActive.getCote(direction).getmY():this.salleActive.getCote(direction).getmY().substract(this.salleActive.getEpaisseurMurs()),
+                        i==0?new Imperial(0):listSep.get(i-1).getDistanceBordDeReference(),
+                        i!=listSep.size()?listSep.get(i).getDistanceBordDeReference():this.salleActive.getLargeur().substract(listSep.get(i-1).getDistanceBordDeReference())));
+            }
+            else{
+                murs.add(new Mur(this.salleActive, this.salleActive.getCote(direction),
+                        this.salleActive.getCote(direction).getmY(),
+                        i==0?new Imperial(0):listSep.get(i-1).getDistanceBordDeReference(),
+                        i==listSep.size()?listSep.get(i).getDistanceBordDeReference():this.salleActive.getLargeur()));
+            }
+        }
+        return murs;
+    }
     public void chargerSalle(String path)
     {
         filePath = path;

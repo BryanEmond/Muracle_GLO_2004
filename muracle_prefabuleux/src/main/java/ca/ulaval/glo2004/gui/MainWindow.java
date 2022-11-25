@@ -239,9 +239,10 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(e.getClickCount() == 2) {
-                    gestionnaireSalle.updateSalleChange(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
+                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
                 }
-
+                mainPanel.validate();
+                mainPanel.repaint();
             }
         });
 

@@ -36,17 +36,14 @@ public class Salle extends Element implements Serializable {
     public ArrayList<Polygone> polygonesElevation(){
         return new ArrayList<Polygone>();
     }
-
-    public ArrayList<Cote> separateur(PointImperial point) {
+    public Utilitaire.Direction separateur(PointImperial point) {
 
         ArrayList<PointImperial> points = new ArrayList<>();
+        Utilitaire.Direction direction = null;
 
         for (Cote var : cotes)
         {
             if(var.PointEstDansCote(point)){
-
-
-
                 Polygone polygone = getPolygoneMur(var,point);
 
                 if (polygone == null){
@@ -56,37 +53,28 @@ public class Salle extends Element implements Serializable {
                 if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
 
                     if(var.PointSeparateurEstSurAccessoire(point.mX)){
-                        return null;
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
                     }
-
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-
                     Imperial distanceBord = point.getmX().substract(var.getPremierMur().getmX());
-
+                    direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                 }else {
-
                     if(var.PointSeparateurEstSurAccessoire(point.mY)){
-                        return null;
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
                     }
-
-                    points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-
                     Imperial distanceBord = point.getmY().substract(var.getPremierMur().getmY());
-
+                    direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
-                }
+                    }
+                };
             }
-
-
-        }
-        return cotes;
+        return direction;
     }
 
     private Polygone getPolygoneMur(Cote var, PointImperial point) {
