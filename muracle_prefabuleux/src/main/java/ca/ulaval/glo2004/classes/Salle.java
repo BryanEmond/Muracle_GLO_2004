@@ -133,8 +133,9 @@ public class Salle implements Serializable {
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                     }
                 };
+            return direction;
             }
-        return direction;
+        return null;
     }
 
     private Polygone getPolygoneMur(Cote var, PointImperial point) {
