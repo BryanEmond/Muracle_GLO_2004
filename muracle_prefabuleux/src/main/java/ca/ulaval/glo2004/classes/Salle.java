@@ -65,7 +65,6 @@ public class Salle extends Element implements Serializable {
                     points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
 
                     Imperial distanceBord = point.getmX().substract(var.getPremierMur().getmX());
-                    System.out.println(distanceBord);
 
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                 }else {
@@ -80,7 +79,6 @@ public class Salle extends Element implements Serializable {
                     points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
 
                     Imperial distanceBord = point.getmY().substract(var.getPremierMur().getmY());
-                    System.out.println(distanceBord);
 
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                 }
