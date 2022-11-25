@@ -121,6 +121,7 @@ public class Salle implements Serializable {
                     System.out.println("Distance : " + distanceBord);*/
                     direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
+                    return direction;
                 }else {
                     if(var.PointSeparateurEstSurAccessoire(point.mY)){
                         points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
@@ -131,9 +132,9 @@ public class Salle implements Serializable {
                     Imperial distanceBord = point.getmY().substract(var.getPremierMur().getmY());
                     direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
+                    return direction;
                     }
                 };
-            return direction;
             }
         return null;
     }
