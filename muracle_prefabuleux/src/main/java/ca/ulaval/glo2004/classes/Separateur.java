@@ -57,4 +57,9 @@ public class Separateur extends Element implements Serializable {
     {
         return mCote.getSeparateurPrecedent(this);
     }
+
+    public Separateur getSeparateurSuivant()
+    {
+        return mCote.getSeparateurSuivant(this);
+    }
 }
