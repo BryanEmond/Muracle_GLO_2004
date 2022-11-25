@@ -16,12 +16,13 @@ public abstract class Afficheur {
 
 
 
-    public void dessinerPolygones(Graphics g, ArrayList<Polygone> polygones)
+    public Graphics2D dessinerPolygones(Graphics g, ArrayList<Polygone> polygones)
     {
         for (Polygone p : polygones)
         {
             dessinerPolygone(g, p);
         }
+        return null;
     }
 
     public void dessinerPolygone(Graphics g, Polygone polygone)

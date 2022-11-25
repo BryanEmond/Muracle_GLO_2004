@@ -24,10 +24,6 @@ public class AfficheurElevationCote extends Afficheur{
         setOffset(10,10);
 
         ArrayList<Polygone> polygones = cote.getPolygoneElevation(exterieur);
-
-
         dessinerPolygones(g, polygones);
-
     }
-
 }

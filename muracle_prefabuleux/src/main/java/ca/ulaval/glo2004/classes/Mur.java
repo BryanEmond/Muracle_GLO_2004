@@ -147,7 +147,7 @@ public class Mur extends Element implements Serializable {
 
     public void genererPolygoneELV(){
         Imperial x1 = super.mX;
-        Imperial y1 = super.mY;
+        Imperial y1 = new Imperial(0);
         Imperial x2;
         Imperial y2;
 
@@ -171,6 +171,8 @@ public class Mur extends Element implements Serializable {
         Mur copieMur = new Mur(mSalle, mCote, getmY(), getmX(), getmLargeur());
         return copieMur;
     }
+
+
 
     }
 

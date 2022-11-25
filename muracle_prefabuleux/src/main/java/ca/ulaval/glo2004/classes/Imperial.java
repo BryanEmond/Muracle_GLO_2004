@@ -167,7 +167,6 @@ public class Imperial implements Comparable<Imperial>,Serializable {
             return null;
 
         Imperial imp = new Imperial(entier, numerateur, denominateur);
-        System.out.println(imp);
         return imp;
     }
 
