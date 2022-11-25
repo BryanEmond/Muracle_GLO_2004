@@ -44,14 +44,16 @@ public class Salle extends Element implements Serializable {
         {
             if(var.PointEstDansCote(point)){
 
-
-
                 Polygone polygone = getPolygoneMur(var,point);
+
+                if (polygone == null){
+                    return null;
+                }
 
                 if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
 
                     if(var.PointSeparateurEstSurAccessoire(point.mX)){
-                        return;
+                        return null;
                     }
 
                     points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
@@ -65,7 +67,7 @@ public class Salle extends Element implements Serializable {
                 }else {
 
                     if(var.PointSeparateurEstSurAccessoire(point.mY)){
-                        return;
+                        return null;
                     }
 
                     points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
@@ -80,12 +82,6 @@ public class Salle extends Element implements Serializable {
             }
 
 
-            for (Polygone polygone:var.getPolygonesPlan()) {
-                if(polygone.PointEstDansPolygone(point)){
-
-
-                };
-            }
         }
         return cotes;
     }
