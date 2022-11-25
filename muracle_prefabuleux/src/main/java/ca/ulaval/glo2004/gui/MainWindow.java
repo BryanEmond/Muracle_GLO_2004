@@ -427,9 +427,16 @@ public class MainWindow {
             if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null || pliSoudure == -1)
                 return;
 
-            boolean result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure));
-            mainPanel.validate();
-            mainPanel.repaint();
+            int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure));
+
+            if(result == 0)
+            {
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+
+            proprietesSalle.setError("largeur", result == 1);
+            proprietesSalle.setError("profondeur", result == 2);
         });
 
         proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 0);
