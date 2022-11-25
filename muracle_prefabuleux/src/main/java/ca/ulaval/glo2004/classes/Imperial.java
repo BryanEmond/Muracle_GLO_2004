@@ -118,7 +118,7 @@ public class Imperial implements Comparable<Imperial>,Serializable {
 
     public Imperial substract(Imperial other)
     {
-        return new Imperial(other.negative().entier );
+        return this.add(other.negative());
     }
 
     public Imperial negative()

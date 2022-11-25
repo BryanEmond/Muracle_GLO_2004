@@ -4,24 +4,26 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Salle extends Element implements Serializable {
+public class Salle implements Serializable {
 
     Imperial epaisseurMurs;
-    Imperial marge;
     Imperial hauteur;
     Imperial largeur;
     Imperial profondeur;
-    boolean vuePlan;
+
+    Imperial largeurPliSoudure;
+
+    int anglePliSoudure;
+
     ArrayList<Cote> cotes;
 
-    public Salle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes) {
-        super(mY, mX);
-        this.epaisseurMurs = epaisseurMurs;
-        this.marge = marge;
-        this.hauteur = hauteur;
-        this.largeur = largeur;
-        this.profondeur = profondeur;
-        this.vuePlan = vuePlan;
+    public Salle(ArrayList<Cote> cotes) {
+        this.epaisseurMurs = new Imperial(6);
+        this.hauteur = new Imperial(96);
+        this.largeur = new Imperial(144);
+        this.profondeur = new Imperial(144);
+        this.largeurPliSoudure = new Imperial(1);
+        this.anglePliSoudure = 45;
         this.cotes = cotes;
     }
     public ArrayList<Polygone> polygonePlan(){
@@ -59,6 +61,9 @@ public class Salle extends Element implements Serializable {
                         points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
                     }
                     Imperial distanceBord = point.getmX().substract(var.getPremierMur().getmX());
+                   /* System.out.println("Point : " + point);
+                    System.out.println("Premier : " + var.);
+                    System.out.println("Distance : " + distanceBord);*/
                     direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                 }else {
@@ -94,14 +99,6 @@ public class Salle extends Element implements Serializable {
         this.epaisseurMurs = epaisseurMurs;
     }
 
-    public Imperial getMarge() {
-        return marge;
-    }
-
-    public void setMarge(Imperial marge) {
-        this.marge = marge;
-    }
-
     public Imperial getHauteur() {
         return hauteur;
     }
@@ -124,14 +121,6 @@ public class Salle extends Element implements Serializable {
 
     public void setProfondeur(Imperial profondeur) {
         this.profondeur = profondeur;
-    }
-
-    public boolean isVuePlan() {
-        return vuePlan;
-    }
-
-    public void setVuePlan(boolean vuePlan) {
-        this.vuePlan = vuePlan;
     }
 
     public ArrayList<Cote> getCotes() {
@@ -161,8 +150,23 @@ public class Salle extends Element implements Serializable {
                 return cote;
             }
         }
-    return null;
+        return null;
     }
 
+    public Imperial getLargeurPliSoudure()
+    {
+        return largeurPliSoudure;
+    }
 
+    public void setLargeurPliSoudure(Imperial largeurPliSoudure) {
+        this.largeurPliSoudure = largeurPliSoudure;
+    }
+
+    public int getAnglePliSoudure() {
+        return anglePliSoudure;
+    }
+
+    public void setAnglePliSoudure(int anglePliSoudure) {
+        this.anglePliSoudure = anglePliSoudure;
+    }
 }
