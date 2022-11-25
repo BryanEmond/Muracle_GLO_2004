@@ -4,6 +4,7 @@ package ca.ulaval.glo2004.classes;
 // toujours centré sur le panneau, largeur configurable, seulement sur les panneau
 //intérieur
 
+import ca.ulaval.glo2004.gestion.GestionnaireSalle;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.awt.*;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 
 public class RetourAir extends Accessoire implements Serializable {
 
-        Boolean perceInterieur = true;
-        Boolean perceExterieur = false;
+        boolean perceInterieur = true;
+        boolean perceExterieur = false;
         Imperial largeur = new Imperial(12, 0 , 0);
         Imperial hauteur = new Imperial(2,0,0);
 
@@ -27,7 +28,6 @@ public class RetourAir extends Accessoire implements Serializable {
     this.hauteur = mHauteur;
     }
 
-    @Override
     public ArrayList<Polygone> genererPolygoneELV() {
         //TODO toujours centré sur le mur,
         // largeur configurable,
@@ -35,10 +35,12 @@ public class RetourAir extends Accessoire implements Serializable {
         // ont tous la même hauteur et même distance avec le sol
         // crée aussi un trou en haut du panneau qui sera visible de la vue PLAN
 
+
         Imperial x1 = super.mX;
         Imperial y1 = super.mY;
         Imperial x2;
         Imperial y2;
+
 
         x2 = x1.add(largeur);
         y2 = y1.add(hauteur);

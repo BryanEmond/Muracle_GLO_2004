@@ -17,6 +17,7 @@ public class Polygone implements Serializable {
     public Polygone(Color couleur, ArrayList<PointImperial> points) {
         this.mCouleur = couleur;
         this.points = points;
+        //this.pointsTrier = trier(points);
     }
 
     public Polygone(Color couleur, PointImperial... points)

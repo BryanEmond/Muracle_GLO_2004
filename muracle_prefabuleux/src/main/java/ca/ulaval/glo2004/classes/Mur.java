@@ -7,10 +7,13 @@ import java.io.Console;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.Vector;
+
 import ca.ulaval.glo2004.classes.Porte;
 import ca.ulaval.glo2004.classes.Accessoire;
 
 public class Mur extends Element implements Serializable {
+
 
     int uniqueID;
     Cote mCote;
@@ -55,6 +58,8 @@ public class Mur extends Element implements Serializable {
     public Imperial getmBandeSoudageVerticale() {
         return mBandeSoudageVerticale;
     }
+
+
 
     public void setmBandeSoudageVerticale(Imperial mBandeSoudageVerticale) {
         this.mBandeSoudageVerticale = mBandeSoudageVerticale;
@@ -190,6 +195,27 @@ public class Mur extends Element implements Serializable {
             }
         return polygonesAccessoires;
         };
+
+    public Imperial getmPolygoneMargeHaut(){
+        return mPolygoneMargeHaut;
+    }
+
+    public Imperial getmPolygoneMargeBas(){
+        return mPolygoneMargeBas;
+    }
+
+    public Imperial getmPolygoneMargeGauche(){
+        return mPolygoneMargeGauche;
+    }
+
+    public Imperial getmPolygoneMargeDroite(){
+        return mPolygoneMargeDroite;
+    }
+    public Mur copieMur(Mur other){
+    Mur copieMur = new Mur(mSalle, mCote, getmY(), getmX(), getmLargeur(), getmBandeSoudageVerticale(),
+            getmBandeSoudageHorizontale(), getmPolygoneMargeHaut(), getmPolygoneMargeBas(),getmPolygoneMargeGauche(),getmPolygoneMargeDroite());
+    return copieMur;
+    }
 
     }
 

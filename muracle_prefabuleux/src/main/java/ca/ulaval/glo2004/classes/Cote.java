@@ -9,7 +9,11 @@ import java.util.Collections;
 
 public class Cote extends Element implements Serializable {
     Imperial mZ;
+
+    Salle mSalle;
+
     Utilitaire.Direction mDirection;
+    Direction mDirectionL;
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
@@ -110,13 +114,46 @@ public class Cote extends Element implements Serializable {
         return polygones;
     }
 
-    public ArrayList<Polygone> getPolygoneElevation()
+    public ArrayList<Polygone> getPolygoneElevation(boolean exterieur)
     {
         ArrayList<Polygone> polygones = new ArrayList<Polygone>();
 
         for(int i = 0; i < murs.size(); i++)
         {
+
             polygones.add(murs.get(i).mPolygoneElevation);
+            if (!exterieur && i == 0 && murs.size()>1)
+            {
+                Mur premierMur = getPremierMur().copieMur(getPremierMur());
+
+                premierMur.setmLargeur(premierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative()));
+                premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
+                premierMur.genererPolygoneELV();
+                polygones.remove(polygones.get(i));
+                polygones.add(premierMur.mPolygoneElevation);
+            }
+            if (!exterieur && i == murs.size() - 1 && murs.size()>1){
+                Mur dernierMur = getDernierMur().copieMur(getDernierMur());
+
+                dernierMur.setmLargeur(dernierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative()));
+                dernierMur.genererPolygoneELV();
+                polygones.remove(polygones.get(i));
+                polygones.add(dernierMur.mPolygoneElevation);
+            }
+
+            if (!exterieur && murs.size() == 1){
+                Mur premierMur = getPremierMur().copieMur(getPremierMur());
+                Imperial epaisseurMurDouble = new Imperial(getmSalle().epaisseurMurs.entier * 2);
+                premierMur.setmLargeur(premierMur.getmLargeur().add(epaisseurMurDouble.negative()));
+                premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
+                premierMur.genererPolygoneELV();
+                polygones.remove(polygones.get(i));
+                polygones.add(premierMur.mPolygoneElevation);
+
+            }
+
+
+
         }
 
         return polygones;
@@ -193,5 +230,13 @@ public class Cote extends Element implements Serializable {
             return null;
 
         return murs.get(murs.size() - 1);
+    }
+
+    public void setmSalle(Salle mSalle) {
+        this.mSalle = mSalle;
+    }
+
+    public Salle getmSalle(){
+        return mSalle;
     }
 }

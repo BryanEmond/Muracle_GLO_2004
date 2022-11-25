@@ -66,6 +66,7 @@ public class MainWindow {
     private DrawingPanel panel;
     GestionnaireSalle gestionnaireSalle;
     private String filePath;
+    Utilitaire.AccessoireEnum AccessoireEnum;
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
         this.gestionnaireSalle = gestionnaireSalle;
         mainWindow = this;
@@ -74,14 +75,13 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 mainWindow = new MainWindow(gestionnaireSalle);
-                setHomePage(e);
                 JFileChooser fc = new JFileChooser();
                 fc.setSelectedFile(new File("sale.ser"));
                 int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
                 if(returnFcVal == JFileChooser.APPROVE_OPTION){
                     try{
                         File file = fc.getSelectedFile();
-                        //panel = new DrawingPanel(mainWindow);
+                        setHomePage(e);
                         mainWindow.gestionnaireSalle.enregistrerSalle(file.getPath());
                     }catch (Exception error){
                         System.out.println(error);
@@ -94,15 +94,13 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 mainWindow = new MainWindow(gestionnaireSalle);
-                setHomePage(e);
                 JFileChooser fc = new JFileChooser("d:");
                 int returnFcVal = fc.showOpenDialog(rootPanel.getParent());
                 if(returnFcVal == JFileChooser.APPROVE_OPTION){
                     try{
                         File file = fc.getSelectedFile();
-
+                        setHomePage(e);
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
-                        //panel = new DrawingPanel(mainWindow);
                     }catch (Exception error){
                         System.out.println(error);
                     }
@@ -129,7 +127,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-               panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
+               panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), false));
             }
         });
 
@@ -138,7 +136,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), true));
             }
         });
 
@@ -146,7 +144,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), false));
             }
         });
         btnElvSudEXT.addMouseListener(new MouseAdapter() {
@@ -154,7 +152,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), true));
 
             }
         });
@@ -162,7 +160,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), false));
 
             }
         });
@@ -171,7 +169,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), true));
             }
         });
 
@@ -179,7 +177,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), false));
             }
         });
 
@@ -188,7 +186,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), true));
             }
         });
 
@@ -204,35 +202,46 @@ public class MainWindow {
         btnPorte.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
+                AccessoireEnum = Utilitaire.AccessoireEnum.Porte;
             }
         });
 
         btnPrise.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
+                AccessoireEnum = Utilitaire.AccessoireEnum.PriseElectrique;
             }
         });
 
         btnRetourAir.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
+                AccessoireEnum = Utilitaire.AccessoireEnum.RetourAir;
             }
         });
 
         btnFenetre.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
+                //TODO activer mode ajout acessoire fenetre
+
+                AccessoireEnum = Utilitaire.AccessoireEnum.Fenetre;
             }
         });
 
+        btnSupprimer.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e) {
+                AccessoireEnum = Utilitaire.AccessoireEnum.Supprimer;
+            }
+        });
         this.mainPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                gestionnaireSalle.test(e.getX(), e.getY());
+                if(e.getClickCount() == 2) {
+                    gestionnaireSalle.updateSalleChange(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
+                }
+
             }
         });
 

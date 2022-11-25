@@ -15,6 +15,7 @@ public class AfficheurVueDessus extends Afficheur {
         this.salle = salle;
     }
 
+
     @Override
     public void affiche(Graphics g) {
         setOffset(10, 10);

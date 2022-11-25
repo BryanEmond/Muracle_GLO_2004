@@ -14,6 +14,8 @@ public abstract class Afficheur {
 
     public abstract void affiche(Graphics g);
 
+
+
     public void dessinerPolygones(Graphics g, ArrayList<Polygone> polygones)
     {
         for (Polygone p : polygones)
@@ -68,4 +70,5 @@ public abstract class Afficheur {
         this.offsetX = x;
         this.offsetY = y;
     }
+
 }

@@ -36,7 +36,7 @@ public class Salle extends Element implements Serializable {
     public ArrayList<Polygone> polygonesElevation(){
         return new ArrayList<Polygone>();
     }
-    public void separateur(PointImperial point) {
+    public ArrayList<Cote> separateur(PointImperial point) {
 
         ArrayList<PointImperial> points = new ArrayList<>();
 
@@ -87,6 +87,7 @@ public class Salle extends Element implements Serializable {
                 };
             }
         }
+        return cotes;
     }
 
     private Polygone getPolygoneMur(Cote var, PointImperial point) {

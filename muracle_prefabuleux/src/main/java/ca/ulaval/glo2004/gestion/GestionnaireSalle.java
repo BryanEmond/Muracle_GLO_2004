@@ -3,6 +3,7 @@ package ca.ulaval.glo2004.gestion;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
+import sun.tools.jconsole.JConsole;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class GestionnaireSalle {
         Cote ouest = new Cote(new Imperial(20), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
 
         creerSalle(new Imperial(0), new Imperial(0),
-                new Imperial(1), new Imperial(1),
+                new Imperial(10), new Imperial(1),
                 new Imperial(100),
                 new Imperial(20), new Imperial(20),
                 true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
@@ -35,8 +36,7 @@ public class GestionnaireSalle {
 
     public void test(int pixelX, int pixelY)
     {
-        PointImperial point = Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY);
-        salleActive.separateur(point);
+
     }
 
     public void creerSalle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes)
@@ -64,14 +64,19 @@ public class GestionnaireSalle {
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(2).setMurs(new ArrayList<>(Arrays.asList(ms1)));
 
-        Mur me1 = new Mur(salle, cotes.get(1), new Imperial(1), new Imperial(0), new Imperial(18),
+        Mur me1 = new Mur(salle, cotes.get(1), new Imperial(1), new Imperial(19), new Imperial(18),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(1).setMurs(new ArrayList<>(Arrays.asList(me1)));
 
-        Mur mo1 = new Mur(salle, cotes.get(3), new Imperial(1), new Imperial(19), new Imperial(18),
+        Mur mo1 = new Mur(salle, cotes.get(3), new Imperial(1), new Imperial(0), new Imperial(18),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
-        salleActive = salle;
+        this.salleActive = salle;
+
+        for (Cote cote: salle.getCotes() ){
+            cote.setmSalle(salle);
+        }
+
 
         this.mMurCourant = mn1;
         this.mSeparateur = sn2;
@@ -91,6 +96,13 @@ public class GestionnaireSalle {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+    public void updateSalleChange(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum, boolean interieur ){
+        if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur){
+            ArrayList<Cote> cote = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
+            this.salleActive = salle;
         }
     }
 
@@ -173,10 +185,10 @@ public class GestionnaireSalle {
         return this.mAccessoire;
     }
 
-    public void AjouteSeparateurAPartirVuePlan(PointImperial point)
+    /*public void AjouteSeparateurAPartirVuePlan(PointImperial point)
     {
         this.mSalle.separateur(point);
-    }
+    }*/
 
 
 
