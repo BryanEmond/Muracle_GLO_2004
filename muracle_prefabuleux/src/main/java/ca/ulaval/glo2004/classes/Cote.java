@@ -134,10 +134,55 @@ public class Cote extends Element implements Serializable {
     public ArrayList<Polygone> getPolygoneElevation(boolean exterieur)
     {
         ArrayList<Polygone> polygones = new ArrayList<Polygone>();
-
+        int valeur = 0;
+        int nbMur = murs.size()-1;
         for(int i = 0; i < murs.size(); i++)
         {
+
+
             polygones.add(murs.get(i).mPolygoneElevation);
+
+            if (exterieur){
+
+
+                if (i == 0){
+                    Mur murMiroir = murs.get(nbMur).copieMur(murs.get(nbMur));
+                    nbMur = nbMur - 1;
+                    murMiroir.setmX(new Imperial(0));
+                    murMiroir.genererPolygoneELV();
+
+                    polygones.remove(polygones.get(i));
+                    polygones.add(murMiroir.mPolygoneElevation);
+
+
+                }
+
+                else {
+                    Mur murMiroir = murs.get(nbMur).copieMur(murs.get(nbMur));
+                    int indexMurPrecedent = nbMur + 1;
+
+                    Imperial mXMurPrecedent = murs.get(indexMurPrecedent).mX;
+                    if (indexMurPrecedent == murs.size()-1){
+                        mXMurPrecedent = (new Imperial(0));
+                    }
+
+                    Imperial largeurMurPrecedent = murs.get(indexMurPrecedent).mLargeur;
+                    Imperial finMurPrecedent = mXMurPrecedent.add(largeurMurPrecedent);
+
+                    murMiroir.setmX(finMurPrecedent);
+                    murMiroir.genererPolygoneELV();
+                    nbMur = nbMur -1;
+
+                    polygones.remove(polygones.get(i));
+                    polygones.add(murMiroir.mPolygoneElevation);
+
+
+                }
+
+
+            }
+
+
             if (!exterieur && i == 0 && murs.size()>1)
             {
                 Mur premierMur = getPremierMur().copieMur(getPremierMur());
@@ -161,7 +206,9 @@ public class Cote extends Element implements Serializable {
                 Mur premierMur = getPremierMur().copieMur(getPremierMur());
                 Imperial epaisseurMurDouble = new Imperial(getmSalle().epaisseurMurs.entier * 2);
                 premierMur.setmLargeur(premierMur.getmLargeur().add(epaisseurMurDouble.negative()));
-                premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
+
+                //premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
+                premierMur.setmX(new Imperial(0));
                 premierMur.genererPolygoneELV();
                 polygones.remove(polygones.get(i));
                 polygones.add(premierMur.mPolygoneElevation);
