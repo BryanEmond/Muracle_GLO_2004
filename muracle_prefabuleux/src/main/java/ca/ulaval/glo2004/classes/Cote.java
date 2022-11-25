@@ -5,6 +5,7 @@ import ca.ulaval.glo2004.enums.Direction;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Cote extends Element implements Serializable {
     Imperial mZ;
@@ -119,6 +120,58 @@ public class Cote extends Element implements Serializable {
         }
 
         return polygones;
+    }
+
+    public ArrayList<Double> getPolygoneElevationCoins()
+    {
+        Mur PremierMur = getPremierMur();
+        Mur DernierMur = getDernierMur();
+
+        if(PremierMur == DernierMur){
+            return PremierMur.mPolygoneElevation.getCoinsDouble();
+        }
+
+        ArrayList<Double> pointsCoin = new ArrayList<>();
+
+        ArrayList<Double> coinsPremierMur = PremierMur.mPolygoneElevation.getCoinsDouble();
+        ArrayList<Double> coinsDernierMur = DernierMur.mPolygoneElevation.getCoinsDouble();
+
+        coinsPremierMur.addAll(coinsDernierMur);
+
+        ArrayList<Double> coinsMurX = new ArrayList<>();
+        ArrayList<Double> coinsMurY = new ArrayList<>();
+
+        coinsMurX.add(coinsPremierMur.get(0));
+        coinsMurX.add(coinsPremierMur.get(1));
+        coinsMurX.add(coinsDernierMur.get(0));
+        coinsMurX.add(coinsDernierMur.get(1));
+
+        coinsMurY.add(coinsPremierMur.get(2));
+        coinsMurY.add(coinsPremierMur.get(3));
+        coinsMurY.add(coinsDernierMur.get(2));
+        coinsMurY.add(coinsDernierMur.get(3));
+
+        pointsCoin.add(Collections.min(coinsMurX));
+        pointsCoin.add(Collections.max(coinsMurX));
+        pointsCoin.add(Collections.min(coinsMurY));
+        pointsCoin.add(Collections.max(coinsMurY));
+
+        return pointsCoin;
+    }
+
+    public boolean PointEstDansCote(PointImperial point) {
+        ArrayList<Double> coins = getPolygoneElevationCoins();
+
+        return point.mX.getFormeNormal() >= coins.get(0) && point.mX.getFormeNormal() <= coins.get(1) &&
+                point.mY.getFormeNormal() >= coins.get(2) && point.mY.getFormeNormal() <= coins.get(3);
+    }
+
+    public boolean PointSeparateurEstSurAccessoire(Imperial point) {
+        for (Accessoire accessoire: accessoires) {
+            ArrayList<Double> coins = accessoire.mPolygoneElevation.getCoinsDouble();
+            if(point.getFormeNormal() >= coins.get(0) && point.getFormeNormal() <= coins.get(1)) return true;
+        }
+        return false;
     }
 
     public void SupprimerSeparateur(Separateur separateur) {separateurs.remove(separateur);}
