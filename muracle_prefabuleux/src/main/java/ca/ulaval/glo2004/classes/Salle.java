@@ -45,8 +45,6 @@ public class Salle extends Element implements Serializable {
         {
             if(var.PointEstDansCote(point)){
 
-
-
                 Polygone polygone = getPolygoneMur(var,point);
 
                 if (polygone == null){
