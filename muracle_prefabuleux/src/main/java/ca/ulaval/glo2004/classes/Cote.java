@@ -77,8 +77,11 @@ public class Cote extends Element implements Serializable {
     public ArrayList<Separateur> getSeparateurs() {
         return separateurs;
     }
-
+    public void sortSeparateurs(){
+        Collections.sort(this.separateurs);
+    }
     public void setSeparateurs(ArrayList<Separateur> separateurs) {
+        Collections.sort(separateurs);
         this.separateurs = separateurs;
     }
 

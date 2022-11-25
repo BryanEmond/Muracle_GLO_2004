@@ -94,31 +94,44 @@ public class GestionnaireSalle {
         ArrayList<Separateur> listSep = this.salleActive.getCote(direction).getSeparateurs();
         for(int i = 0;i <= listSep.size(); i++){
 
-            if(direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD){
-
+            if(direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD) {
                 Salle salle = this.salleActive;
                 Cote cote = salleActive.getCote(direction);
-                Imperial y = this.salleActive.getCote(direction).getmY();;
+                Imperial y = this.salleActive.getCote(direction).getmY();
+                ;
                 Imperial x;
                 Imperial largeur;
 
-                if(i == 0)
+                if (i == 0)
                     x = new Imperial(0);
                 else
                     x = listSep.get(i - 1).getDistanceBordDeReference();
 
-                if(i != listSep.size())
+                if (i != listSep.size())
                     largeur = listSep.get(i).getDistanceBordDeReference().substract(x);
                 else
-                    largeur = this.salleActive.getLargeur().substract(listSep.get(i-1).getDistanceBordDeReference());
+                    largeur = this.salleActive.getLargeur().substract(listSep.get(i - 1).getDistanceBordDeReference());
 
                 murs.add(new Mur(salle, cote, y, x, largeur));
             }
             else{
-                murs.add(new Mur(this.salleActive, this.salleActive.getCote(direction),
-                        this.salleActive.getCote(direction).getmY(),
-                        i==0?new Imperial(0):listSep.get(i-1).getDistanceBordDeReference(),
-                        i==listSep.size()?listSep.get(i).getDistanceBordDeReference():this.salleActive.getLargeur()));
+                Salle salle = this.salleActive;
+                Cote cote = salleActive.getCote(direction);
+                Imperial y;
+                Imperial x = this.salleActive.getCote(direction).getmX();
+                Imperial largeur;
+
+                if (i == 0)
+                    y = this.salleActive.getEpaisseurMurs();
+                else
+                    y = listSep.get(i - 1).getDistanceBordDeReference();
+
+                if (i != listSep.size())
+                    largeur = listSep.get(i).getDistanceBordDeReference().substract(y);
+                else
+                    largeur = this.salleActive.getLargeur().substract(listSep.get(i - 1).getDistanceBordDeReference()).substract(this.salleActive.getEpaisseurMurs());
+
+                murs.add(new Mur(salle, cote, y, x, largeur));
             }
         }
         return murs;
