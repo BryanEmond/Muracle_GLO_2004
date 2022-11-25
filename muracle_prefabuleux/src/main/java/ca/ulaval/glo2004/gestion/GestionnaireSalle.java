@@ -93,7 +93,7 @@ public class GestionnaireSalle {
     public void onClickEvents(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum, boolean interieur, Utilitaire.Direction directionParams){
         if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && !interieur && directionParams == null){
             Utilitaire.Direction direction = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
-            this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+            if(direction != null)this.salleActive.getCote(direction).setMurs(updateMurs(direction));
         }
         else if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && !interieur){
             salleActive.separateirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams);
