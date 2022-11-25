@@ -83,11 +83,18 @@ public class GestionnaireSalle {
             throw new RuntimeException(e);
         }
     }
-    public void onClickEvents(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum, boolean interieur ){
-        if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur){
+    public void onClickEvents(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum, boolean interieur, Utilitaire.Direction directionParams){
+        if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && !interieur && directionParams == null){
             Utilitaire.Direction direction = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
             this.salleActive.getCote(direction).setMurs(updateMurs(direction));
-//            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
+        }
+        else if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && !interieur){
+            salleActive.separateirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams);
+            this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
+        }
+        else if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && interieur){
+            salleActive.separateirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams);
+            this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
         }
     }
 

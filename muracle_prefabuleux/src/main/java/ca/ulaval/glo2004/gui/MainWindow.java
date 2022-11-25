@@ -69,7 +69,12 @@ public class MainWindow {
     GestionnaireSalle gestionnaireSalle;
     private String filePath;
     Utilitaire.AccessoireEnum AccessoireEnum;
+    Utilitaire.Direction direction;
+    private boolean interieur;
+    private boolean plan;
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
+        this.interieur = false;
+        this.plan = true;
         this.gestionnaireSalle = gestionnaireSalle;
         mainWindow = this;
         panel = new DrawingPanel(this);
@@ -129,8 +134,10 @@ public class MainWindow {
         btnElvEstINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
-               panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), false));
+                interieur = false;
+                plan = false;
+                direction = Utilitaire.Direction.EST;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), false));
             }
         });
 
@@ -138,32 +145,40 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), true));
+                plan = false;
+                interieur = true;
+                direction = Utilitaire.Direction.EST;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), true));
             }
         });
 
         btnELVSudINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), false));
+                plan = false;
+                interieur = false;
+                direction = Utilitaire.Direction.SUD;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), false));
             }
         });
         btnElvSudEXT.addMouseListener(new MouseAdapter() {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), true));
+                plan = false;
+                interieur = true;
+                direction = Utilitaire.Direction.SUD;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), true));
 
             }
         });
         btnElvOuestINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), false));
+                interieur = false;
+                plan = false;
+                direction = Utilitaire.Direction.OUEST;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), false));
 
             }
         });
@@ -171,16 +186,20 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), true));
+                interieur = true;
+                plan = false;
+                direction = Utilitaire.Direction.OUEST;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), true));
             }
         });
 
         btnElvNordINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), false));
+                interieur = false;
+                plan = false;
+                direction = Utilitaire.Direction.NORD;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), false));
             }
         });
 
@@ -188,15 +207,17 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), true));
+                interieur = true;
+                plan = false;
+                direction = Utilitaire.Direction.NORD;
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(direction), true));
             }
         });
 
         btnPlan.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
+                plan = true;
                 panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
 
             }
@@ -226,8 +247,6 @@ public class MainWindow {
         btnFenetre.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //TODO activer mode ajout acessoire fenetre
-
                 AccessoireEnum = Utilitaire.AccessoireEnum.Fenetre;
             }
         });
@@ -242,7 +261,30 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(e.getClickCount() == 2) {
-                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
+                    if(plan){
+                        gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
+                    }
+                    else if(interieur){
+                        gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,interieur,direction);
+                    }else{
+                        gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,interieur,direction);
+                    }
+                }
+                if(AccessoireEnum == null){
+                    switch (AccessoireEnum){
+                    case Porte:
+                        break;
+                    case PriseElectrique:
+                        break;
+                    case Supprimer:
+                        break;
+                    case RetourAir:
+                        break;
+                    case Fenetre:
+                        break;
+                    default:
+                        break;
+                    }
                 }
                 mainPanel.validate();
                 mainPanel.repaint();
