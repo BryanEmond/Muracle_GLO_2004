@@ -270,16 +270,29 @@ public class MainWindow {
                 if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan()) {
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
                 }
-
-
-                if(gestionnaireSalle.GetvueCote() && AccessoireEnum != Utilitaire.AccessoireEnum.defaut && direction != null ){
-                    if(e.getClickCount() == 1){
-                        gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),AccessoireEnum,direction,interieur);
-                    }else{
-
+                else if(interieur){
+                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,interieur,direction);
+                }else {
+                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(), Utilitaire.AccessoireEnum.Separateur, interieur, direction);
+                }
+                if (direction != null) {
+                    switch (AccessoireEnum){
+                        case Fenetre:
+                            break;
+                        case RetourAir:
+                            break;
+                        case Supprimer:
+                            break;
+                        case Porte:
+                            break;
+                        case PriseElectrique:
+                            break;
+                        case Separateur:
+                            break;
+                        default:
+                            gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),direction,interieur);
                     }
                 }
-
                 mainPanel.validate();
                 mainPanel.repaint();
             }

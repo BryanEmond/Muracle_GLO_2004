@@ -105,12 +105,12 @@ public class GestionnaireSalle {
         }
     }
 
-    public void selectionnerElement(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum,Utilitaire.Direction direction, boolean interieur ){
-        if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur){
+    public void selectionnerElement(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+//        if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur){
             Element element = salleActive.selection(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
 
 //            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
-        }
+//        }
     }
 
 
