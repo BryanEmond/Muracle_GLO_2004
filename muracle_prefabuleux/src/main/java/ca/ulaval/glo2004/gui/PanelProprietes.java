@@ -132,12 +132,23 @@ public class PanelProprietes extends JPanel
         return values.get(propertyName);
     }
 
-    public Imperial getImperial(String propertyName)
+    public int getInt(String propertyName)
     {
-        return getImperial(propertyName, true);
+        if(!values.containsKey(propertyName))
+            return -1;
+
+        String value = values.get(propertyName);
+        try
+        {
+            return Integer.parseInt(value);
+        }
+        catch (NumberFormatException err)
+        {
+            return -1;
+        }
     }
 
-    public Imperial getImperial(String propertyName, boolean shouldBePositive)
+    public Imperial getImperial(String propertyName)
     {
         if(!values.containsKey(propertyName))
             return null;
@@ -146,17 +157,6 @@ public class PanelProprietes extends JPanel
         Imperial valueImp = Imperial.fromString(value);
         boolean isValid = valueImp != null;
         setError(propertyName, !isValid);
-
-        if(isValid && shouldBePositive)
-        {
-            if(valueImp.getValue() < 0)
-            {
-                setError(propertyName, true);
-                return null;
-            }
-            else
-                setError(propertyName, false);
-        }
 
         return valueImp;
     }
@@ -171,15 +171,17 @@ public class PanelProprietes extends JPanel
         return errors.contains(propertyName);
     }
 
-    public void setError(String propertyName, boolean error)
+    public boolean setError(String propertyName, boolean error)
     {
         if(error == hasError(propertyName))
-            return;
+            return error;
 
         if(error)
             errors.add(propertyName);
         else
             errors.remove(propertyName);
+
+        return error;
     }
 
     public HashMap<String, String> getValues()

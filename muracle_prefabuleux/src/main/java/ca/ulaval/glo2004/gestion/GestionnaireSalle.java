@@ -2,6 +2,7 @@ package ca.ulaval.glo2004.gestion;
 
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
+import ca.ulaval.glo2004.classes.dto.SalleDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 
 import java.io.*;
@@ -89,16 +90,72 @@ public class GestionnaireSalle {
 //            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
         }
     }
+
+    public void updateSalle()
+    {
+        Imperial yCoteSud = this.salleActive.getProfondeur().substract(this.salleActive.getEpaisseurMurs());
+        Imperial xCoteEst = this.salleActive.getLargeur().substract(this.salleActive.getEpaisseurMurs());
+
+        Cote oldNord = salleActive.getCote(Utilitaire.Direction.NORD);
+        Cote oldEst = salleActive.getCote(Utilitaire.Direction.EST);
+        Cote oldSud = salleActive.getCote(Utilitaire.Direction.SUD);
+        Cote oldOuest = salleActive.getCote(Utilitaire.Direction.OUEST);
+
+        Cote nord = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.NORD);
+        nord.setAccessoires(oldNord.getAccessoires());
+        nord.setSeparateurs(oldNord.getSeparateurs());
+
+        Cote est = new Cote(new Imperial(0), xCoteEst, new Imperial(0), Utilitaire.Direction.EST);
+        est.setAccessoires(oldEst.getAccessoires());
+        est.setSeparateurs(oldEst.getSeparateurs());
+
+        Cote sud = new Cote(yCoteSud, new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
+        sud.setAccessoires(oldSud.getAccessoires());
+        sud.setSeparateurs(oldSud.getSeparateurs());
+
+        Cote ouest = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
+        ouest.setAccessoires(oldOuest.getAccessoires());
+        ouest.setSeparateurs(oldOuest.getSeparateurs());
+
+        salleActive.setCotes(new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
+        for (Cote cote : salleActive.getCotes())
+        {
+            cote.setMurs(updateMurs(cote.getDirection()));
+        }
+    }
+
     public ArrayList<Mur> updateMurs(Utilitaire.Direction direction){
         ArrayList<Mur> murs = new ArrayList<>();
         ArrayList<Separateur> listSep = this.salleActive.getCote(direction).getSeparateurs();
+        Salle salle = this.salleActive;
+        Cote cote = salleActive.getCote(direction);
+
+        if(listSep.size() == 0)
+        {
+            Mur mur;
+
+            if(direction == Utilitaire.Direction.NORD)
+                mur = new Mur(salle, cote, new Imperial(0), new Imperial(0), salle.getLargeur());
+            else if(direction == Utilitaire.Direction.SUD)
+                mur = new Mur(salle, cote, salle.getProfondeur().substract(salle.getEpaisseurMurs()), new Imperial(0), salle.getLargeur());
+            else if(direction == Utilitaire.Direction.EST)
+            {
+                Imperial taille = salle.getProfondeur().substract(salle.getEpaisseurMurs()).substract(salle.getEpaisseurMurs());
+                mur = new Mur(salle, cote, salle.getEpaisseurMurs(), salle.getLargeur().substract(salle.getEpaisseurMurs()), taille);
+            }
+            else
+            {
+                Imperial taille = salle.getProfondeur().substract(salle.getEpaisseurMurs()).substract(salle.getEpaisseurMurs());
+                mur = new Mur(salle, cote, salle.getEpaisseurMurs(), new Imperial(0), taille);
+            }
+
+            return new ArrayList<>(Arrays.asList(mur));
+        }
+
         for(int i = 0;i <= listSep.size(); i++){
 
             if(direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD) {
-                Salle salle = this.salleActive;
-                Cote cote = salleActive.getCote(direction);
                 Imperial y = this.salleActive.getCote(direction).getmY();
-                ;
                 Imperial x;
                 Imperial largeur;
 
@@ -115,8 +172,6 @@ public class GestionnaireSalle {
                 murs.add(new Mur(salle, cote, y, x, largeur));
             }
             else{
-                Salle salle = this.salleActive;
-                Cote cote = salleActive.getCote(direction);
                 Imperial y;
                 Imperial x = this.salleActive.getCote(direction).getmX();
                 Imperial largeur;
@@ -129,7 +184,7 @@ public class GestionnaireSalle {
                 if (i != listSep.size())
                     largeur = listSep.get(i).getDistanceBordDeReference().substract(y);
                 else
-                    largeur = this.salleActive.getLargeur().substract(listSep.get(i - 1).getDistanceBordDeReference()).substract(this.salleActive.getEpaisseurMurs());
+                    largeur = this.salleActive.getProfondeur().substract(listSep.get(i - 1).getDistanceBordDeReference()).substract(this.salleActive.getEpaisseurMurs());
 
                 murs.add(new Mur(salle, cote, y, x, largeur));
             }
@@ -162,7 +217,26 @@ public class GestionnaireSalle {
 
     }
 
+    public SalleDTO getSalleSelectionne()
+    {
+        if(this.salleActive == null)
+            return null;
 
+        return new SalleDTO(salleActive);
+    }
+
+    public boolean editSalleSelectionne(SalleDTO salle)
+    {
+        this.salleActive.setHauteur(salle.getHauteur());
+        this.salleActive.setLargeur(salle.getLargeur());
+        this.salleActive.setProfondeur(salle.getProfondeur());
+        this.salleActive.setEpaisseurMurs(salle.getEpaisseurMurs());
+        this.salleActive.setAnglePliSoudure(salle.getAnglePliSoudure());
+        this.salleActive.setLargeurPliSoudure(salle.getLargeurPli());
+
+        updateSalle();
+        return true;
+    }
 
     public MurDTO getMurSelectionne()
     {
@@ -220,6 +294,7 @@ public class GestionnaireSalle {
         else
             mSeparateur.setDistanceBordDeReference(sepPrec.getDistanceBordDeReference().add(posRelative));
 
+        mSeparateur.getmCote().setMurs(updateMurs(direction));
         return true;
     }
 
