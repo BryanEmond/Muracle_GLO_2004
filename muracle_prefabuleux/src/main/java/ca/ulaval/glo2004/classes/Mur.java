@@ -157,14 +157,14 @@ public class Mur extends Element implements Serializable {
             if (estDernierMur)
                 p4.mX = p4.mX.add(mSalle.epaisseurMurs.negative());
         }
-        else if(mCote.mDirection == Utilitaire.Direction.EST)
+        else if(mCote.mDirection == Utilitaire.Direction.OUEST)
         {
             if(estPremierMur)
                 p1.mY = p1.mY.add(mSalle.epaisseurMurs.negative());
             if(estDernierMur)
                 p2.mY = p2.mY.add(mSalle.epaisseurMurs);
         }
-        else if(mCote.mDirection == Utilitaire.Direction.OUEST)
+        else if(mCote.mDirection == Utilitaire.Direction.EST)
         {
             if(estPremierMur)
                 p4.mY = p4.mY.add(mSalle.epaisseurMurs.negative());
@@ -212,9 +212,9 @@ public class Mur extends Element implements Serializable {
         return mPolygoneMargeDroite;
     }
     public Mur copieMur(Mur other){
-    Mur copieMur = new Mur(mSalle, mCote, getmY(), getmX(), getmLargeur(), getmBandeSoudageVerticale(),
-            getmBandeSoudageHorizontale(), getmPolygoneMargeHaut(), getmPolygoneMargeBas(),getmPolygoneMargeGauche(),getmPolygoneMargeDroite());
-    return copieMur;
+        Mur copieMur = new Mur(mSalle, mCote, getmY(), getmX(), getmLargeur(), getmBandeSoudageVerticale(),
+                getmBandeSoudageHorizontale(), getmPolygoneMargeHaut(), getmPolygoneMargeBas(),getmPolygoneMargeGauche(),getmPolygoneMargeDroite());
+        return copieMur;
     }
 
     }

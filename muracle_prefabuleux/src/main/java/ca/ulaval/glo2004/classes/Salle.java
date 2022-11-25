@@ -36,6 +36,7 @@ public class Salle extends Element implements Serializable {
     public ArrayList<Polygone> polygonesElevation(){
         return new ArrayList<Polygone>();
     }
+
     public ArrayList<Cote> separateur(PointImperial point) {
 
         ArrayList<PointImperial> points = new ArrayList<>();
@@ -43,15 +44,12 @@ public class Salle extends Element implements Serializable {
         for (Cote var : cotes)
         {
             if(var.PointEstDansCote(point)){
-
-
-
                 Polygone polygone = getPolygoneMur(var,point);
 
                 if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
 
                     if(var.PointSeparateurEstSurAccessoire(point.mX)){
-                        return;
+                        return cotes;
                     }
 
                     points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
@@ -59,13 +57,14 @@ public class Salle extends Element implements Serializable {
                     points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
                     points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
 
-                    Imperial distanceBord = var.getDernierMur().mPolygonePlan.getCoinsImperial().get(0);
+                    Imperial distanceBord = point.getmX().substract(var.getPremierMur().getmX());
+                    System.out.println(distanceBord);
 
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                 }else {
 
                     if(var.PointSeparateurEstSurAccessoire(point.mY)){
-                        return;
+                        return cotes;
                     }
 
                     points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
@@ -73,7 +72,8 @@ public class Salle extends Element implements Serializable {
                     points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
                     points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
 
-                    Imperial distanceBord = var.getPremierMur().mPolygonePlan.getCoinsImperial().get(2);
+                    Imperial distanceBord = point.getmY().substract(var.getPremierMur().getmY());
+                    System.out.println(distanceBord);
 
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                 }

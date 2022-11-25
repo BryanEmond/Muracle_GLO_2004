@@ -23,9 +23,9 @@ public class GestionnaireSalle {
     public GestionnaireSalle()
     {
         Cote nord = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.NORD);
-        Cote est = new Cote(new Imperial(0), new Imperial(1), new Imperial(0), Utilitaire.Direction.EST);
+        Cote est = new Cote(new Imperial(20), new Imperial(1), new Imperial(0), Utilitaire.Direction.EST);
         Cote sud = new Cote(new Imperial(20), new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
-        Cote ouest = new Cote(new Imperial(20), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
+        Cote ouest = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
 
         creerSalle(new Imperial(0), new Imperial(0),
                 new Imperial(10), new Imperial(1),
@@ -170,14 +170,27 @@ public class GestionnaireSalle {
         return new SeparateurDTO(position, positionRelative);
     }
 
-    public void editSeparateurSelectionne(Imperial posRelative)
+    public boolean editSeparateurSelectionne(Imperial posRelative)
     {
         Separateur sepPrec = mSeparateur.getSeparateurPrecedent();
+        Separateur sepSuivant = mSeparateur.getSeparateurSuivant();
+
+        Utilitaire.Direction direction = mSeparateur.getmCote().getDirection();
+        Imperial tailleSalle = direction.estHorizontal() ? salleActive.getLargeur() : salleActive.getProfondeur();
+
+        float min = sepPrec == null ? 0 : sepPrec.getDistanceBordDeReference().getValue();
+        float max = sepSuivant == null ? tailleSalle.getValue() : sepSuivant.getDistanceBordDeReference().getValue();
+        float value = posRelative.getValue();
+
+        if(value < 0 || (value - min) > max)
+            return false;
 
         if(sepPrec == null)
             mSeparateur.setDistanceBordDeReference(posRelative.clone());
         else
             mSeparateur.setDistanceBordDeReference(sepPrec.getDistanceBordDeReference().add(posRelative));
+
+        return true;
     }
 
     public Accessoire accessoireSelectionne(String cheminDossier)

@@ -364,15 +364,18 @@ public class MainWindow {
 
             Imperial posRel = proprietesSeparateur.getImperial("posRel", true);
 
-            if(posRel != null)
+            if(posRel != null && gestionnaireSalle.editSeparateurSelectionne(posRel))
             {
-                gestionnaireSalle.editSeparateurSelectionne(posRel);
+                proprietesSeparateur.setError("posRel", false);
                 SeparateurDTO newValue = gestionnaireSalle.getSeparateurSelectionne();
                 proprietesSeparateur.setValue("pos", newValue.getPosition().toString());
 
                 mainPanel.validate();
                 mainPanel.repaint();
             }
+            else
+                proprietesSeparateur.setError("posRel", false);
+
         });
 
         rightPanel.setLayout(new BorderLayout(0, 0));

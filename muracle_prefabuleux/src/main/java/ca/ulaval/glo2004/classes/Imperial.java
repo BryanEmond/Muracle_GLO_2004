@@ -105,11 +105,15 @@ public class Imperial implements Comparable<Imperial>,Serializable {
     public Imperial add(Imperial other)
     {
         int newEntier = entier + other.entier;
-        int newDenominateur = PGCD(denominateur, other.denominateur);
+        int newDenominateur = Math.max(denominateur, other.denominateur);
+
         int newNumerateur1 = (numerateur * 1000 / denominateur * newDenominateur / 1000);
         int newNumerateur2 = (other.numerateur * 1000 / other.denominateur * newDenominateur / 1000);
 
-        return new Imperial(newEntier, newNumerateur1 + newNumerateur2, newDenominateur);
+        int totalNumerator = newNumerateur1 + newNumerateur2;
+        newEntier += totalNumerator / newDenominateur;
+
+        return new Imperial(newEntier, totalNumerator % newDenominateur, newDenominateur);
     }
 
     public Imperial substract(Imperial other)
@@ -162,7 +166,9 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         if(denominateur == 0)
             return null;
 
-        return new Imperial(entier, numerateur, denominateur);
+        Imperial imp = new Imperial(entier, numerateur, denominateur);
+        System.out.println(imp);
+        return imp;
     }
 
     public Imperial clone()

@@ -84,10 +84,22 @@ public class Cote extends Element implements Serializable {
     {
         int index = separateurs.indexOf(separateur);
 
-        if (index == 0)
+        if (index == 0 || index == -1)
             return null;
 
         return separateurs.get(index - 1);
+    }
+
+    public Separateur getSeparateurSuivant(Separateur separateur)
+    {
+        int index = separateurs.indexOf(separateur);
+
+        if(index == separateurs.size() - 1 || index == -1)
+        {
+            return null;
+        }
+
+        return separateurs.get(index + 1);
     }
 
     public ArrayList<Polygone> getPolygonesPlan()
@@ -100,7 +112,7 @@ public class Cote extends Element implements Serializable {
         }
 
         //TODO THIS IS JUST FOR TESTS, JUSTE POUR LE CÔTÉ NORD
-        /*if(separateurs != null)
+        if(separateurs != null)
         {
             for(Separateur s : separateurs)
             {
@@ -109,7 +121,7 @@ public class Cote extends Element implements Serializable {
                 Polygone p = new Polygone(Color.pink, p1, p2, p1, p2);
                 polygones.add(p);
             }
-        }*/
+        }
 
         return polygones;
     }
@@ -120,7 +132,6 @@ public class Cote extends Element implements Serializable {
 
         for(int i = 0; i < murs.size(); i++)
         {
-
             polygones.add(murs.get(i).mPolygoneElevation);
             if (!exterieur && i == 0 && murs.size()>1)
             {
@@ -204,10 +215,10 @@ public class Cote extends Element implements Serializable {
     }
 
     public boolean PointSeparateurEstSurAccessoire(Imperial point) {
-        for (Accessoire accessoire: accessoires) {
+        /*for (Accessoire accessoire: accessoires) {
             ArrayList<Double> coins = accessoire.mPolygoneElevation.getCoinsDouble();
             if(point.getFormeNormal() >= coins.get(0) && point.getFormeNormal() <= coins.get(1)) return true;
-        }
+        }*/
         return false;
     }
 
@@ -238,5 +249,9 @@ public class Cote extends Element implements Serializable {
 
     public Salle getmSalle(){
         return mSalle;
+    }
+
+    public Utilitaire.Direction getDirection() {
+        return mDirection;
     }
 }
