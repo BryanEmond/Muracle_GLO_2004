@@ -47,6 +47,9 @@ public class Salle extends Element implements Serializable {
 
                     if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
 
+
+
+                        
                         points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
                         points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
                         points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
@@ -62,7 +65,7 @@ public class Salle extends Element implements Serializable {
                         points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
                         points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
 
-                        Imperial distanceBord = var.getDernierMur().mPolygonePlan.getCoinsImperial().get(2);
+                        Imperial distanceBord = var.getPremierMur().mPolygonePlan.getCoinsImperial().get(2);
 
                         var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                     }

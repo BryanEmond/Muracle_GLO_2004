@@ -11,6 +11,8 @@ public class Separateur extends Element implements Serializable {
 
     Polygone mPolygonePlan;
 
+    Polygone mPolygoneElevation;
+
     public Separateur(Imperial mY, Imperial mX, Imperial distanceBordDeReference, Cote mCote, Polygone mPolygonePlan) {
         super(mY, mX);
         this.distanceBordDeReference = distanceBordDeReference;
