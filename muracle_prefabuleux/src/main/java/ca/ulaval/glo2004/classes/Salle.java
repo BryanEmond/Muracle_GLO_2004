@@ -4,24 +4,26 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Salle extends Element implements Serializable {
+public class Salle implements Serializable {
 
     Imperial epaisseurMurs;
-    Imperial marge;
     Imperial hauteur;
     Imperial largeur;
     Imperial profondeur;
-    boolean vuePlan;
+
+    Imperial largeurPliSoudure;
+
+    int anglePliSoudure;
+
     ArrayList<Cote> cotes;
 
-    public Salle(Imperial mY, Imperial mX, Imperial epaisseurMurs, Imperial marge, Imperial hauteur, Imperial largeur, Imperial profondeur, boolean vuePlan, ArrayList<Cote> cotes) {
-        super(mY, mX);
-        this.epaisseurMurs = epaisseurMurs;
-        this.marge = marge;
-        this.hauteur = hauteur;
-        this.largeur = largeur;
-        this.profondeur = profondeur;
-        this.vuePlan = vuePlan;
+    public Salle(ArrayList<Cote> cotes) {
+        this.epaisseurMurs = new Imperial(6);
+        this.hauteur = new Imperial(96);
+        this.largeur = new Imperial(144);
+        this.profondeur = new Imperial(144);
+        this.largeurPliSoudure = new Imperial(1);
+        this.anglePliSoudure = 45;
         this.cotes = cotes;
     }
     public ArrayList<Polygone> polygonePlan(){
@@ -36,15 +38,14 @@ public class Salle extends Element implements Serializable {
     public ArrayList<Polygone> polygonesElevation(){
         return new ArrayList<Polygone>();
     }
-
-    public ArrayList<Cote> separateur(PointImperial point) {
+    public Utilitaire.Direction separateur(PointImperial point) {
 
         ArrayList<PointImperial> points = new ArrayList<>();
+        Utilitaire.Direction direction = null;
 
         for (Cote var : cotes)
         {
             if(var.PointEstDansCote(point)){
-
                 Polygone polygone = getPolygoneMur(var,point);
 
                 if (polygone == null){
@@ -54,39 +55,31 @@ public class Salle extends Element implements Serializable {
                 if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
 
                     if(var.PointSeparateurEstSurAccessoire(point.mX)){
-                        return null;
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
                     }
-
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-
                     Imperial distanceBord = point.getmX().substract(var.getPremierMur().getmX());
-                    System.out.println(distanceBord);
-
+                   /* System.out.println("Point : " + point);
+                    System.out.println("Premier : " + var.);
+                    System.out.println("Distance : " + distanceBord);*/
+                    direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                 }else {
-
                     if(var.PointSeparateurEstSurAccessoire(point.mY)){
-                        return null;
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
                     }
-
-                    points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-
                     Imperial distanceBord = point.getmY().substract(var.getPremierMur().getmY());
-                    System.out.println(distanceBord);
-
+                    direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
-                }
+                    }
+                };
             }
-
-
-        }
-        return cotes;
+        return direction;
     }
 
     private Polygone getPolygoneMur(Cote var, PointImperial point) {
@@ -104,14 +97,6 @@ public class Salle extends Element implements Serializable {
 
     public void setEpaisseurMurs(Imperial epaisseurMurs) {
         this.epaisseurMurs = epaisseurMurs;
-    }
-
-    public Imperial getMarge() {
-        return marge;
-    }
-
-    public void setMarge(Imperial marge) {
-        this.marge = marge;
     }
 
     public Imperial getHauteur() {
@@ -136,14 +121,6 @@ public class Salle extends Element implements Serializable {
 
     public void setProfondeur(Imperial profondeur) {
         this.profondeur = profondeur;
-    }
-
-    public boolean isVuePlan() {
-        return vuePlan;
-    }
-
-    public void setVuePlan(boolean vuePlan) {
-        this.vuePlan = vuePlan;
     }
 
     public ArrayList<Cote> getCotes() {
@@ -173,8 +150,23 @@ public class Salle extends Element implements Serializable {
                 return cote;
             }
         }
-    return null;
+        return null;
     }
 
+    public Imperial getLargeurPliSoudure()
+    {
+        return largeurPliSoudure;
+    }
 
+    public void setLargeurPliSoudure(Imperial largeurPliSoudure) {
+        this.largeurPliSoudure = largeurPliSoudure;
+    }
+
+    public int getAnglePliSoudure() {
+        return anglePliSoudure;
+    }
+
+    public void setAnglePliSoudure(int anglePliSoudure) {
+        this.anglePliSoudure = anglePliSoudure;
+    }
 }

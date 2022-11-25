@@ -20,10 +20,7 @@ public class DrawingPanel extends JPanel {
         mainWindow.mainPanel.add(this);
 
         this.setBorder(new EmptyBorder(50, 10, 10, 10));
-
-        Salle salle = GetTestingSalle();
-        afficheur = new AfficheurVueDessus(salle);
-
+        afficheur = new AfficheurVueDessus(mainWindow.gestionnaireSalle.getSalleActive());
     }
 
     @Override
@@ -39,36 +36,6 @@ public class DrawingPanel extends JPanel {
         afficheurCote.affiche(g, exterieur);
     }
 */
-
-    private Salle GetTestingSalle() {
-        Cote nord = new Cote(new Imperial(0),
-                new Imperial(0), new Imperial(0),
-                Utilitaire.Direction.NORD);
-
-        Cote est = new Cote(new Imperial(0),
-                new Imperial(1),
-                new Imperial(0),
-                Utilitaire.Direction.EST);
-
-        Cote sud = new Cote(new Imperial(20),
-                new Imperial(0),
-                new Imperial(0),
-                Utilitaire.Direction.SUD);
-
-        Cote ouest = new Cote(new Imperial(20),
-                new Imperial(1),
-                new Imperial(0),
-                Utilitaire.Direction.OUEST);
-
-        mainWindow.gestionnaireSalle.creerSalle(new Imperial(0), new Imperial(0),
-                new Imperial(1), new Imperial(1),
-                new Imperial(20),
-                new Imperial(20), new Imperial(20),
-                true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
-        Salle salle = mainWindow.gestionnaireSalle.getSalleActive();
-
-        return salle;
-    }
 
 
     private Cote GetTestingCote() {

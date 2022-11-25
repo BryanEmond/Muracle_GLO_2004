@@ -6,6 +6,7 @@ import ca.ulaval.glo2004.enums.Direction;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Cote extends Element implements Serializable {
     Imperial mZ;
@@ -76,8 +77,11 @@ public class Cote extends Element implements Serializable {
     public ArrayList<Separateur> getSeparateurs() {
         return separateurs;
     }
-
+    public void sortSeparateurs(){
+        Collections.sort(this.separateurs);
+    }
     public void setSeparateurs(ArrayList<Separateur> separateurs) {
+        Collections.sort(separateurs);
         this.separateurs = separateurs;
     }
 
@@ -113,7 +117,7 @@ public class Cote extends Element implements Serializable {
         }
 
         //TODO THIS IS JUST FOR TESTS, JUSTE POUR LE CÔTÉ NORD
-        if(separateurs != null)
+       /* if(separateurs != null)
         {
             for(Separateur s : separateurs)
             {
@@ -122,7 +126,7 @@ public class Cote extends Element implements Serializable {
                 Polygone p = new Polygone(Color.pink, p1, p2, p1, p2);
                 polygones.add(p);
             }
-        }
+        }*/
 
         return polygones;
     }

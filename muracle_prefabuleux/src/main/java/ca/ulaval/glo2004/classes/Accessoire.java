@@ -27,34 +27,6 @@ public abstract class Accessoire extends Element implements Serializable {
 
     public abstract ArrayList<Polygone> genererPolygoneELV();
 
-
-    public Salle salle(){
-    return new Salle(new Imperial(1, 1, 1),new Imperial(1, 1, 1),
-            new Imperial(1, 1, 1),new Imperial(1, 1, 1),
-            new Imperial(1, 1, 1),new Imperial(1, 1, 1),
-            new Imperial(1, 1, 1), true, new ArrayList<Cote>()) ;
-    }
-
-    public Cote cote(){
-    return null;
-    }
-
-    public Mur mur(){
-        Imperial imperial = new Imperial(1,1,1);
-
-        ArrayList<PointImperial> pointImperials = new ArrayList<PointImperial>();
-        pointImperials.add(new PointImperial(new Imperial(1,1,1),
-                new Imperial(1,1,1)));
-
-        //Polygone polygone =new Polygone("FFFFF", pointImperials);
-
-
-    /*return new Mur(imperial, imperial, cote(), salle(), polygone, polygone, imperial, imperial, imperial, imperial,
-            imperial, imperial,imperial,imperial);*/
-
-        return null;
-    }
-
     public void calculeDisposition(){ }
 
     public ArrayList<Polygone> polygonesElevation(boolean exterieur) {

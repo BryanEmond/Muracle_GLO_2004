@@ -8,21 +8,16 @@ public class MurDTO {
     private Imperial x;
     private Imperial y;
     private Imperial largeur;
-    private Imperial mBandeSoudageVerticale;
-    private Imperial mBandeSoudageHorizontale;
 
     public MurDTO(Mur mur)
     {
-        this(mur.getmX().clone(), mur.getmY().clone(), mur.getmLargeur().clone(),
-                mur.getmBandeSoudageVerticale().clone(), mur.getmBandeSoudageHorizontale().clone());
+        this(mur.getmX().clone(), mur.getmY().clone(), mur.getmLargeur().clone());
     }
 
-    public MurDTO(Imperial x, Imperial y, Imperial largeur, Imperial mBandeSoudageVerticale, Imperial mBandeSoudageHorizontale) {
+    public MurDTO(Imperial x, Imperial y, Imperial largeur) {
         this.x = x;
         this.y = y;
         this.largeur = largeur;
-        this.mBandeSoudageVerticale = mBandeSoudageVerticale;
-        this.mBandeSoudageHorizontale = mBandeSoudageHorizontale;
     }
 
     public Imperial getX() {
@@ -35,14 +30,6 @@ public class MurDTO {
 
     public Imperial getLargeur() {
         return largeur;
-    }
-
-    public Imperial getmBandeSoudageVerticale() {
-        return mBandeSoudageVerticale;
-    }
-
-    public Imperial getmBandeSoudageHorizontale() {
-        return mBandeSoudageHorizontale;
     }
 
 }

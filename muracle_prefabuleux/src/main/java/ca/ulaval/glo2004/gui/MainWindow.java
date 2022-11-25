@@ -4,6 +4,7 @@ import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.Utilitaire;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
+import ca.ulaval.glo2004.gestion.Conversion;
 import ca.ulaval.glo2004.gestion.GestionnaireSalle;
 
 import javax.swing.*;
@@ -74,6 +75,7 @@ public class MainWindow {
         creerUnNouveauProjetButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                gestionnaireSalle.creerSalleDefaut();
                 mainWindow = new MainWindow(gestionnaireSalle);
                 JFileChooser fc = new JFileChooser();
                 fc.setSelectedFile(new File("sale.ser"));
@@ -239,22 +241,78 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(e.getClickCount() == 2) {
-                    gestionnaireSalle.updateSalleChange(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
+                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
                 }
-
+                mainPanel.validate();
+                mainPanel.repaint();
             }
         });
 
+        MouseAdapter mouvementCameraAdapter =new MouseAdapter() {
+
+            Point lastPoint = null;
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+
+                if(e.getButton() == MouseEvent.BUTTON2)
+                {
+                    System.out.println("START PAN");
+                    lastPoint = e.getPoint();
+                }
+
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+
+                if(e.getButton() == MouseEvent.BUTTON2)
+                {
+                    System.out.println("END PAN");
+                    lastPoint = null;
+                }
+            }
+
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+
+                if(lastPoint != null)
+                {
+                    Point point = e.getPoint();
+                    int offsetX = point.x - lastPoint.x;
+                    int offsetY = point.y - lastPoint.y;
+                    lastPoint = point;
+
+                    Conversion.getConversion().pan(-offsetX, -offsetY);
+                    mainPanel.validate();
+                    mainPanel.repaint();
+                }
+            }
+        };
+
+        this.mainPanel.addMouseListener(mouvementCameraAdapter);
+        this.mainPanel.addMouseMotionListener(mouvementCameraAdapter);
+
         MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
-        proprietesMur.setValue("x", murSelect.getX().toString());
-        proprietesMur.setValue("y", murSelect.getY().toString());
-        proprietesMur.setValue("largeur", murSelect.getLargeur().toString());
-        proprietesMur.updateValues();
+        if(murSelect != null)
+        {
+            proprietesMur.setValue("x", murSelect.getX().toString());
+            proprietesMur.setValue("y", murSelect.getY().toString());
+            proprietesMur.setValue("largeur", murSelect.getLargeur().toString());
+            proprietesMur.updateValues();
+        }
 
         SeparateurDTO sepSelect = gestionnaireSalle.getSeparateurSelectionne();
-        proprietesSeparateur.setValue("pos", sepSelect.getPosition().toString());
-        proprietesSeparateur.setValue("posRel", sepSelect.getPositionRelative().toString());
-        proprietesSeparateur.updateValues();
+        if(sepSelect != null)
+        {
+            proprietesSeparateur.setValue("pos", sepSelect.getPosition().toString());
+            proprietesSeparateur.setValue("posRel", sepSelect.getPositionRelative().toString());
+            proprietesSeparateur.updateValues();
+        }
+
     }
 
     {
@@ -374,7 +432,7 @@ public class MainWindow {
                 mainPanel.repaint();
             }
             else
-                proprietesSeparateur.setError("posRel", false);
+                proprietesSeparateur.setError("posRel", true);
 
         });
 

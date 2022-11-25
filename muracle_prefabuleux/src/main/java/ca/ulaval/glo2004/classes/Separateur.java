@@ -3,7 +3,7 @@ package ca.ulaval.glo2004.classes;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Separateur extends Element implements Serializable {
+public class Separateur extends Element implements Serializable, Comparable<Separateur> {
 
     Imperial distanceBordDeReference ;
 
@@ -61,5 +61,10 @@ public class Separateur extends Element implements Serializable {
     public Separateur getSeparateurSuivant()
     {
         return mCote.getSeparateurSuivant(this);
+    }
+
+    @Override
+    public int compareTo(Separateur separateur) {
+        return this.distanceBordDeReference.compareTo(separateur.distanceBordDeReference);
     }
 }

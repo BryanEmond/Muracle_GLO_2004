@@ -14,10 +14,14 @@ public class Conversion implements Serializable {
     private int offsetX;
     private int offsetY;
 
-    public Conversion(int pixelsX, int pixelsY)
+    public Conversion()
     {
-        //TODO Implement default pixelPerInches with screen size
-        this.pixelPerInches = 20;
+        reset();
+    }
+
+    public void reset()
+    {
+        this.pixelPerInches = 4;
         this.offsetX = 0;
         this.offsetY = 0;
     }
@@ -41,15 +45,25 @@ public class Conversion implements Serializable {
         return new Imperial(entier, numerateur, denominateur);
     }
 
+    public void pan(int offsetX, int offsetY)
+    {
+        this.offsetX += offsetX;
+        this.offsetY += offsetY;
+    }
+
     public void zoomer(double quantity, int x, int y)
     {
-        if(quantity < 0 && pixelPerInches < 5)
-            return;
+        double factor;
+
+        if(quantity > 0)
+            factor = 1.5;
+        else
+            factor = 0.75;
 
         double xInchVise = (x + offsetX) / pixelPerInches;
         double yInchVise = (y + offsetY) / pixelPerInches;
 
-        this.pixelPerInches += quantity;
+        this.pixelPerInches *= factor;
 
         int xAfter = (int) (xInchVise * pixelPerInches) - offsetX;
         int yAfter = (int) (yInchVise * pixelPerInches) - offsetY;
@@ -78,7 +92,7 @@ public class Conversion implements Serializable {
     public static Conversion getConversion()
     {
         if(conversion == null)
-            conversion = new Conversion(1920, 1080);
+            conversion = new Conversion();
 
         return conversion;
     }
