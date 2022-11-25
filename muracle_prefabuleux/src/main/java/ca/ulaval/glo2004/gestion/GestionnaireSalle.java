@@ -27,7 +27,7 @@ public class GestionnaireSalle {
         Cote ouest = new Cote(new Imperial(20), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
 
         creerSalle(new Imperial(0), new Imperial(0),
-                new Imperial(1), new Imperial(1),
+                new Imperial(10), new Imperial(1),
                 new Imperial(100),
                 new Imperial(20), new Imperial(20),
                 true, new ArrayList<>(Arrays.asList(nord, est, sud, ouest)));
@@ -64,11 +64,11 @@ public class GestionnaireSalle {
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(2).setMurs(new ArrayList<>(Arrays.asList(ms1)));
 
-        Mur me1 = new Mur(salle, cotes.get(1), new Imperial(1), new Imperial(0), new Imperial(18),
+        Mur me1 = new Mur(salle, cotes.get(1), new Imperial(1), new Imperial(19), new Imperial(18),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(1).setMurs(new ArrayList<>(Arrays.asList(me1)));
 
-        Mur mo1 = new Mur(salle, cotes.get(3), new Imperial(1), new Imperial(19), new Imperial(18),
+        Mur mo1 = new Mur(salle, cotes.get(3), new Imperial(1), new Imperial(0), new Imperial(18),
                 new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0), new Imperial(0));
         cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
         salleActive = salle;

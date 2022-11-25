@@ -126,7 +126,7 @@ public class Cote extends Element implements Serializable {
                 Mur premierMur = getPremierMur().copieMur(getPremierMur());
 
                 premierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative());
-
+                premierMur.genererPolygoneELV();
                 polygones.remove(polygones.get(i));
                 polygones.add(premierMur.mPolygoneElevation);
             }
@@ -134,6 +134,7 @@ public class Cote extends Element implements Serializable {
                 Mur dernierMur = getDernierMur().copieMur(getDernierMur());
 
                 dernierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative());
+                dernierMur.genererPolygoneELV();
                 polygones.remove(polygones.get(i));
                 polygones.add(dernierMur.mPolygoneElevation);
             }

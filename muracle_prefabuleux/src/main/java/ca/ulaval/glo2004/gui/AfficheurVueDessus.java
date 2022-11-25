@@ -15,10 +15,6 @@ public class AfficheurVueDessus extends Afficheur {
         this.salle = salle;
     }
 
-    @Override
-    public void affiche(Graphics g, boolean exterieur) {
-
-    }
 
     @Override
     public void affiche(Graphics g) {

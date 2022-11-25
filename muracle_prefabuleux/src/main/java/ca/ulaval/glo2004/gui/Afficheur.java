@@ -13,7 +13,7 @@ public abstract class Afficheur {
     private int offsetY = 0 ;
 
     public abstract void affiche(Graphics g);
-    public abstract void affiche(Graphics g, boolean exterieur);
+
 
 
     public void dessinerPolygones(Graphics g, ArrayList<Polygone> polygones)
