@@ -47,7 +47,7 @@ public class Mur extends Element implements Serializable {
 
     }
 
-    public Polygone polygonesElevation(boolean exterieur) {
+    public Polygone polygonesElevation(boolean interieur) {
         return mPolygoneElevation;
     }
 

@@ -20,6 +20,10 @@ public class GestionnaireSalle {
     private String filePath;
     private Salle salleActive;
 
+    private boolean vuePlan;
+
+    private boolean vueCote;
+
     public GestionnaireSalle()
     {
     }
@@ -31,6 +35,9 @@ public class GestionnaireSalle {
 
     public void creerSalleDefaut()
     {
+        vuePlan =true;
+        vueCote = false;
+
         Cote nord = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.NORD);
         Cote est = new Cote(new Imperial(0), new Imperial(138), new Imperial(0), Utilitaire.Direction.EST);
         Cote sud = new Cote(new Imperial(138), new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
@@ -89,6 +96,16 @@ public class GestionnaireSalle {
 //            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
         }
     }
+
+    public void selectionnerElement(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum,Utilitaire.Direction direction, boolean interieur ){
+        if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur){
+            Element element = salleActive.selection(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+
+//            Salle salle = new Salle(salleActive.getmY(),salleActive.getmX(),salleActive.getEpaisseurMurs(), salleActive.getMarge(),salleActive.getHauteur(),salleActive.getLargeur(), salleActive.getProfondeur(), salleActive.isVuePlan(), cote);
+        }
+    }
+
+
     public ArrayList<Mur> updateMurs(Utilitaire.Direction direction){
         ArrayList<Mur> murs = new ArrayList<>();
         ArrayList<Separateur> listSep = this.salleActive.getCote(direction).getSeparateurs();
@@ -223,6 +240,16 @@ public class GestionnaireSalle {
         return true;
     }
 
+    public boolean GetvuePlan()
+    {
+        return this.vuePlan;
+    }
+
+    public boolean GetvueCote()
+    {
+        return this.vueCote;
+    }
+
     public Accessoire accessoireSelectionne(String cheminDossier)
     {
         return this.mAccessoire;
@@ -250,5 +277,16 @@ public class GestionnaireSalle {
         return salleActive;
     }
 
+    public void ChangementDeVueVersPlan()
+    {
+        this.vuePlan = true;
+        this.vueCote = false;
+    }
+
+    public void ChangementDeVueVersCote()
+    {
+        this.vuePlan = false;
+        this.vueCote = true;
+    }
 
 }

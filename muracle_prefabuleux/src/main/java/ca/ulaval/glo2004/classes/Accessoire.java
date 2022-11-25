@@ -85,7 +85,7 @@ public abstract class Accessoire extends Element implements Serializable {
         this.mPolygonePlan = mPolygonePlan;
     }
 
-    public Polygone getmPolygoneElevation() {
+    public Polygone getmPolygoneElevation(boolean interieur) {
         return mPolygoneElevation;
     }
 

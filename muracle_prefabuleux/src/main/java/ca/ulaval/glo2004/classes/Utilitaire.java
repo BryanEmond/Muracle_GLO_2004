@@ -9,7 +9,9 @@ public abstract class Utilitaire implements Serializable {
         PriseElectrique,
         RetourAir,
         Supprimer,
-        Separateur
+        Separateur,
+
+        defaut
     }
     public enum Direction {
         NORD("Nord", true),

@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainWindow {
     public JPanel rootPanel;
@@ -68,9 +69,15 @@ public class MainWindow {
     GestionnaireSalle gestionnaireSalle;
     private String filePath;
     Utilitaire.AccessoireEnum AccessoireEnum;
+
+    Utilitaire.Direction direction;
+
+    boolean interieur;
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
         this.gestionnaireSalle = gestionnaireSalle;
         mainWindow = this;
+        direction = null;
+        interieur = false;
         panel = new DrawingPanel(this);
         creerUnNouveauProjetButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -125,10 +132,13 @@ public class MainWindow {
             this.mainPanel.repaint();
         });
 
+
         btnElvEstINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
+               gestionnaireSalle.ChangementDeVueVersCote();
+               direction = Utilitaire.Direction.EST;
+               interieur = true;
                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), false));
             }
         });
@@ -137,7 +147,9 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersCote();
+                direction = Utilitaire.Direction.EST;
+                interieur = false;
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), true));
             }
         });
@@ -145,7 +157,9 @@ public class MainWindow {
         btnELVSudINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersCote();
+                direction = Utilitaire.Direction.SUD;
+                interieur = true;
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), false));
             }
         });
@@ -153,7 +167,9 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersCote();
+                direction = Utilitaire.Direction.SUD;
+                interieur = false;
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), true));
 
             }
@@ -161,7 +177,9 @@ public class MainWindow {
         btnElvOuestINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersCote();
+                direction = Utilitaire.Direction.OUEST;
+                interieur = true;
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), false));
 
             }
@@ -170,7 +188,9 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersCote();
+                direction = Utilitaire.Direction.OUEST;
+                interieur = false;
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), true));
             }
         });
@@ -178,7 +198,9 @@ public class MainWindow {
         btnElvNordINT.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersCote();
+                direction = Utilitaire.Direction.NORD;
+                interieur = true;
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), false));
             }
         });
@@ -187,7 +209,9 @@ public class MainWindow {
             //TODO enlever : retour d'air et prise de courant des accessoires
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersCote();
+                direction = Utilitaire.Direction.NORD;
+                interieur = false;
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), true));
             }
         });
@@ -195,7 +219,9 @@ public class MainWindow {
         btnPlan.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-
+                gestionnaireSalle.ChangementDeVueVersPlan();
+                direction = null;
+                interieur = false;
                 panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
 
             }
@@ -206,6 +232,8 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 AccessoireEnum = Utilitaire.AccessoireEnum.Porte;
             }
+
+
         });
 
         btnPrise.addMouseListener(new MouseAdapter() {
@@ -237,12 +265,22 @@ public class MainWindow {
                 AccessoireEnum = Utilitaire.AccessoireEnum.Supprimer;
             }
         });
+
         this.mainPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(e.getClickCount() == 2) {
+                if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan()) {
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
                 }
+
+                if(gestionnaireSalle.GetvueCote() && AccessoireEnum != Utilitaire.AccessoireEnum.defaut && direction != null ){
+                    if(e.getClickCount() == 1){
+                        gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),AccessoireEnum,direction,interieur);
+                    }else{
+
+                    }
+                }
+
                 mainPanel.validate();
                 mainPanel.repaint();
             }

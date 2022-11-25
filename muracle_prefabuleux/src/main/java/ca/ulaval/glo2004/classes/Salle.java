@@ -13,6 +13,8 @@ public class Salle implements Serializable {
 
     Imperial largeurPliSoudure;
 
+    Element ElementSelectionne;
+
     int anglePliSoudure;
 
     ArrayList<Cote> cotes;
@@ -30,9 +32,27 @@ public class Salle implements Serializable {
         return new ArrayList<Polygone>();
     }
 
-    public Element selection(){
-        Imperial imp = new Imperial(1,1,1);
-        return new Element(imp, imp);
+    public Element selection(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+
+        Cote cote = getCote(direction);
+
+        Element element = null;
+
+        for (Mur mur: cote.murs) {
+            mur.genererPolygoneELV();
+            if(mur.polygonesElevation(interieur).PointEstDansPolygone(point)){
+                element = mur;
+            }
+        }
+
+        for (Accessoire accessoire: cote.accessoires) {
+            accessoire.genererPolygoneELV();
+            if(accessoire.getmPolygoneElevation(interieur).PointEstDansPolygone(point)){
+                element = accessoire;
+            }
+        }
+
+        return element;
     }
 
     public ArrayList<Polygone> polygonesElevation(){
