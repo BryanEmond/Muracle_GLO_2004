@@ -48,7 +48,7 @@ public class Salle implements Serializable {
         for (Accessoire accessoire: cote.accessoires) {
             accessoire.genererPolygoneELV();
             if(accessoire.getmPolygoneElevation(interieur).PointEstDansPolygone(point)){
-                element = accessoire;
+                return accessoire;
             }
         }
 
@@ -101,6 +101,8 @@ public class Salle implements Serializable {
         for (Cote var : cotes)
         {
             if(var.PointEstDansCote(point)){
+
+
                 Polygone polygone = getPolygoneMur(var,point);
 
                 if (polygone == null){
@@ -134,6 +136,7 @@ public class Salle implements Serializable {
                     }
                 };
             }
+
         return direction;
     }
 
