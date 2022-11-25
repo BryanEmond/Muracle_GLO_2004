@@ -121,23 +121,37 @@ public class Cote extends Element implements Serializable {
         {
 
             polygones.add(murs.get(i).mPolygoneElevation);
-            if (!exterieur && i == 0)
+            if (!exterieur && i == 0 && murs.size()>1)
             {
                 Mur premierMur = getPremierMur().copieMur(getPremierMur());
 
-                premierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative());
+                premierMur.setmLargeur(premierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative()));
+                premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
                 premierMur.genererPolygoneELV();
                 polygones.remove(polygones.get(i));
                 polygones.add(premierMur.mPolygoneElevation);
             }
-            if (!exterieur && i == murs.size() - 1){
+            if (!exterieur && i == murs.size() - 1 && murs.size()>1){
                 Mur dernierMur = getDernierMur().copieMur(getDernierMur());
 
-                dernierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative());
+                dernierMur.setmLargeur(dernierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative()));
                 dernierMur.genererPolygoneELV();
                 polygones.remove(polygones.get(i));
                 polygones.add(dernierMur.mPolygoneElevation);
             }
+
+            if (!exterieur && murs.size() == 1){
+                Mur premierMur = getPremierMur().copieMur(getPremierMur());
+                Imperial epaisseurMurDouble = new Imperial(getmSalle().epaisseurMurs.entier * 2);
+                premierMur.setmLargeur(premierMur.getmLargeur().add(epaisseurMurDouble.negative()));
+                premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
+                premierMur.genererPolygoneELV();
+                polygones.remove(polygones.get(i));
+                polygones.add(premierMur.mPolygoneElevation);
+
+            }
+
+
 
         }
 
