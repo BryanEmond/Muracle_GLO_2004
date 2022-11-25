@@ -129,7 +129,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-               panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
+               panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), false));
             }
         });
 
@@ -138,7 +138,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), true));
             }
         });
 
@@ -146,7 +146,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), false));
             }
         });
         btnElvSudEXT.addMouseListener(new MouseAdapter() {
@@ -154,7 +154,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), true));
 
             }
         });
@@ -162,7 +162,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), false));
 
             }
         });
@@ -171,7 +171,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), true));
             }
         });
 
@@ -179,7 +179,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), false));
             }
         });
 
@@ -188,7 +188,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
 
-                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD)));
+                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), true));
             }
         });
 
@@ -225,6 +225,8 @@ public class MainWindow {
         btnFenetre.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                //TODO activer mode ajout acessoire fenetre
+
                 super.mousePressed(e);
             }
         });

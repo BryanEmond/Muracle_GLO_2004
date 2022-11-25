@@ -73,6 +73,11 @@ public class GestionnaireSalle {
         cotes.get(3).setMurs(new ArrayList<>(Arrays.asList(mo1)));
         salleActive = salle;
 
+        for (Cote cote: salle.getCotes() ){
+            cote.setmSalle(salle);
+        }
+
+
         this.mMurCourant = mn1;
         this.mSeparateur = sn2;
     }
@@ -173,10 +178,10 @@ public class GestionnaireSalle {
         return this.mAccessoire;
     }
 
-    public void AjouteSeparateurAPartirVuePlan(PointImperial point)
+    /*public void AjouteSeparateurAPartirVuePlan(PointImperial point)
     {
         this.mSalle.separateur(point);
-    }
+    }*/
 
 
 

@@ -8,7 +8,11 @@ import java.util.ArrayList;
 
 public class Cote extends Element implements Serializable {
     Imperial mZ;
+
+    Salle mSalle;
+
     Utilitaire.Direction mDirection;
+    Direction mDirectionL;
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
@@ -109,13 +113,31 @@ public class Cote extends Element implements Serializable {
         return polygones;
     }
 
-    public ArrayList<Polygone> getPolygoneElevation()
+    public ArrayList<Polygone> getPolygoneElevation(boolean exterieur)
     {
         ArrayList<Polygone> polygones = new ArrayList<Polygone>();
 
         for(int i = 0; i < murs.size(); i++)
         {
+
             polygones.add(murs.get(i).mPolygoneElevation);
+            if (!exterieur && i == 0)
+            {
+                Mur premierMur = getPremierMur().copieMur(getPremierMur());
+
+                premierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative());
+
+                polygones.remove(polygones.get(i));
+                polygones.add(premierMur.mPolygoneElevation);
+            }
+            if (!exterieur && i == murs.size() - 1){
+                Mur dernierMur = getDernierMur().copieMur(getDernierMur());
+
+                dernierMur.getmLargeur().add(getmSalle().epaisseurMurs.negative());
+                polygones.remove(polygones.get(i));
+                polygones.add(dernierMur.mPolygoneElevation);
+            }
+
         }
 
         return polygones;
@@ -140,5 +162,13 @@ public class Cote extends Element implements Serializable {
             return null;
 
         return murs.get(murs.size() - 1);
+    }
+
+    public void setmSalle(Salle mSalle) {
+        this.mSalle = mSalle;
+    }
+
+    public Salle getmSalle(){
+        return mSalle;
     }
 }

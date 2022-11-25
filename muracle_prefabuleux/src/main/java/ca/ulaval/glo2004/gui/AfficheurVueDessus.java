@@ -16,6 +16,11 @@ public class AfficheurVueDessus extends Afficheur {
     }
 
     @Override
+    public void affiche(Graphics g, boolean exterieur) {
+
+    }
+
+    @Override
     public void affiche(Graphics g) {
         setOffset(10, 10);
 
