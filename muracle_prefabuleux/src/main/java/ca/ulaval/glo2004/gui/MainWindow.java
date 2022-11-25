@@ -268,8 +268,9 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan()) {
-                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false);
+                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
                 }
+
 
                 if(gestionnaireSalle.GetvueCote() && AccessoireEnum != Utilitaire.AccessoireEnum.defaut && direction != null ){
                     if(e.getClickCount() == 1){
