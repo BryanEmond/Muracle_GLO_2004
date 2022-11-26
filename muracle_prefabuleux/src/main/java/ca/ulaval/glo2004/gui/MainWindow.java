@@ -296,32 +296,33 @@ public class MainWindow {
                 if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan()) {
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
                 }
-                else if(interieur){
+                else if(e.getClickCount() == 2 &&interieur){
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,interieur,direction);
-                }else {
+                }else if(e.getClickCount() == 2 && !interieur){
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(), Utilitaire.AccessoireEnum.Separateur, interieur, direction);
-                }
-                if (direction != null && e.getClickCount() == 2) {
-                    switch (AccessoireEnum){
-                        case Fenetre:
-                            gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur);
-                            break;
-                        case RetourAir:
-                            gestionnaireSalle.AjouterRetourAir(e.getX(), e.getY(),direction,interieur);
-                            break;
-                        case Supprimer:
-                            gestionnaireSalle.Supprimer(e.getX(), e.getY(),direction,interieur);
-                            break;
-                        case Porte:
-                            gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur);
-                            break;
-                        case PriseElectrique:
-                            gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur);
-                            break;
-                        case Separateur:
-                            break;
-                        default:
-                            gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),direction,interieur);
+                }else{
+                    if (direction != null) {
+                        switch (AccessoireEnum){
+                            case Fenetre:
+                                gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur);
+                                break;
+                            case RetourAir:
+                                gestionnaireSalle.AjouterRetourAir(e.getX(), e.getY(),direction,interieur);
+                                break;
+                            case Supprimer:
+                                gestionnaireSalle.Supprimer(e.getX(), e.getY(),direction,interieur);
+                                break;
+                            case Porte:
+                                gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur);
+                                break;
+                            case PriseElectrique:
+                                gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur);
+                                break;
+                            case Separateur:
+                                break;
+                            default:
+                                gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),direction,interieur);
+                        }
                     }
                 }
                 mainPanel.validate();

@@ -152,7 +152,6 @@ public class Cote extends Element implements Serializable {
 
         return polygones;
     }
-
     public ArrayList<Double> getPolygonePlanCoins()
     {
         Mur PremierMur = getPremierMur();
@@ -226,7 +225,12 @@ public class Cote extends Element implements Serializable {
 
         return pointsCoin;
     }
+    public boolean PointEstDansCoteElevation(PointImperial point) {
+        ArrayList<Double> coins = getPolygoneElevationCoins();
 
+        return point.mX.getFormeNormal() >= coins.get(0) && point.mX.getFormeNormal() <= coins.get(1) &&
+                point.mY.getFormeNormal() >= coins.get(2) && point.mY.getFormeNormal() <= coins.get(3);
+    }
     public boolean PointEstDansCote(PointImperial point) {
         ArrayList<Double> coins = getPolygonePlanCoins();
 
