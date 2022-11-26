@@ -20,11 +20,11 @@ public class Salle implements Serializable {
     ArrayList<Cote> cotes;
 
     public Salle(ArrayList<Cote> cotes) {
-        this.epaisseurMurs = new Imperial(6);
-        this.hauteur = new Imperial(96);
-        this.largeur = new Imperial(144);
-        this.profondeur = new Imperial(144);
-        this.largeurPliSoudure = new Imperial(1);
+        this.epaisseurMurs = new Imperial(6, 0, 1);
+        this.hauteur = new Imperial(96,0,1);
+        this.largeur = new Imperial(144,0,1);
+        this.profondeur = new Imperial(144,0,1);
+        this.largeurPliSoudure = new Imperial(1,0,1);
         this.anglePliSoudure = 45;
         this.cotes = cotes;
     }
@@ -216,20 +216,21 @@ public class Salle implements Serializable {
                     System.out.println("Distance : " + distanceBord);*/
                     direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
+                    return direction;
                 }else {
-                    if(var.PointSeparateurEstSurAccessoire(point.mY)){
-                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
+                    if(var.PointSeparateurEstSurAccessoire(point.mY)) {
+                        points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY, polygone.points.get(1).mX));
+                        points.add(new PointImperial(point.mY, polygone.points.get(1).mX));
                     }
                     Imperial distanceBord = point.getmY().substract(var.getPremierMur().getmY());
                     direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
-                    }
-                };
-            return direction;
-            }
+                    return direction;
+                }
+            };
+        }
         return null;
     }
 

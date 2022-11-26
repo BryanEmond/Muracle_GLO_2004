@@ -140,6 +140,8 @@ public class MainWindow {
                gestionnaireSalle.ChangementDeVueVersCote();
                direction = Utilitaire.Direction.EST;
                interieur = true;
+                resetButtonView();
+                btnElvEstINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), false));
             }
         });
@@ -151,6 +153,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.EST;
                 interieur = false;
+                resetButtonView();
+                btnElvEstEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), true));
             }
         });
@@ -161,6 +165,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.SUD;
                 interieur = true;
+                resetButtonView();
+                btnELVSudINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), false));
             }
         });
@@ -171,6 +177,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.SUD;
                 interieur = false;
+                resetButtonView();
+                btnElvSudEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), true));
 
             }
@@ -181,6 +189,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.OUEST;
                 interieur = true;
+                resetButtonView();
+                btnElvOuestINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), false));
 
             }
@@ -192,6 +202,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.OUEST;
                 interieur = false;
+                resetButtonView();
+                btnElvOuestEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), true));
             }
         });
@@ -202,6 +214,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.NORD;
                 interieur = true;
+                resetButtonView();
+                btnElvNordINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), false));
             }
         });
@@ -213,6 +227,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.NORD;
                 interieur = false;
+                resetButtonView();
+                btnElvNordEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), true));
             }
         });
@@ -223,6 +239,8 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersPlan();
                 direction = null;
                 interieur = false;
+                resetButtonView();
+                btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
 
             }
@@ -231,6 +249,8 @@ public class MainWindow {
         btnPorte.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                resetButtonAccessoires();
+                btnPorte.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.Porte;
             }
         });
@@ -238,6 +258,8 @@ public class MainWindow {
         btnPrise.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                resetButtonAccessoires();
+                btnPrise.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.PriseElectrique;
             }
         });
@@ -245,6 +267,8 @@ public class MainWindow {
         btnRetourAir.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                resetButtonAccessoires();
+                btnRetourAir.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.RetourAir;
             }
         });
@@ -252,8 +276,8 @@ public class MainWindow {
         btnFenetre.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //TODO activer mode ajout acessoire fenetre
-
+                resetButtonAccessoires();
+                btnFenetre.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.Fenetre;
             }
         });
@@ -261,6 +285,8 @@ public class MainWindow {
         btnSupprimer.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
+                resetButtonAccessoires();
+                btnSupprimer.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.Supprimer;
             }
         });
@@ -377,9 +403,25 @@ public class MainWindow {
             proprietesSeparateur.setValue("posRel", sepSelect.getPositionRelative().toString());
             proprietesSeparateur.updateValues();
         }
-
     }
-
+    public void resetButtonView(){
+        btnElvEstINT.setBorder(null);
+        btnElvEstEXT.setBorder(null);
+        btnElvNordEXT.setBorder(null);
+        btnElvNordINT.setBorder(null);
+        btnElvOuestEXT.setBorder(null);
+        btnElvOuestINT.setBorder(null);
+        btnElvSudEXT.setBorder(null);
+        btnELVSudINT.setBorder(null);
+        btnPlan.setBorder(null);
+    }
+    public void resetButtonAccessoires(){
+        btnSupprimer.setBorder(null);
+        btnRetourAir.setBorder(null);
+        btnPrise.setBorder(null);
+        btnPorte.setBorder(null);
+        btnFenetre.setBorder(null);
+    }
     {
         $$$setupUI$$$();
     }
@@ -789,6 +831,7 @@ public class MainWindow {
         btnPlan.setMinimumSize(new Dimension(30,50));
         btnPlan.setPreferredSize(new Dimension(30,50));
         btnPlan.setText("");
+        btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));
         gbc = new GridBagConstraints();
         gbc.gridx = 13;
         gbc.gridy = 2;
