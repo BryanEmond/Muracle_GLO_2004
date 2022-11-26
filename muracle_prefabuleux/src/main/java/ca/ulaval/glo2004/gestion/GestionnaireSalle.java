@@ -114,7 +114,7 @@ public class GestionnaireSalle {
     }
 
     public void Supprimer(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+        salleActive.SupprimerPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){

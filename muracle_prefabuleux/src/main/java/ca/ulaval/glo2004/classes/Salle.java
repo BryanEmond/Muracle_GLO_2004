@@ -92,7 +92,11 @@ public class Salle implements Serializable {
         return  false;
     }
 
-    public boolean Supprimer(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+    public boolean SupprimerPlan(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        return  false;
+    }
+
+    public boolean SupprimerElevation(PointImperial point, Utilitaire.Direction direction,boolean interieur){
         return  false;
     }
 

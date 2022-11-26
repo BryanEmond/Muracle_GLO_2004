@@ -293,7 +293,13 @@ public class MainWindow {
         this.mainPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan()) {
+                if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan() && AccessoireEnum != Utilitaire.AccessoireEnum.Supprimer) {
+                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
+                }
+                else if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan() && AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer) {
+                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
+                }
+                else if(e.getClickCount() == 2 && gestionnaireSalle.GetvueCote() && AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer) {
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
                 }
                 else if(interieur){
