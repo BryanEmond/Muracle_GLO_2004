@@ -123,19 +123,19 @@ public class Salle implements Serializable {
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                     return direction;
                 }else {
-                    if(var.PointSeparateurEstSurAccessoire(point.mY)){
-                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
+                    if(var.PointSeparateurEstSurAccessoire(point.mY)) {
+                        points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY, polygone.points.get(1).mX));
+                        points.add(new PointImperial(point.mY, polygone.points.get(1).mX));
                     }
                     Imperial distanceBord = point.getmY().substract(var.getPremierMur().getmY());
                     direction = var.mDirection;
                     var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
                     return direction;
-                    }
-                };
-            }
+                }
+            };
+        }
         return null;
     }
 
