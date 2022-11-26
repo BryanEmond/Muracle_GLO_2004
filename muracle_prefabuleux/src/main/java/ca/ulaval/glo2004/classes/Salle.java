@@ -136,7 +136,7 @@ public class Salle implements Serializable {
         Cote cote = getCote(direction);
 
         for (Mur mur: cote.murs) {
-            mur.genererPolygoneELV();
+            //mur.genererPolygoneELV(interieur);
             if(mur.polygonesElevation(interieur).PointEstDansPolygone(point)){
                 ElementSelectionne = mur;
             }
