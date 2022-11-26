@@ -32,27 +32,122 @@ public class Salle implements Serializable {
         return new ArrayList<Polygone>();
     }
 
-    public Element selection(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+    public boolean AjouterFenetre(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        Cote cote = getCote(direction);
+        if(cote.PointEstDansCote(point)){
+            Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
+            if (polygone == null){
+                return false;
+            }
+            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24, 0, 0),new Imperial(24, 0, 0), null)    ;
+            ArrayList<Polygone> fenetres = fenetre.genererPolygoneELV();
+            for (PointImperial pointImperial:fenetres.get(1).getPoints()
+                 )
+            {
+                if(!polygone.PointEstDansPolygone(pointImperial)){
+                    return false;
+                }
+
+                for (Accessoire accessoire: cote.accessoires
+                ) {
+                    if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
+                        return false;
+                    }
+                }
+            }
+
+            cote.accessoires.add(fenetre);
+            return  true;
+        }
+        return  false;
+    }
+
+    public boolean AjouterPorte(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        Cote cote = getCote(direction);
+        if(cote.PointEstDansCote(point)){
+            Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
+            if (polygone == null){
+                return false;
+            }
+            Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38, 0, 0),new Imperial(88, 0, 0), null)    ;
+            ArrayList<Polygone> portes = porte.genererPolygoneELV();
+            for (PointImperial pointImperial:portes.get(0).getPoints()
+            )
+            {
+                if(!polygone.PointEstDansPolygone(pointImperial)){
+                    return false;
+                }
+
+                for (Accessoire accessoire: cote.accessoires
+                ) {
+                    if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
+                        return false;
+                    }
+                }
+            }
+
+            cote.accessoires.add(porte);
+            return  true;
+        }
+        return  false;
+    }
+
+    public boolean Supprimer(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        return  false;
+    }
+
+    public boolean AjouterPriseElectrique(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        Cote cote = getCote(direction);
+        if(cote.PointEstDansCote(point)){
+            Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
+            if (polygone == null){
+                return false;
+            }
+            PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(24, 0, 0),new Imperial(24, 0, 0), null)    ;
+            ArrayList<Polygone> prisesElectriques = prisesElectrique.genererPolygoneELV();
+            for (PointImperial pointImperial:prisesElectriques.get(0).getPoints()
+            )
+            {
+                if(!polygone.PointEstDansPolygone(pointImperial)){
+                    return false;
+                }
+
+                for (Accessoire accessoire: cote.accessoires
+                ) {
+                    if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
+                        return false;
+                    }
+                }
+            }
+
+            cote.accessoires.add(prisesElectrique);
+            return  true;
+        }
+        return  false;
+    }
+
+    public void AjouterRetourAir(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        // Mur ?
+    }
+
+
+    public void selection(PointImperial point, Utilitaire.Direction direction,boolean interieur){
 
         Cote cote = getCote(direction);
-
-        Element element = null;
 
         for (Mur mur: cote.murs) {
             mur.genererPolygoneELV();
             if(mur.polygonesElevation(interieur).PointEstDansPolygone(point)){
-                element = mur;
+                ElementSelectionne = mur;
             }
         }
 
         for (Accessoire accessoire: cote.accessoires) {
             accessoire.genererPolygoneELV();
             if(accessoire.getmPolygoneElevation(interieur).PointEstDansPolygone(point)){
-                element = accessoire;
+                ElementSelectionne = accessoire;
             }
         }
-
-        return element;
     }
 
     public ArrayList<Polygone> polygonesElevation(){
@@ -63,7 +158,7 @@ public class Salle implements Serializable {
         ArrayList<PointImperial> points = new ArrayList<>();
         Cote cote = getCote(direction);
         if(cote.PointEstDansCote(point)){
-            Polygone polygone = getPolygoneMur(cote,point);
+            Polygone polygone = getPolygoneMurPlan(cote,point);
             if (polygone == null){
                 return null;
             }
@@ -101,7 +196,7 @@ public class Salle implements Serializable {
         for (Cote var : cotes)
         {
             if(var.PointEstDansCote(point)){
-                Polygone polygone = getPolygoneMur(var,point);
+                Polygone polygone = getPolygoneMurPlan(var,point);
 
                 if (polygone == null){
                     return null;
@@ -138,8 +233,17 @@ public class Salle implements Serializable {
         return null;
     }
 
-    private Polygone getPolygoneMur(Cote var, PointImperial point) {
+    private Polygone getPolygoneMurPlan(Cote var, PointImperial point) {
         for (Polygone polygone:var.getPolygonesPlan()) {
+            if(polygone.PointEstDansPolygone(point)){
+                return polygone;
+            };
+        }
+        return null;
+    }
+
+    private Polygone getPolygoneMurElevation(Cote var, PointImperial point,boolean interieur) {
+        for (Polygone polygone:var.getPolygoneElevation(interieur)) {
             if(polygone.PointEstDansPolygone(point)){
                 return polygone;
             };

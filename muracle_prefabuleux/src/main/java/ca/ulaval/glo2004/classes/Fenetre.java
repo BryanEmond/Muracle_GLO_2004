@@ -12,6 +12,8 @@ public class Fenetre extends Accessoire implements Serializable {
     Imperial largeur = new Imperial(24, 0, 0);
     Imperial hauteur = new Imperial( 24, 0, 0);
 
+    ArrayList<Polygone> PolygoneELV;
+
     public Fenetre(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur,
                    Imperial mHauteur, String mNom) {
         super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mNom);
@@ -45,6 +47,7 @@ public class Fenetre extends Accessoire implements Serializable {
         fenetres.add(fenetre);
         fenetres.add(cadre);
 
+        PolygoneELV = fenetres;
         return fenetres;
     }
 

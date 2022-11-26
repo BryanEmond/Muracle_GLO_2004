@@ -275,17 +275,22 @@ public class MainWindow {
                 }else {
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(), Utilitaire.AccessoireEnum.Separateur, interieur, direction);
                 }
-                if (direction != null) {
+                if (direction != null && e.getClickCount() == 2) {
                     switch (AccessoireEnum){
                         case Fenetre:
+                            gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur);
                             break;
                         case RetourAir:
+                            gestionnaireSalle.AjouterRetourAir(e.getX(), e.getY(),direction,interieur);
                             break;
                         case Supprimer:
+                            gestionnaireSalle.Supprimer(e.getX(), e.getY(),direction,interieur);
                             break;
                         case Porte:
+                            gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur);
                             break;
                         case PriseElectrique:
+                            gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur);
                             break;
                         case Separateur:
                             break;
