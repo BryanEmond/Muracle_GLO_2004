@@ -141,7 +141,7 @@ public class Cote extends Element implements Serializable {
 
 
             polygones.add(murs.get(i).mPolygoneElevation);
-
+/*
             if (exterieur){
 
 
@@ -181,7 +181,7 @@ public class Cote extends Element implements Serializable {
 
 
             }
-
+*/
 
             if (!exterieur && i == 0 && murs.size()>1)
             {
@@ -207,8 +207,8 @@ public class Cote extends Element implements Serializable {
                 Imperial epaisseurMurDouble = new Imperial(getmSalle().epaisseurMurs.entier * 2);
                 premierMur.setmLargeur(premierMur.getmLargeur().add(epaisseurMurDouble.negative()));
 
-                //premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
-                premierMur.setmX(new Imperial(0));
+                premierMur.setmX(premierMur.mX.add(getmSalle().epaisseurMurs));
+               // premierMur.setmX(new Imperial(0));
                 premierMur.genererPolygoneELV();
                 polygones.remove(polygones.get(i));
                 polygones.add(premierMur.mPolygoneElevation);

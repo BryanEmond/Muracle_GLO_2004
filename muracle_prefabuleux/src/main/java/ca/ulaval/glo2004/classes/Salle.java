@@ -20,11 +20,11 @@ public class Salle implements Serializable {
     ArrayList<Cote> cotes;
 
     public Salle(ArrayList<Cote> cotes) {
-        this.epaisseurMurs = new Imperial(6);
-        this.hauteur = new Imperial(96);
-        this.largeur = new Imperial(144);
-        this.profondeur = new Imperial(144);
-        this.largeurPliSoudure = new Imperial(1);
+        this.epaisseurMurs = new Imperial(6, 0, 1);
+        this.hauteur = new Imperial(96,0,1);
+        this.largeur = new Imperial(144,0,1);
+        this.profondeur = new Imperial(144,0,1);
+        this.largeurPliSoudure = new Imperial(1,0,1);
         this.anglePliSoudure = 45;
         this.cotes = cotes;
     }
