@@ -140,7 +140,7 @@ public class Salle implements Serializable {
         Cote cote = getCote(direction);
 
         for (Mur mur: cote.murs) {
-            mur.genererPolygoneELV();
+            //mur.genererPolygoneELV(interieur);
             if(mur.polygonesElevation(interieur).PointEstDansPolygone(point)){
                 ElementSelectionne = mur;
             }
@@ -158,38 +158,34 @@ public class Salle implements Serializable {
         return new ArrayList<Polygone>();
     }
 
-    public Utilitaire.Direction separateirElevation(PointImperial point,Utilitaire.Direction direction){
+    public void separateurElevation(PointImperial point,Utilitaire.Direction direction,boolean interieur){
         ArrayList<PointImperial> points = new ArrayList<>();
         Cote cote = getCote(direction);
-        if(cote.PointEstDansCote(point)){
-            Polygone polygone = getPolygoneMurPlan(cote,point);
-            if (polygone == null){
-                return null;
-            }
-            if(cote.mDirection == Utilitaire.Direction.NORD || cote.mDirection == Utilitaire.Direction.SUD){
+        if(cote.PointEstDansCoteElevation(point)){
+            Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
+            if(polygone != null){
+                if(cote.mDirection == Utilitaire.Direction.NORD || cote.mDirection == Utilitaire.Direction.SUD){
 
-                if(cote.PointSeparateurEstSurAccessoire(point.mX)){
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-                    points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                    if(cote.PointSeparateurEstSurAccessoire(point.mX)){
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
+                    }
+                    Imperial distanceBord = point.getmX().substract(cote.getPremierMur().getmX());
+                    cote.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points)));
+                }else {
+                    if(cote.PointSeparateurEstSurAccessoire(point.mY)){
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
+                        points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
+                    }
+                    Imperial distanceBord = point.getmY().substract(cote.getPremierMur().getmY());
+                    cote.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points)));
                 }
-                Imperial distanceBord = point.getmX().substract(cote.getPremierMur().getmX());
-                direction = cote.mDirection;
-                cote.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points)));
-            }else {
-                if(cote.PointSeparateurEstSurAccessoire(point.mY)){
-                    points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(0).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-                    points.add(new PointImperial(point.mY,polygone.points.get(1).mX));
-                }
-                Imperial distanceBord = point.getmY().substract(cote.getPremierMur().getmY());
-                direction = cote.mDirection;
-                cote.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points)));
             }
         }
-        return direction;
     }
 
     public Utilitaire.Direction separateur(PointImperial point) {

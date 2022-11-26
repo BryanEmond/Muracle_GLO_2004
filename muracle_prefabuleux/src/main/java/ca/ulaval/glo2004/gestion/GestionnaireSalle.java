@@ -96,11 +96,11 @@ public class GestionnaireSalle {
             if(direction != null)this.salleActive.getCote(direction).setMurs(updateMurs(direction));
         }
         else if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && !interieur){
-            salleActive.separateirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams);
+            salleActive.separateurElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams,interieur);
             this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
         }
         else if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && interieur){
-            salleActive.separateirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams);
+            salleActive.separateurElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams,interieur);
             this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
         }
     }
