@@ -47,7 +47,7 @@ public class Fenetre extends Accessoire implements Serializable {
         Imperial y4 = y2.substract(new Imperial(0,1,8));
 
        // Polygone cadre = this.mPolygoneElevation = new Polygone(Color.PINK, new PointImperial(x3, y3), new PointImperial(x3, y4), new PointImperial(x4, y4), new PointImperial(x4, y3));
-        Polygone cadre = new Polygone(Color.PINK, new PointImperial(x3, y3), new PointImperial(x3, y4), new PointImperial(x4, y4), new PointImperial(x4, y3));
+        Polygone cadre = new Polygone(Color.DARK_GRAY, new PointImperial(x3, y3), new PointImperial(x3, y4), new PointImperial(x4, y4), new PointImperial(x4, y3));
 
         ArrayList<Polygone> fenetres = new ArrayList<>();
         fenetres.add(fenetre);

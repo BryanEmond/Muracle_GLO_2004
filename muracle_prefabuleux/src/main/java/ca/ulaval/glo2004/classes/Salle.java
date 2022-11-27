@@ -42,14 +42,27 @@ public class Salle implements Serializable {
     }
 
     public boolean AjouterFenetre(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        //TODO NE PAS METTRE SUR UN SEPARATEUR OU UN RETOUR D'AIR ou autre accessoire
         Cote cote = getCote(direction);
         if(cote.PointEstDansCoteElevation(point)){
             Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
             if (polygone == null){
                 return false;
             }
+
+            int sallelargeur=0;
+            if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD))
+            {
+                sallelargeur = cote.getmSalle().largeur.entier;
+            }
+            else{sallelargeur = cote.getmSalle().profondeur.entier;}
+
+            if (point.mX.entier + 25 > sallelargeur){
+                return false;
+            }
             Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24));
             fenetre.setCote(cote);
+            fenetre.setmPerceExtérieur(true);
 
             ArrayList<Polygone> fenetres = fenetre.genererPolygoneELV();
 
@@ -75,14 +88,26 @@ public class Salle implements Serializable {
     }
 
     public boolean AjouterPorte(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        // TODO NE PAS METRE SUR SEPARATEUR OU RETOUR D'AIR ou autre accessoire
         Cote cote = getCote(direction);
         if(cote.PointEstDansCoteElevation(point)){
             Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
             if (polygone == null){
                 return false;
             }
+            int sallelargeur=0;
+            if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD))
+            {
+                sallelargeur = cote.getmSalle().largeur.entier;
+            }
+            else{sallelargeur = cote.getmSalle().profondeur.entier;}
+
+            if (point.mX.entier + 40 > sallelargeur){
+                return false;
+            }
             Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null);
             porte.setCote(cote);
+            porte.setmPerceExtérieur(true);
             ArrayList<Polygone> portes = porte.genererPolygoneELV();
             for (PointImperial pointImperial:portes.get(0).getPoints())
             { //                if(polygone.PointEstDansPolygone(pointImperial)){ //
@@ -146,6 +171,7 @@ public class Salle implements Serializable {
     }
 
     public boolean AjouterPriseElectrique(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        //TODO NE PAS METTRE SUR UN SEPARATEUR OU RETOUR D'AIR ou autre accessoire
         Cote cote = getCote(direction);
         if(cote.PointEstDansCoteElevation(point)){
             Polygone polygone = getPolygoneMurElevation(cote,point,interieur);

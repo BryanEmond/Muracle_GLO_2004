@@ -48,7 +48,7 @@ public class RetourAir extends Accessoire implements Serializable {
         x2 = x1.add(largeur);
         y2 = y1.add(hauteur);
 
-        Polygone retourAir = this.mPolygoneElevation = new Polygone(Color.PINK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
+        Polygone retourAir = this.mPolygoneElevation = new Polygone(Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
 
         return null;
     }
