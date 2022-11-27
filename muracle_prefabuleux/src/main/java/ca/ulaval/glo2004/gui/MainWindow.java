@@ -377,7 +377,6 @@ public class MainWindow {
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                                 break;
                         }
-
                     }
                 }
 
@@ -433,15 +432,6 @@ public class MainWindow {
         updatePanels();
     }
 
-    /*
-
-
-
-
-
-
-    });*/
-
     private void updatePanels()
     {
         propertiesPanel.removeAll();
@@ -450,48 +440,6 @@ public class MainWindow {
         if(salleSelect != null)
         {
             proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
-            proprietesSalle.addProperty("largeur", "LARGEUR :");
-            proprietesSalle.addProperty("profondeur", "PROFONDEUR :");
-            proprietesSalle.addProperty("hauteur", "HAUTEUR :");
-            proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :");
-            proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :");
-            proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :");
-            proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :");
-            proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :");
-            proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :");
-            proprietesSalle.generateLayout();
-            propertiesPanel.add(proprietesSalle);
-
-            proprietesSalle.setOnChangeListener(values -> {
-                Imperial largeur = proprietesSalle.getImperial("largeur");
-                Imperial profondeur = proprietesSalle.getImperial("profondeur");
-                Imperial hauteur = proprietesSalle.getImperial("hauteur");
-                Imperial epaisseurMur = proprietesSalle.getImperial("epaisseurMur");
-                Imperial largeurPli = proprietesSalle.getImperial("largeurPli");
-                int pliSoudure = proprietesSalle.getInt("pliSoudure");
-                Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
-                Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
-                Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
-
-                if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
-                        pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
-                    return;
-
-                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
-
-                if(result == 0)
-                {
-                    mainPanel.validate();
-                    mainPanel.repaint();
-                }
-
-                proprietesSalle.setError("largeur", result == 1);
-                proprietesSalle.setError("profondeur", result == 2);
-                proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
-                proprietesSalle.setError("positionRetourAir", result == 4);
-                proprietesSalle.setError("hauteurRetourAir", result == 4);
-            });
-
             proprietesSalle.setValue("largeur", salleSelect.getLargeur().toString());
             proprietesSalle.setValue("hauteur", salleSelect.getHauteur().toString());
             proprietesSalle.setValue("profondeur", salleSelect.getProfondeur().toString());
