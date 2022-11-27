@@ -26,7 +26,7 @@ public class Porte extends Accessoire implements Serializable {
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
         //TODO largeur et hauteur configurable
-        Imperial x1 = new Imperial(super.mX.entier, super.mX.numerateur, super.mX.denominateur);
+        Imperial x1 = new Imperial(mX.entier, mX.numerateur, mX.denominateur);
         Imperial y1 = new Imperial(cote.getmSalle().hauteur.entier, cote.getmSalle().hauteur.numerateur, cote.getmSalle().hauteur.denominateur);
         Imperial x2;
         Imperial y2;

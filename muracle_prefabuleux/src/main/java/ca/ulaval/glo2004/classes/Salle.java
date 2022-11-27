@@ -48,7 +48,8 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24))    ;
+            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24));
+            fenetre.setCote(cote);
 
             ArrayList<Polygone> fenetres = fenetre.genererPolygoneELV();
 
@@ -59,8 +60,8 @@ public class Salle implements Serializable {
                     return false;
                 }
 
-                for (Accessoire accessoire: cote.accessoires
-                ) {
+                for (Accessoire accessoire: cote.accessoires)
+                {
                     if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
                         return false;
                     }
