@@ -18,17 +18,16 @@ public class RetourAir extends Accessoire implements Serializable {
         Imperial largeur = new Imperial(12, 0 , 0);
         Imperial hauteur = new Imperial(2,0,0);
 
-        String mNom = "RetourAir";
 
 
     public RetourAir(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur,
-                     Imperial mHauteur, String mNom) {
-        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mNom);
+                     Imperial mHauteur) {
+        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur);
     this.perceExterieur = mPerceExtérieur;
     this.perceInterieur = mPerceInterieur;
     this.largeur = mLargeur;
     this.hauteur = mHauteur;
-    this.mNom = "RetourAir";
+
 
     }
 
