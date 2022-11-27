@@ -152,6 +152,9 @@ public class Cote extends Element implements Serializable {
 
         return polygones;
     }
+
+
+
     public ArrayList<Double> getPolygonePlanCoins()
     {
         Mur PremierMur = getPremierMur();
@@ -283,6 +286,14 @@ public class Cote extends Element implements Serializable {
         return murs.get(murs.size() - 1);
     }
 
+    public Mur getMurSuivant(int index){
+        if(murs.size()==0)
+            return null;
+        if(murs.size() -1 == index)
+            return null;
+        return murs.get(index + 1);
+    }
+
     public void setmSalle(Salle mSalle) {
         this.mSalle = mSalle;
     }
@@ -299,3 +310,5 @@ public class Cote extends Element implements Serializable {
         return mExterieur;
     }
 }
+
+
