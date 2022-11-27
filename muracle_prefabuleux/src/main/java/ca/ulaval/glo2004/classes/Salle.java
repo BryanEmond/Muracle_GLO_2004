@@ -428,4 +428,12 @@ public class Salle implements Serializable {
     public void setHauteurTrouRetourAir(Imperial hauteurTrouRetourAir) {
         this.hauteurTrouRetourAir = hauteurTrouRetourAir;
     }
+
+    public <T extends Element>T getElementSelectionne()
+    {
+        if(ElementSelectionne == null)
+            return null;
+
+        return (T) ElementSelectionne;
+    }
 }
