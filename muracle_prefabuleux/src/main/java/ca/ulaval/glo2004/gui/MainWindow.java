@@ -1,6 +1,7 @@
 package ca.ulaval.glo2004.gui;
 
 import ca.ulaval.glo2004.classes.Imperial;
+import ca.ulaval.glo2004.classes.PointImperial;
 import ca.ulaval.glo2004.classes.Utilitaire;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
@@ -340,6 +341,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
                                 break;
                             case Selection:
+
                                 if(gestionnaireSalle.GetvueCote()){
                                     gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
                                 }else{
@@ -362,6 +364,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
                                 break;
                             case Selection:
+
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                                 updatePanels();
                                 break;

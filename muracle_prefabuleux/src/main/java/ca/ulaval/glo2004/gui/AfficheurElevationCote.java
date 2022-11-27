@@ -19,8 +19,6 @@ public class AfficheurElevationCote extends Afficheur{
 
     @Override
     public void affiche(Graphics g) {
-        setOffset(10,10);
-
         ArrayList<Polygone> polygones = cote.getPolygoneElevation(exterieur);
         for (int i = 0; i < cote.getAccessoires().size(); i++){
             if (exterieur && cote.getAccessoires().get(i).ismPerceExtérieur())
