@@ -9,6 +9,7 @@ import ca.ulaval.glo2004.gestion.Conversion;
 import ca.ulaval.glo2004.gestion.GestionnaireSalle;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
@@ -33,6 +34,7 @@ public class MainWindow {
     private JButton btnRetourAir;
     private JButton btnSupprimer;
     private JButton btnSeparateur;
+    private JButton btnSelection;
     private JPanel DimensionsPanel;
     private JButton btnDimensionsCollapse;
     private JPanel dimensionPanelContent;
@@ -69,7 +71,7 @@ public class MainWindow {
     private DrawingPanel panel;
     GestionnaireSalle gestionnaireSalle;
     private String filePath;
-    Utilitaire.AccessoireEnum AccessoireEnum;
+    Utilitaire.AccessoireEnum AccessoireEnum = Utilitaire.AccessoireEnum.Selection;
     Utilitaire.Direction direction;
     private boolean interieur;
     private boolean plan;
@@ -141,6 +143,7 @@ public class MainWindow {
                direction = Utilitaire.Direction.EST;
                interieur = true;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnElvEstINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), false));
             }
@@ -154,6 +157,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.EST;
                 interieur = false;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnElvEstEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), true));
             }
@@ -166,6 +170,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.SUD;
                 interieur = true;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnELVSudINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), false));
             }
@@ -178,6 +183,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.SUD;
                 interieur = false;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnElvSudEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), true));
 
@@ -190,6 +196,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.OUEST;
                 interieur = true;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnElvOuestINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), false));
 
@@ -203,6 +210,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.OUEST;
                 interieur = false;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnElvOuestEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST), true));
             }
@@ -215,6 +223,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.NORD;
                 interieur = true;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnElvNordINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), false));
             }
@@ -228,6 +237,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.NORD;
                 interieur = false;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnElvNordEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD), true));
             }
@@ -240,6 +250,7 @@ public class MainWindow {
                 direction = null;
                 interieur = false;
                 resetButtonView();
+                resetButtonAccessoires();
                 btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
 
@@ -249,53 +260,55 @@ public class MainWindow {
         btnPorte.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                resetButtonAccessoires();
-                btnPorte.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.Porte;
+                resetButtonAccessoires();
             }
         });
 
         btnPrise.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                resetButtonAccessoires();
-                btnPrise.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.PriseElectrique;
+                resetButtonAccessoires();
             }
         });
 
         btnRetourAir.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                resetButtonAccessoires();
-                btnRetourAir.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.RetourAir;
+                resetButtonAccessoires();
+            }
+        });
+
+         btnSelection.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                AccessoireEnum = Utilitaire.AccessoireEnum.Selection;
+                resetButtonAccessoires();
             }
         });
 
         btnFenetre.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                resetButtonAccessoires();
-                btnFenetre.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.Fenetre;
+                resetButtonAccessoires();
             }
         });
 
         btnSupprimer.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
-                resetButtonAccessoires();
-                btnSupprimer.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.Supprimer;
+                resetButtonAccessoires();
             }
         });
         btnSeparateur.addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed(MouseEvent e) {
-                resetButtonAccessoires();
-                btnSeparateur.setBorder(BorderFactory.createLineBorder(Color.red));
                 AccessoireEnum = Utilitaire.AccessoireEnum.Separateur;
+                resetButtonAccessoires();
             }
         });
         this.mainPanel.addMouseListener(new MouseAdapter() {
@@ -326,7 +339,7 @@ public class MainWindow {
                             case Separateur:
                                 gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
                                 break;
-                            default:
+                            case Selection:
                                 if(gestionnaireSalle.GetvueCote()){
                                     gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
                                 }else{
@@ -343,7 +356,7 @@ public class MainWindow {
                             case Separateur:
                                 gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
                                 break;
-                            default:
+                            case Selection:
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                         }
 
@@ -465,12 +478,19 @@ public class MainWindow {
         btnPlan.setBorder(null);
     }
     public void resetButtonAccessoires(){
-        btnSupprimer.setBorder(null);
-        btnRetourAir.setBorder(null);
-        btnPrise.setBorder(null);
-        btnPorte.setBorder(null);
-        btnFenetre.setBorder(null);
-        btnSeparateur.setBorder(null);
+        Border border = BorderFactory.createLineBorder(Color.red);
+        btnSelection.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Selection ? border : null);
+        btnSupprimer.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer ? border : null);
+        btnRetourAir.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.RetourAir ? border : null);
+        btnPrise.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.PriseElectrique ? border : null);
+        btnPorte.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Porte ? border : null);
+        btnFenetre.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Fenetre ? border : null);
+        btnSeparateur.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Separateur ? border : null);
+
+        boolean estEnVuePlan = gestionnaireSalle.GetvuePlan();
+        btnPrise.setVisible(!estEnVuePlan);
+        btnPorte.setVisible(!estEnVuePlan);
+        btnFenetre.setVisible(!estEnVuePlan);
     }
     {
         $$$setupUI$$$();
@@ -524,6 +544,7 @@ public class MainWindow {
         btnUndo = new JButton();
         btnSave = new JButton();
         btnSeparateur = new JButton();
+        btnSelection = new JButton();
         buttonsPanel = new JPanel();
         controlPanel = new JPanel();
         rightPanel = new JPanel();
@@ -699,7 +720,22 @@ public class MainWindow {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnGrille, gbc);
+        btnSelection.setBorder(BorderFactory.createLineBorder(Color.red));
+        btnSelection.setBackground(new Color(-12829636));
+        btnSelection.setIcon(new ImageIcon(getClass().getResource("/buttons/selection.png")));
+        btnSelection.setMargin(new Insets(0, 0, 0, 0));
+        btnSelection.setMaximumSize(new Dimension(50, 50));
+        btnSelection.setMinimumSize(new Dimension(50, 50));
+        btnSelection.setPreferredSize(new Dimension(50, 50));
+        btnSelection.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2, 2, 2, 2);
+        buttonsPanel.add(btnSelection, gbc);
         btnFenetre.setBackground(new Color(-12829636));
+        btnFenetre.setVisible(false);
         btnFenetre.setIcon(new ImageIcon(getClass().getResource("/buttons/fenetre.png")));
         btnFenetre.setMargin(new Insets(0, 0, 0, 0));
         btnFenetre.setMaximumSize(new Dimension(50, 50));
@@ -707,12 +743,13 @@ public class MainWindow {
         btnFenetre.setPreferredSize(new Dimension(50, 50));
         btnFenetre.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnFenetre, gbc);
         btnPorte.setBackground(new Color(-12829636));
+        btnPorte.setVisible(false);
         btnPorte.setIcon(new ImageIcon(getClass().getResource("/buttons/porte.png")));
         btnPorte.setMargin(new Insets(0, 0, 0, 0));
         btnPorte.setMaximumSize(new Dimension(50, 50));
@@ -720,12 +757,13 @@ public class MainWindow {
         btnPorte.setPreferredSize(new Dimension(50, 50));
         btnPorte.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnPorte, gbc);
         btnPrise.setBackground(new Color(-12829636));
+        btnPrise.setVisible(false);
         btnPrise.setIcon(new ImageIcon(getClass().getResource("/buttons/prise.png")));
         btnPrise.setMargin(new Insets(0, 0, 0, 0));
         btnPrise.setMaximumSize(new Dimension(50, 50));
@@ -733,7 +771,7 @@ public class MainWindow {
         btnPrise.setPreferredSize(new Dimension(50, 50));
         btnPrise.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
@@ -746,7 +784,7 @@ public class MainWindow {
         btnRetourAir.setPreferredSize(new Dimension(50, 50));
         btnRetourAir.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
@@ -759,7 +797,7 @@ public class MainWindow {
         btnSupprimer.setPreferredSize(new Dimension(50, 50));
         btnSupprimer.setText("");
         gbc = new GridBagConstraints();
-        gbc.gridx = 4;
+        gbc.gridx = 5;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
@@ -770,7 +808,7 @@ public class MainWindow {
         mainPanel.setMinimumSize(new Dimension(200, 24));
         mainPanel.setPreferredSize(new Dimension(200, 24));
         gbc = new GridBagConstraints();
-        gbc.gridx = 5;
+        gbc.gridx = 6;
         gbc.gridy = 3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
