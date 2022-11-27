@@ -596,6 +596,7 @@ public class MainWindow {
         btnSeparateur.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Separateur ? border : null);
 
         boolean estEnVuePlan = gestionnaireSalle.GetvuePlan();
+        btnRetourAir.setVisible(estEnVuePlan || interieur);
         btnPrise.setVisible(!estEnVuePlan && interieur);
         btnPorte.setVisible(!estEnVuePlan);
         btnFenetre.setVisible(!estEnVuePlan);
