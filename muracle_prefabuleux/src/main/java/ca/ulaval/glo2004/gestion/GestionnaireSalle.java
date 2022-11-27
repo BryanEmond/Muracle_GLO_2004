@@ -29,11 +29,6 @@ public class GestionnaireSalle {
     {
     }
 
-    public void test(int pixelX, int pixelY)
-    {
-
-    }
-
     public void creerSalleDefaut()
     {
         vuePlan =true;
@@ -90,19 +85,13 @@ public class GestionnaireSalle {
             throw new RuntimeException(e);
         }
     }
-    public void onClickEvents(int pixelX, int pixelY, Utilitaire.AccessoireEnum accessoireEnum, boolean interieur, Utilitaire.Direction directionParams){
-        if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && !interieur && directionParams == null){
-            Utilitaire.Direction direction = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
-            if(direction != null)this.salleActive.getCote(direction).setMurs(updateMurs(direction));
-        }
-        else if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && !interieur){
-            salleActive.separateurElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams,interieur);
-            this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
-        }
-        else if(accessoireEnum == Utilitaire.AccessoireEnum.Separateur && interieur){
-            salleActive.separateurElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams,interieur);
-            this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
-        }
+    public void AjouterSeparateurVuePlan(int pixelX, int pixelY){
+        Utilitaire.Direction direction = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+        if(direction != null)this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+    }
+    public void AjouterSeparateurVueElevation(int pixelX, int pixelY, boolean interieur, Utilitaire.Direction directionParams){
+        salleActive.separateurElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams,interieur);
+        this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
     }
 
     public void selectionnerElement(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
