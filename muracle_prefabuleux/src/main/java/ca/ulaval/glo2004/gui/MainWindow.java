@@ -488,7 +488,7 @@ public class MainWindow {
         btnSeparateur.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Separateur ? border : null);
 
         boolean estEnVuePlan = gestionnaireSalle.GetvuePlan();
-        btnPrise.setVisible(!estEnVuePlan);
+        btnPrise.setVisible(!estEnVuePlan && interieur);
         btnPorte.setVisible(!estEnVuePlan);
         btnFenetre.setVisible(!estEnVuePlan);
     }
