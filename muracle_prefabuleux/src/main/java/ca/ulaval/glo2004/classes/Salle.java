@@ -82,26 +82,18 @@ public class Salle implements Serializable {
             }
             Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null);
             ArrayList<Polygone> portes = porte.genererPolygoneELV();
-            for (PointImperial pointImperial:portes.get(0).getPoints()
-            )
-            {
-                if(!polygone.PointEstDansPolygone(pointImperial)){
-                    return false;
+            for (PointImperial pointImperial:portes.get(0).getPoints())
+            { //                if(polygone.PointEstDansPolygone(pointImperial)){ //
+                // return false; //                }
+                for (Accessoire accessoire: cote.accessoires) {
+                if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
+                return false;
                 }
-
-                for (Accessoire accessoire: cote.accessoires
-                ) {
-                    if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
-                        return false;
-                    }
                 }
             }
-
             cote.accessoires.add(porte);
-            return  true;
-        }
-        return  false;
-    }
+            return  true;}
+        return  false;     }
 
     public boolean SupprimerPlan(PointImperial point){
         return  false;
