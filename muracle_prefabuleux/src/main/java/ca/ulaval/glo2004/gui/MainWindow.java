@@ -297,10 +297,10 @@ public class MainWindow {
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
                 }
                 else if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan() && AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer) {
-                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
+                    gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
                 }
                 else if(e.getClickCount() == 2 && gestionnaireSalle.GetvueCote() && AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer) {
-                    gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
+                    gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
                 }
                 else if(e.getClickCount() == 2 &&interieur){
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,interieur,direction);
@@ -316,7 +316,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterRetourAir(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case Supprimer:
-                                gestionnaireSalle.Supprimer(e.getX(), e.getY(),direction,interieur);
+                                gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case Porte:
                                 gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur);
@@ -327,7 +327,11 @@ public class MainWindow {
                             case Separateur:
                                 break;
                             default:
-                                gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),direction,interieur);
+                                if(gestionnaireSalle.GetvueCote()){
+                                    gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
+                                }else{
+                                    gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
+                                }
                         }
                     }
                 }

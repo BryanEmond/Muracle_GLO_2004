@@ -105,7 +105,11 @@ public class GestionnaireSalle {
         }
     }
 
-    public void selectionnerElement(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+    public void selectionnerElementPlan(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        salleActive.selection(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    }
+
+    public void selectionnerElementElevantion(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
         salleActive.selection(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
@@ -113,8 +117,12 @@ public class GestionnaireSalle {
         salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void Supprimer(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.SupprimerPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public void SupprimerPlan(int pixelX, int pixelY){
+        salleActive.SupprimerPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+    }
+
+    public void SupprimerElevation(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        salleActive.SupprimerElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
