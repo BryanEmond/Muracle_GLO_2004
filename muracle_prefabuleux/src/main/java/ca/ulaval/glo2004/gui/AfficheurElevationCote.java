@@ -27,7 +27,22 @@ public class AfficheurElevationCote extends Afficheur{
             {
                 //TODO créer generer polygone accessoire
                 //TODO créer getmPolygone accessoire
-                //polygones.add(cote.getAccessoires().get(i).)
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+            }
+
+            if(!exterieur && cote.getAccessoires().get(i).getmNom().equals("RetourAir"))
+            {
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+            }
+
+            if(cote.getAccessoires().get(i).getmNom().equals("Porte"))
+            {
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+            }
+
+            if(cote.getAccessoires().get(i).getmNom().equals("Fenetre"))
+            {
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
             }
         }
         //TODO generer polygone accessoire
