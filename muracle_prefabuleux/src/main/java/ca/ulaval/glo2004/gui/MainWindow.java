@@ -3,6 +3,7 @@ package ca.ulaval.glo2004.gui;
 import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.PointImperial;
 import ca.ulaval.glo2004.classes.Utilitaire;
+import ca.ulaval.glo2004.classes.dto.AccessoireDTO;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
@@ -143,6 +144,7 @@ public class MainWindow {
                gestionnaireSalle.ChangementDeVueVersCote();
                direction = Utilitaire.Direction.EST;
                interieur = true;
+               updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvEstINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -157,6 +159,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.EST;
                 interieur = false;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvEstEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -170,6 +173,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.SUD;
                 interieur = true;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnELVSudINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -183,6 +187,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.SUD;
                 interieur = false;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvSudEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -196,6 +201,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.OUEST;
                 interieur = true;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -210,6 +216,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.OUEST;
                 interieur = false;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -223,6 +230,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.NORD;
                 interieur = true;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -237,6 +245,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersCote();
                 direction = Utilitaire.Direction.NORD;
                 interieur = false;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -250,6 +259,7 @@ public class MainWindow {
                 gestionnaireSalle.ChangementDeVueVersPlan();
                 direction = null;
                 interieur = false;
+                updatePanels();
                 resetButtonView();
                 resetButtonAccessoires();
                 btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -365,11 +375,12 @@ public class MainWindow {
                                 break;
                             case Selection:
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
-                                updatePanels();
                                 break;
                         }
                     }
                 }
+
+                updatePanels();
                 mainPanel.validate();
                 mainPanel.repaint();
             }
@@ -423,25 +434,56 @@ public class MainWindow {
 
     private void updatePanels()
     {
+        propertiesPanel.removeAll();
+
         SalleDTO salleSelect = gestionnaireSalle.getSalleSelectionne();
         if(salleSelect != null)
         {
-            proprietesSalle.setVisible(true);
-            proprietesSalle.setValue("largeur", salleSelect.getLargeur().toString());
-            proprietesSalle.setValue("hauteur", salleSelect.getHauteur().toString());
-            proprietesSalle.setValue("profondeur", salleSelect.getProfondeur().toString());
-            proprietesSalle.setValue("epaisseurMur", salleSelect.getEpaisseurMurs().toString());
-            proprietesSalle.setValue("largeurPli", salleSelect.getLargeurPli().toString());
-            proprietesSalle.setValue("pliSoudure", salleSelect.getAnglePliSoudure() + "");
-            proprietesSalle.setValue("hauteurRetourAir", salleSelect.getHauteurRetourAir().toString());
-            proprietesSalle.setValue("positionRetourAir", salleSelect.getPositionRetourAir().toString());
-            proprietesSalle.setValue("hauteurTrouRetourAir", salleSelect.getHauteurTrouRetourAir().toString());
-            proprietesSalle.updateValues();
+            proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
+            proprietesSalle.addProperty("largeur", "LARGEUR :", salleSelect.getLargeur().toString(), false);
+            proprietesSalle.addProperty("profondeur", "PROFONDEUR :", salleSelect.getProfondeur().toString(), false);
+            proprietesSalle.addProperty("hauteur", "HAUTEUR :", salleSelect.getHauteur().toString(), false);
+            proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :", salleSelect.getEpaisseurMurs().toString(), false);
+            proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :", salleSelect.getLargeurPli().toString(), false);
+            proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :", salleSelect.getAnglePliSoudure() + "", false);
+            proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :", salleSelect.getHauteurRetourAir().toString(), false);
+            proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :", salleSelect.getPositionRetourAir().toString(), false);
+            proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :", salleSelect.getHauteurTrouRetourAir().toString(), false);
+            proprietesSalle.generateLayout();
+            propertiesPanel.add(proprietesSalle);
+
+            proprietesSalle.setOnChangeListener(values -> {
+                Imperial largeur = proprietesSalle.getImperial("largeur");
+                Imperial profondeur = proprietesSalle.getImperial("profondeur");
+                Imperial hauteur = proprietesSalle.getImperial("hauteur");
+                Imperial epaisseurMur = proprietesSalle.getImperial("epaisseurMur");
+                Imperial largeurPli = proprietesSalle.getImperial("largeurPli");
+                int pliSoudure = proprietesSalle.getInt("pliSoudure");
+                Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
+                Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
+                Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
+
+                if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
+                        pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
+                    return;
+
+                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
+
+                if(result == 0)
+                {
+                    mainPanel.validate();
+                    mainPanel.repaint();
+                }
+
+                proprietesSalle.setError("largeur", result == 1);
+                proprietesSalle.setError("profondeur", result == 2);
+                proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
+                proprietesSalle.setError("positionRetourAir", result == 4);
+                proprietesSalle.setError("hauteurRetourAir", result == 4);
+            });
         }
         else
         {
-            proprietesMur.setVisible(false);
-            proprietesSeparateur.setVisible(false);
             return;
         }
 
@@ -449,36 +491,88 @@ public class MainWindow {
         MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
         if(murSelect != null)
         {
-            proprietesMur.setVisible(true);
-
-            proprietesMur.removeProperty("largeurRetourAir");
+            proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 0);
+            proprietesMur.addProperty("x", "POSITION X :", murSelect.getX().toString(), true);
+            proprietesMur.addProperty("y", "POSITION Y :", "", true);
+            proprietesMur.addProperty("largeur", "LARGEUR :", "", true);
             if(murSelect.aRetourAir())
-            {
                 proprietesMur.addProperty("largeurRetourAir", "RETOUR AIR :", murSelect.getLargeurRetourAir().toString(), false);
-            }
-
             proprietesMur.generateLayout();
-            proprietesMur.validate();
-            proprietesMur.repaint();
+            propertiesPanel.add(proprietesMur);
+
+            proprietesMur.setOnChangeListener(values -> {
+                Imperial largeurRetourAir = proprietesMur.getImperial("largeurRetourAir");
+
+                if(largeurRetourAir != null)
+                {
+                    boolean result = gestionnaireSalle.editMurSelectionne(largeurRetourAir);
+
+                    proprietesMur.setError("largeurRetourAir", !result);
+                    mainPanel.validate();
+                    mainPanel.repaint();
+                }
+            });
 
             proprietesMur.setValue("x", murSelect.getX().toString());
             proprietesMur.setValue("y", murSelect.getY().toString());
             proprietesMur.setValue("largeur", murSelect.getLargeur().toString());
             proprietesMur.updateValues();
         }
-        else
-            proprietesMur.setVisible(false);
 
         SeparateurDTO sepSelect = gestionnaireSalle.getSeparateurSelectionne();
         if(sepSelect != null)
         {
-            proprietesSeparateur.setVisible(true);
-            proprietesSeparateur.setValue("pos", sepSelect.getPosition().toString());
-            proprietesSeparateur.setValue("posRel", sepSelect.getPositionRelative().toString());
-            proprietesSeparateur.updateValues();
+            proprietesSeparateur = new PanelProprietes("SÉPARATEUR", 100);
+            proprietesSeparateur.addProperty("pos", "POSITION :", sepSelect.getPosition().toString(), true);
+            proprietesSeparateur.addProperty("posRel", "SEP. PRÉCÉDENT :", sepSelect.getPositionRelative().toString(), false);
+            proprietesSeparateur.generateLayout();
+            propertiesPanel.add(proprietesSeparateur);
+
+            proprietesSeparateur.setOnChangeListener(values -> {
+
+                        Imperial posRel = proprietesSeparateur.getImperial("posRel");
+
+                        if (posRel != null && gestionnaireSalle.editSeparateurSelectionne(posRel)) {
+                            proprietesSeparateur.setError("posRel", false);
+                            SeparateurDTO newValue = gestionnaireSalle.getSeparateurSelectionne();
+                            proprietesSeparateur.setValue("pos", newValue.getPosition().toString());
+
+                            mainPanel.validate();
+                            mainPanel.repaint();
+                        } else
+                            proprietesSeparateur.setError("posRel", true);
+                    });
         }
-        else
-            proprietesSeparateur.setVisible(false);
+
+        AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
+        if (accessoireSelect != null)
+        {
+            proprietesAccessoire = new PanelProprietes("ACCESSOIRE", 100);
+            proprietesAccessoire.addProperty("x", "POS X :", accessoireSelect.getX().toString(), false);
+            if(accessoireSelect.getTypeAccessoire() != Utilitaire.AccessoireEnum.Porte)
+                proprietesAccessoire.addProperty("y", "POS Y :", accessoireSelect.getY().toString(), false);
+            proprietesAccessoire.addProperty("largeur", "LARGEUR :", accessoireSelect.getLargeur().toString(), false);
+            proprietesAccessoire.addProperty("hauteur", "HAUTEUR :", accessoireSelect.getHauteur().toString(), false);
+            if(accessoireSelect.getTypeAccessoire() == Utilitaire.AccessoireEnum.Fenetre)
+                proprietesAccessoire.addProperty("brodureFenetre", "BORDURE", accessoireSelect.getBordureFenetre().toString(), false);
+            proprietesAccessoire.generateLayout();
+            propertiesPanel.add(proprietesAccessoire);
+
+            proprietesAccessoire.setOnChangeListener(values -> {
+                Imperial x = proprietesAccessoire.getImperial("x");
+                Imperial y = proprietesAccessoire.getImperial("y");
+                Imperial largeur = proprietesAccessoire.getImperial("largeur");
+                Imperial hauteur = proprietesAccessoire.getImperial("hauteur");
+                Imperial bordure = proprietesAccessoire.getImperial("brodureFenetre");
+
+                int result = gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(x, y, hauteur, largeur, bordure, accessoireSelect.getTypeAccessoire()));
+                mainPanel.validate();
+                mainPanel.repaint();
+            });
+        }
+
+        propertiesPanel.validate();
+        propertiesPanel.repaint();
     }
     public void resetButtonView(){
         btnElvEstINT.setBorder(null);
@@ -587,93 +681,6 @@ public class MainWindow {
         propertiesScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         propertiesScroll.setPreferredSize(new Dimension(235, 0));
         rootPanel.add(propertiesScroll, BorderLayout.WEST);
-
-        proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
-        proprietesSalle.addProperty("largeur", "LARGEUR :");
-        proprietesSalle.addProperty("profondeur", "PROFONDEUR :");
-        proprietesSalle.addProperty("hauteur", "HAUTEUR :");
-        proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :");
-        proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :");
-        proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :");
-        proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :");
-        proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :");
-        proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :");
-        proprietesSalle.generateLayout();
-        propertiesPanel.add(proprietesSalle);
-
-        proprietesSalle.setOnChangeListener(values -> {
-            Imperial largeur = proprietesSalle.getImperial("largeur");
-            Imperial profondeur = proprietesSalle.getImperial("profondeur");
-            Imperial hauteur = proprietesSalle.getImperial("hauteur");
-            Imperial epaisseurMur = proprietesSalle.getImperial("epaisseurMur");
-            Imperial largeurPli = proprietesSalle.getImperial("largeurPli");
-            int pliSoudure = proprietesSalle.getInt("pliSoudure");
-            Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
-            Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
-            Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
-
-            if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
-                    pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
-                return;
-
-            int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
-
-            if(result == 0)
-            {
-                mainPanel.validate();
-                mainPanel.repaint();
-            }
-
-            proprietesSalle.setError("largeur", result == 1);
-            proprietesSalle.setError("profondeur", result == 2);
-            proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
-            proprietesSalle.setError("positionRetourAir", result == 4);
-            proprietesSalle.setError("hauteurRetourAir", result == 4);
-        });
-
-        proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 0);
-        proprietesMur.addProperty("x", "POSITION X :", "", true);
-        proprietesMur.addProperty("y", "POSITION Y :", "", true);
-        proprietesMur.addProperty("largeur", "LARGEUR :", "", true);
-        proprietesMur.generateLayout();
-        propertiesPanel.add(proprietesMur);
-
-        proprietesMur.setOnChangeListener(values -> {
-            Imperial largeurRetourAir = proprietesMur.getImperial("largeurRetourAir");
-
-            if(largeurRetourAir != null)
-            {
-                boolean result = gestionnaireSalle.editMurSelectionne(largeurRetourAir);
-
-                proprietesMur.setError("largeurRetourAir", !result);
-                mainPanel.validate();
-                mainPanel.repaint();
-            }
-        });
-
-        proprietesSeparateur = new PanelProprietes("SÉPARATEUR", 100);
-        proprietesSeparateur.addProperty("pos", "POSITION :", "", true);
-        proprietesSeparateur.addProperty("posRel", "SEP. PRÉCÉDENT :");
-        proprietesSeparateur.generateLayout();
-        propertiesPanel.add(proprietesSeparateur);
-
-        proprietesSeparateur.setOnChangeListener(values -> {
-
-            Imperial posRel = proprietesSeparateur.getImperial("posRel");
-
-            if(posRel != null && gestionnaireSalle.editSeparateurSelectionne(posRel))
-            {
-                proprietesSeparateur.setError("posRel", false);
-                SeparateurDTO newValue = gestionnaireSalle.getSeparateurSelectionne();
-                proprietesSeparateur.setValue("pos", newValue.getPosition().toString());
-
-                mainPanel.validate();
-                mainPanel.repaint();
-            }
-            else
-                proprietesSeparateur.setError("posRel", true);
-
-        });
 
         rightPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(rightPanel, BorderLayout.CENTER);

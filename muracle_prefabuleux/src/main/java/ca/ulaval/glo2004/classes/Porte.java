@@ -6,9 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Porte extends Accessoire implements Serializable {
-
-    Imperial largeur = new Imperial(38,0,0);
-    Imperial hauteur = new Imperial(88,0,0);
     Boolean perceInterieur = true;
     Boolean perceExterieur = false;
 
@@ -17,8 +14,8 @@ public class Porte extends Accessoire implements Serializable {
 
     public Porte(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, String mNom) {
         super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur);
-    this.largeur = mLargeur;
-    this.hauteur = mHauteur;
+    this.mLargeur = mLargeur;
+    this.mHauteur = mHauteur;
     this.perceInterieur = mPerceInterieur;
     this.perceExterieur = mPerceExtérieur;
     }
@@ -31,8 +28,8 @@ public class Porte extends Accessoire implements Serializable {
         Imperial x2;
         Imperial y2;
 
-        x2 = x1.add(largeur);
-        y2 = y1.add(hauteur.negative());
+        x2 = x1.add(mLargeur);
+        y2 = y1.add(mHauteur.negative());
 
         ArrayList<Polygone> portes = new ArrayList<>();
         portes.add(this.mPolygoneElevation = new Polygone(Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1)));
