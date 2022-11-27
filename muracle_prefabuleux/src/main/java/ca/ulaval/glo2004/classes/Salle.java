@@ -138,6 +138,14 @@ public class Salle implements Serializable {
                 if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
                 return false;
                 }
+                    ArrayList<Polygone> polygonesObstruant = cote.getPolygoneElevation(!interieur);
+                    for (int i = 0; i < cote.getAccessoires().size(); i++){
+                        polygonesObstruant.addAll(cote.getAccessoires().get(i).genererPolygoneELV(!interieur));
+                        polygonesObstruant.add(cote.getAccessoires().get(i).getmPolygoneElevation(interieur));}
+                    for (int ii=0; ii<polygonesObstruant.size(); ii++){
+                        if(polygonesObstruant.get(ii).PointEstDansPolygone(pointImperial))
+                            return false;
+                    }
                 }
 
                 if(!polygone.PointEstDansPolygone(pointImperial)){
