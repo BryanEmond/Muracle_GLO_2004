@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public abstract class Accessoire extends Element implements Serializable {
 
+    Cote cote;
     Mur mur;
     boolean mPerceExtérieur;
     boolean mPerceInterieur;
@@ -94,4 +95,11 @@ public abstract class Accessoire extends Element implements Serializable {
         this.mPolygoneElevation = mPolygoneElevation;
     }
 
+    public Cote getCote() {
+        return cote;
+    }
+
+    public void setCote(Cote cote) {
+        this.cote = cote;
+    }
 }

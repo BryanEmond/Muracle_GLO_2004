@@ -43,8 +43,8 @@ public class GestionnaireSalle {
         Mur mn2 = new Mur(salle, nord, new Imperial(0), new Imperial(48), new Imperial(48));
         Mur mn3 = new Mur(salle, nord, new Imperial(0), new Imperial(96), new Imperial(48));
 
-        Separateur sn1 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(48), nord, null);
-        Separateur sn2 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(96), nord, null);
+        Separateur sn1 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(48), nord);
+        Separateur sn2 = new Separateur(new Imperial(0), new Imperial(0), new Imperial(96), nord);
 
         nord.setSeparateurs(new ArrayList<>(Arrays.asList(sn1, sn2)));
         nord.setMurs(new ArrayList<>(Arrays.asList(mn1, mn2, mn3)));
@@ -331,34 +331,38 @@ public class GestionnaireSalle {
 
     public MurDTO getMurSelectionne()
     {
-        Mur mur = salleActive.getElementSelectionne();
-        if(mur == null)
+        Element element = salleActive.getElementSelectionne();
+
+        if(!(element instanceof Mur))
             return null;
 
+        Mur mur = (Mur) element;
         return new MurDTO(mur);
     }
 
     public boolean editMurSelectionne(Imperial largeurRetourAir)
     {
-        Mur mur = salleActive.getElementSelectionne();
-        if(mur == null)
+        Element element = salleActive.getElementSelectionne();
+        if(!(element instanceof Mur))
             return false;
+
+        Mur mur = (Mur) element;
 
         if(largeurRetourAir.getValue() > mur.getmLargeur().getValue() - 1)
             return false;
 
         mur.setLargeurRetourAir(largeurRetourAir);
-
         mur.genererPolygonePlanRetourAir();
         return true;
     }
 
     public SeparateurDTO getSeparateurSelectionne()
     {
-        Separateur separateur = salleActive.getElementSelectionne();
-        if(separateur == null)
+        Element element = salleActive.getElementSelectionne();
+        if(!(element instanceof Separateur))
             return null;
 
+        Separateur separateur = (Separateur) element;
         Separateur separateurPrec = separateur.getSeparateurPrecedent();
         Imperial position = separateur.getDistanceBordDeReference().clone();
         Imperial positionRelative;
@@ -373,10 +377,11 @@ public class GestionnaireSalle {
 
     public boolean editSeparateurSelectionne(Imperial posRelative)
     {
-        Separateur separateur = salleActive.getElementSelectionne();
-        if(separateur == null)
+        Element element = salleActive.getElementSelectionne();
+        if(!(element instanceof Separateur))
             return false;
 
+        Separateur separateur = (Separateur) element;
         Separateur sepPrec = separateur.getSeparateurPrecedent();
         Separateur sepSuivant = separateur.getSeparateurSuivant();
 

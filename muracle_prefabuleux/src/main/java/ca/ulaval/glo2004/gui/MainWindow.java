@@ -459,6 +459,8 @@ public class MainWindow {
             }
 
             proprietesMur.generateLayout();
+            proprietesMur.validate();
+            proprietesMur.repaint();
 
             proprietesMur.setValue("x", murSelect.getX().toString());
             proprietesMur.setValue("y", murSelect.getY().toString());

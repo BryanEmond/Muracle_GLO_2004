@@ -35,7 +35,7 @@ public class Salle implements Serializable {
         this.hauteurRetourAir = new Imperial(5);
         this.hauteurTrouRetourAir = new Imperial(4);
         this.positionRetourAir = new Imperial(5);
-        this.cotes = cotes;
+        setCotes(cotes);
     }
     public ArrayList<Polygone> polygonePlan(){
         return new ArrayList<Polygone>();
@@ -158,16 +158,22 @@ public class Salle implements Serializable {
 
 
     public void selectionPlan(PointImperial point, Utilitaire.Direction direction,boolean interieur){
-        if(getCote(Utilitaire.Direction.NORD).getMurs().size() >= 2)
-            ElementSelectionne = getCote(Utilitaire.Direction.NORD).getMurs().get(1);
+        for (Cote cote:cotes) {
 
-        /*for (Cote cote:cotes) {
+            for (Mur mur: cote.murs) {
+                //mur.genererPolygoneELV(interieur);
+                if(mur.mPolygonePlan.PointEstDansPolygone(point)){
+                    ElementSelectionne = mur;
+                }
+            }
+
             for (Separateur separateur: cote.separateurs) {
-                if(separateur.mPolygoneElevation.PointEstDansPolygone(point)){
+                separateur.genererPolygonePlan();
+                if(separateur.mPolygonePlan.PointEstDansPolygone(point)){
                     ElementSelectionne = separateur;
                 }
             }
-        }*/
+        }
     }
 
     public void selectionElevantion(PointImperial point, Utilitaire.Direction direction,boolean interieur){
@@ -177,13 +183,14 @@ public class Salle implements Serializable {
             return;
 
         for (Mur mur: cote.murs) {
-            //mur.genererPolygoneELV(interieur);
+            mur.genererPolygoneELV(!interieur);
             if(mur.polygonesElevation(interieur).PointEstDansPolygone(point)){
                 ElementSelectionne = mur;
             }
         }
 
         for (Separateur separateur: cote.separateurs) {
+            separateur.genererPolygoneELV(!interieur);
             if(separateur.mPolygoneElevation.PointEstDansPolygone(point)){
                 ElementSelectionne = separateur;
             }
@@ -372,6 +379,9 @@ public class Salle implements Serializable {
 
     public void setCotes(ArrayList<Cote> cotes) {
         this.cotes = cotes;
+
+        for(Cote cote : cotes)
+            cote.setmSalle(this);
     }
 
     public ArrayList<Polygone> getPolygonesPlan()
@@ -381,6 +391,25 @@ public class Salle implements Serializable {
         for (Cote cote : cotes)
         {
             polygones.addAll(cote.getPolygonesPlan());
+        }
+
+        if(ElementSelectionne instanceof Separateur)
+        {
+            Separateur sep = (Separateur) ElementSelectionne;
+
+            if(sep.getmCote().getDirection().estHorizontal())
+            {
+                Imperial x = sep.getmCote().getmX().add(sep.getDistanceBordDeReference());
+                Imperial y1 = sep.getmCote().getmY();
+                Imperial y2 = y1.add(sep.getmCote().getmSalle().getEpaisseurMurs());
+                polygones.add(new Polygone(Color.RED, new PointImperial(x, y1), new PointImperial(x, y2)));
+            }
+            else {
+                Imperial y = sep.getmCote().getmY().add(sep.getDistanceBordDeReference());
+                Imperial x1 = sep.getmCote().getmX();
+                Imperial x2 = x1.add(sep.getmCote().getmSalle().getEpaisseurMurs());
+                polygones.add(new Polygone(Color.RED, new PointImperial(x1, y), new PointImperial(x2, y)));
+            }
         }
 
         return polygones;
@@ -437,11 +466,8 @@ public class Salle implements Serializable {
         this.hauteurTrouRetourAir = hauteurTrouRetourAir;
     }
 
-    public <T extends Element>T getElementSelectionne()
+    public Element getElementSelectionne()
     {
-        if(ElementSelectionne == null)
-            return null;
-
-        return (T) ElementSelectionne;
+        return ElementSelectionne;
     }
 }
