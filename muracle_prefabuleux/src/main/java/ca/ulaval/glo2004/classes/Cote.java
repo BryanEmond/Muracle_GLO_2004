@@ -39,6 +39,7 @@ public class Cote extends Element implements Serializable {
 
     public void AjouterSeparateur(Separateur separateur) {
         separateurs.add(separateur);
+        Collections.sort(separateurs);
         separateur.setmCote(this);
     }
 
@@ -155,7 +156,7 @@ public class Cote extends Element implements Serializable {
         {
             Separateur sep = (Separateur) mSalle.ElementSelectionne;
 
-            Imperial x = sep.getmCote().getmX().add(sep.getDistanceBordDeReference());
+            Imperial x = sep.getDistanceBordDeReference();
 
             if(exterieur)
             {

@@ -319,16 +319,6 @@ public class MainWindow {
                 if(e.getButton() != MouseEvent.BUTTON1)
                     return;
 
-                System.out.println();
-                System.out.println("=========================");
-                System.out.println("X : " + e.getX());
-                System.out.println("Y : " + e.getY());
-                PointImperial point = Conversion.getConversion().trouverCoordonneImperial(e.getX(), e.getY());
-                System.out.println("IMP : " + point);
-                Point p = Conversion.getConversion().trouverCoordonneePixel(point.getmX(), point.getmY());
-                System.out.println("X : " + p.getX());
-                System.out.println("Y : " + p.getY());
-
                 if(AccessoireEnum != null){
                     if (direction != null) {
                         switch (AccessoireEnum){
