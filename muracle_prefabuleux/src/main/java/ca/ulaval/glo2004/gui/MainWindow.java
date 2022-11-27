@@ -458,6 +458,8 @@ public class MainWindow {
             }
 
             proprietesMur.generateLayout();
+            proprietesMur.validate();
+            proprietesMur.repaint();
 
             proprietesMur.setValue("x", murSelect.getX().toString());
             proprietesMur.setValue("y", murSelect.getY().toString());
@@ -641,7 +643,9 @@ public class MainWindow {
 
             if(largeurRetourAir != null)
             {
-                gestionnaireSalle.editMurSelectionne(largeurRetourAir);
+                boolean result = gestionnaireSalle.editMurSelectionne(largeurRetourAir);
+
+                proprietesMur.setError("largeurRetourAir", !result);
                 mainPanel.validate();
                 mainPanel.repaint();
             }

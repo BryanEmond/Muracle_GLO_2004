@@ -37,7 +37,10 @@ public class Cote extends Element implements Serializable {
         super.calculeDisposition();
     }
 
-    public void AjouterSeparateur(Separateur separateur) {separateurs.add(separateur);}
+    public void AjouterSeparateur(Separateur separateur) {
+        separateurs.add(separateur);
+        separateur.setmCote(this);
+    }
 
     public Polygone getmPolygonePlan() {
         return mPolygonePlan;
@@ -74,6 +77,9 @@ public class Cote extends Element implements Serializable {
 
     public void setAccessoires(ArrayList<Accessoire> accessoires) {
         this.accessoires = accessoires;
+
+        for (Accessoire accessoire : accessoires)
+            accessoire.setCote(this);
     }
 
     public ArrayList<Separateur> getSeparateurs() {
@@ -85,6 +91,9 @@ public class Cote extends Element implements Serializable {
     public void setSeparateurs(ArrayList<Separateur> separateurs) {
         Collections.sort(separateurs);
         this.separateurs = separateurs;
+
+        for(Separateur sep : separateurs)
+            sep.setmCote(this);
     }
 
     public Separateur getSeparateurPrecedent(Separateur separateur)
@@ -140,6 +149,25 @@ public class Cote extends Element implements Serializable {
                 murs.get(i).genererPolygoneRetourAirELV(exterieur);
                 polygones.add(murs.get(i).mPolygoneElevationRetourAir);
             }
+        }
+
+        if(mSalle.ElementSelectionne instanceof Separateur)
+        {
+            Separateur sep = (Separateur) mSalle.ElementSelectionne;
+
+            Imperial x = sep.getmCote().getmX().add(sep.getDistanceBordDeReference());
+
+            if(exterieur)
+            {
+                if(getDirection().estHorizontal())
+                    x = x.substract(mSalle.getLargeur()).abs();
+                else
+                    x = x.substract(mSalle.getProfondeur()).abs();
+            }
+
+            Imperial y1 = new Imperial(0);
+            Imperial y2 = mSalle.getHauteur();
+            polygones.add(new Polygone(Color.RED, new PointImperial(x, y1), new PointImperial(x, y2)));
         }
 
         return polygones;

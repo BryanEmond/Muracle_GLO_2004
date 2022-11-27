@@ -128,7 +128,8 @@ public class PanelProprietes extends JPanel
     {
         for(int i = 0; i < properties.size(); i++)
         {
-            if(properties.get(0).name.equalsIgnoreCase(name))
+            String testName = properties.get(i).name;
+            if(testName.equalsIgnoreCase(name))
             {
                 properties.remove(i);
             }

@@ -23,10 +23,10 @@ public class AfficheurElevationCote extends Afficheur{
 
         ArrayList<Polygone> polygones = cote.getPolygoneElevation(exterieur);
         for (int i = 0; i < cote.getAccessoires().size(); i++){
-            if (!exterieur)
-            {
+            //if (!exterieur)
+            //{
                 polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
-            }
+            //}
         //TODO penser a gérer l'affichage de prise et de retourd'air ne doivent pas s'afficher dehors
         }
 
