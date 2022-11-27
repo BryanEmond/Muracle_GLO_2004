@@ -8,7 +8,6 @@ import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class GestionnaireSalle {
 
@@ -65,7 +64,8 @@ public class GestionnaireSalle {
             cote.setmSalle(salle);
         }
 
-        this.mMurCourant = mn1;
+        mn2.setRetourAir(true);
+        this.mMurCourant = mn2;
         this.mSeparateur = sn2;
     }
 
@@ -110,8 +110,13 @@ public class GestionnaireSalle {
         salleActive.AjouterPriseElectrique(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void AjouterRetourAir(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterRetourAir(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public void AjouterRetourAirPlan(int pixelX, int pixelY)
+    {
+        salleActive.AjouterRetourAirPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+    }
+
+    public void AjouterRetourAirElevation(int pixelX, int pixelY, Utilitaire.Direction direction, boolean interieur ){
+        salleActive.AjouterRetourAirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void AjouterFenetre(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
@@ -129,18 +134,22 @@ public class GestionnaireSalle {
         Cote oldOuest = salleActive.getCote(Utilitaire.Direction.OUEST);
 
         Cote nord = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.NORD);
+        nord.setMurs(oldNord.getMurs());
         nord.setAccessoires(oldNord.getAccessoires());
         nord.setSeparateurs(oldNord.getSeparateurs());
 
         Cote est = new Cote(new Imperial(0), xCoteEst, new Imperial(0), Utilitaire.Direction.EST);
+        est.setMurs(oldEst.getMurs());
         est.setAccessoires(oldEst.getAccessoires());
         est.setSeparateurs(oldEst.getSeparateurs());
 
         Cote sud = new Cote(yCoteSud, new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
+        sud.setMurs(oldSud.getMurs());
         sud.setAccessoires(oldSud.getAccessoires());
         sud.setSeparateurs(oldSud.getSeparateurs());
 
         Cote ouest = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
+        ouest.setMurs(oldOuest.getMurs());
         ouest.setAccessoires(oldOuest.getAccessoires());
         ouest.setSeparateurs(oldOuest.getSeparateurs());
 
@@ -149,6 +158,7 @@ public class GestionnaireSalle {
         {
             cote.setMurs(updateMurs(cote.getDirection()));
         }
+
     }
 
     public ArrayList<Mur> updateMurs(Utilitaire.Direction direction){
@@ -156,6 +166,7 @@ public class GestionnaireSalle {
         ArrayList<Separateur> listSep = this.salleActive.getCote(direction).getSeparateurs();
         Salle salle = this.salleActive;
         Cote cote = salleActive.getCote(direction);
+        ArrayList<Mur> oldMurs = new ArrayList<>(cote.getMurs());
 
         if(listSep.size() == 0)
         {
@@ -215,7 +226,18 @@ public class GestionnaireSalle {
 
                 murs.add(new Mur(salle, cote, y, x, largeur));
             }
+
+            if(i < oldMurs.size())
+            {
+                Mur oldMur = oldMurs.get(i);
+                Mur newMur = murs.get(i);
+
+                newMur.setRetourAir(oldMur.aRetourAir());
+                newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+            }
+
         }
+
         return murs;
     }
     public void chargerSalle(String path)
@@ -286,6 +308,9 @@ public class GestionnaireSalle {
         this.salleActive.setEpaisseurMurs(salle.getEpaisseurMurs());
         this.salleActive.setAnglePliSoudure(salle.getAnglePliSoudure());
         this.salleActive.setLargeurPliSoudure(salle.getLargeurPli());
+        this.salleActive.setHauteurRetourAir(salle.getHauteurRetourAir());
+        this.salleActive.setPositionRetourAir(salle.getPositionRetourAir());
+        this.salleActive.setHauteurTrouRetourAir(salle.getHauteurTrouRetourAir());
 
         updateSalle();
         return 0;
@@ -299,15 +324,14 @@ public class GestionnaireSalle {
         return new MurDTO(this.mMurCourant);
     }
 
-    public void editMurSelectionne(Imperial largeur)
+    public boolean editMurSelectionne(Imperial largeurRetourAir)
     {
-        //this.mMurCourant.setmX(x);
-        //this.mMurCourant.setmY(y);
-        if(this.mMurCourant != null)
-        {
-            this.mMurCourant.setmLargeur(largeur);
-            System.out.println("Mur modifier à : " + largeur);
-        }
+        if(this.mMurCourant == null)
+            return false;
+
+        mMurCourant.setLargeurRetourAir(largeurRetourAir);
+        mMurCourant.genererPolygonePlanRetourAir();
+        return true;
     }
 
     public SeparateurDTO getSeparateurSelectionne()
@@ -370,8 +394,6 @@ public class GestionnaireSalle {
     {
         this.mSalle.separateur(point);
     }*/
-
-
 
     public void quitter()
     {

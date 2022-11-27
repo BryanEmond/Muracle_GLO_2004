@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.util.Locale;
-import java.util.Objects;
 
 public class MainWindow {
     public JPanel rootPanel;
@@ -90,12 +89,12 @@ public class MainWindow {
                 JFileChooser fc = new JFileChooser();
                 fc.setSelectedFile(new File("sale.ser"));
                 int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
-                if(returnFcVal == JFileChooser.APPROVE_OPTION){
-                    try{
+                if (returnFcVal == JFileChooser.APPROVE_OPTION) {
+                    try {
                         File file = fc.getSelectedFile();
                         setHomePage(e);
                         mainWindow.gestionnaireSalle.enregistrerSalle(file.getPath());
-                    }catch (Exception error){
+                    } catch (Exception error) {
                         System.out.println(error);
                     }
                 }
@@ -108,12 +107,12 @@ public class MainWindow {
                 mainWindow = new MainWindow(gestionnaireSalle);
                 JFileChooser fc = new JFileChooser("d:");
                 int returnFcVal = fc.showOpenDialog(rootPanel.getParent());
-                if(returnFcVal == JFileChooser.APPROVE_OPTION){
-                    try{
+                if (returnFcVal == JFileChooser.APPROVE_OPTION) {
+                    try {
                         File file = fc.getSelectedFile();
                         setHomePage(e);
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
-                    }catch (Exception error){
+                    } catch (Exception error) {
                         System.out.println(error);
                     }
                 }
@@ -127,7 +126,7 @@ public class MainWindow {
         });
         this.$$$getRootComponent$$$().registerKeyboardAction((ActionListener) e -> {
             gestionnaireSalle.enregistrerSalle(null);
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK),JComponent.WHEN_IN_FOCUSED_WINDOW);
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         this.mainPanel.addMouseWheelListener(e -> {
             gestionnaireSalle.zoomer(-e.getWheelRotation(), e.getX(), e.getY());
@@ -309,7 +308,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case RetourAir:
-                                gestionnaireSalle.AjouterRetourAir(e.getX(), e.getY(),direction,interieur);
+                                gestionnaireSalle.AjouterRetourAirElevation(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case Supprimer:
                                 gestionnaireSalle.Supprimer(e.getX(), e.getY(),direction,interieur);
@@ -328,7 +327,19 @@ public class MainWindow {
                         }
                     }
                     else{
-                        gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
+
+                        switch (AccessoireEnum){
+                            case RetourAir:
+                                gestionnaireSalle.AjouterRetourAirPlan(e.getX(), e.getY());
+                                break;
+                            case Separateur:
+                                gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
+                                break;
+                            default:
+                                gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),direction,interieur);
+                        }
+
+
                     }
                 }
                 mainPanel.validate();
@@ -336,7 +347,7 @@ public class MainWindow {
             }
         });
 
-        MouseAdapter mouvementCameraAdapter =new MouseAdapter() {
+        MouseAdapter mouvementCameraAdapter = new MouseAdapter() {
 
             Point lastPoint = null;
 
@@ -344,18 +355,17 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
 
-                if(e.getButton() == MouseEvent.BUTTON2)
-                {
+                if (e.getButton() == MouseEvent.BUTTON2) {
                     lastPoint = e.getPoint();
                 }
 
             }
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
 
-                if(e.getButton() == MouseEvent.BUTTON2)
-                {
+                if (e.getButton() == MouseEvent.BUTTON2) {
                     lastPoint = null;
                 }
             }
@@ -365,8 +375,7 @@ public class MainWindow {
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
 
-                if(lastPoint != null)
-                {
+                if (lastPoint != null) {
                     Point point = e.getPoint();
                     int offsetX = point.x - lastPoint.x;
                     int offsetY = point.y - lastPoint.y;
@@ -381,35 +390,60 @@ public class MainWindow {
 
         this.mainPanel.addMouseListener(mouvementCameraAdapter);
         this.mainPanel.addMouseMotionListener(mouvementCameraAdapter);
+        updatePanels();
+    }
 
+        private void updatePanels()
+        {
         SalleDTO salleSelect = gestionnaireSalle.getSalleSelectionne();
         if(salleSelect != null)
         {
+            proprietesSalle.setEnabled(true);
             proprietesSalle.setValue("largeur", salleSelect.getLargeur().toString());
             proprietesSalle.setValue("hauteur", salleSelect.getHauteur().toString());
             proprietesSalle.setValue("profondeur", salleSelect.getProfondeur().toString());
             proprietesSalle.setValue("epaisseurMur", salleSelect.getEpaisseurMurs().toString());
             proprietesSalle.setValue("largeurPli", salleSelect.getLargeurPli().toString());
             proprietesSalle.setValue("pliSoudure", salleSelect.getAnglePliSoudure() + "");
+            proprietesSalle.setValue("hauteurRetourAir", salleSelect.getHauteurRetourAir().toString());
+            proprietesSalle.setValue("positionRetourAir", salleSelect.getPositionRetourAir().toString());
+            proprietesSalle.setValue("hauteurTrouRetourAir", salleSelect.getHauteurTrouRetourAir().toString());
             proprietesSalle.updateValues();
         }
+        else
+            proprietesSalle.setEnabled(false);
 
         MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
         if(murSelect != null)
         {
+            proprietesMur.setEnabled(true);
+
+            proprietesMur.removeProperty("largeurRetourAir");
+            if(murSelect.aRetourAir())
+            {
+                proprietesMur.addProperty("largeurRetourAir", "RETOUR AIR :", murSelect.getLargeurRetourAir().toString(), false);
+            }
+
+            proprietesMur.generateLayout();
+
             proprietesMur.setValue("x", murSelect.getX().toString());
             proprietesMur.setValue("y", murSelect.getY().toString());
             proprietesMur.setValue("largeur", murSelect.getLargeur().toString());
             proprietesMur.updateValues();
         }
+        else
+            proprietesMur.setEnabled(false);
 
         SeparateurDTO sepSelect = gestionnaireSalle.getSeparateurSelectionne();
         if(sepSelect != null)
         {
+            proprietesSeparateur.setEnabled(true);
             proprietesSeparateur.setValue("pos", sepSelect.getPosition().toString());
             proprietesSeparateur.setValue("posRel", sepSelect.getPositionRelative().toString());
             proprietesSeparateur.updateValues();
         }
+        else
+            proprietesSeparateur.setEnabled(false);
     }
     public void resetButtonView(){
         btnElvEstINT.setBorder(null);
@@ -511,13 +545,16 @@ public class MainWindow {
         propertiesScroll.setPreferredSize(new Dimension(235, 0));
         rootPanel.add(propertiesScroll, BorderLayout.WEST);
 
-        proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 0);
+        proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
         proprietesSalle.addProperty("largeur", "LARGEUR :");
         proprietesSalle.addProperty("profondeur", "PROFONDEUR :");
         proprietesSalle.addProperty("hauteur", "HAUTEUR :");
         proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :");
         proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :");
         proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :");
+        proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :");
+        proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :");
+        proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :");
         proprietesSalle.generateLayout();
         propertiesPanel.add(proprietesSalle);
 
@@ -528,11 +565,15 @@ public class MainWindow {
             Imperial epaisseurMur = proprietesSalle.getImperial("epaisseurMur");
             Imperial largeurPli = proprietesSalle.getImperial("largeurPli");
             int pliSoudure = proprietesSalle.getInt("pliSoudure");
+            Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
+            Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
+            Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
 
-            if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null || pliSoudure == -1)
+            if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
+                    pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
                 return;
 
-            int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure));
+            int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
 
             if(result == 0)
             {
@@ -550,6 +591,17 @@ public class MainWindow {
         proprietesMur.addProperty("largeur", "LARGEUR :", "", true);
         proprietesMur.generateLayout();
         propertiesPanel.add(proprietesMur);
+
+        proprietesMur.setOnChangeListener(values -> {
+            Imperial largeurRetourAir = proprietesMur.getImperial("largeurRetourAir");
+
+            if(largeurRetourAir != null)
+            {
+                gestionnaireSalle.editMurSelectionne(largeurRetourAir);
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+        });
 
         proprietesSeparateur = new PanelProprietes("SÉPARATEUR", 100);
         proprietesSeparateur.addProperty("pos", "POSITION :", "", true);

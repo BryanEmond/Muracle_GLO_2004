@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.Console;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -24,12 +25,20 @@ public class Mur extends Element implements Serializable {
 
     Imperial mLargeur;
 
+    boolean retourAir;
+    Imperial largeurRetourAir;
+    Polygone mPolygoneElevationRetourAir;
+    Polygone mPolygonePlanRetourAir;
+
     public Mur(Salle mSalle, Cote mCote, Imperial y, Imperial x, Imperial largeur) {
         super(y, x);
         this.mLargeur = largeur;
 
         this.mCote = mCote;
         this.mSalle = mSalle;
+
+        this.retourAir = false;
+        this.largeurRetourAir = new Imperial(15);
 
         //genererPolygonePlan();
         //genererPolygoneELV(this.getExterieur());
@@ -43,6 +52,18 @@ public class Mur extends Element implements Serializable {
         this.mLargeur = mLargeur;
     }
 
+
+    public ArrayList<Double> getPolygonePlanCoins()
+    {
+        return mPolygonePlan.getCoinsDouble();
+    }
+
+    public boolean PointEstDansMur(PointImperial point) {
+        ArrayList<Double> coins = getPolygonePlanCoins();
+
+        return point.mX.getFormeNormal() >= coins.get(0) && point.mX.getFormeNormal() <= coins.get(1) &&
+                point.mY.getFormeNormal() >= coins.get(2) && point.mY.getFormeNormal() <= coins.get(3);
+    }
 
     public void calculerDisposition() {
 
@@ -86,6 +107,13 @@ public class Mur extends Element implements Serializable {
         // TODO méthode dans accessoires pour determiner zone par rapport point
 
         return null;
+    }
+
+    public void genererPolygones()
+    {
+        genererPolygonePlan();
+        genererPolygonePlanRetourAir();
+        //genererPolygoneELV(exterieur);
     }
 
     public void genererPolygonePlan()
@@ -145,6 +173,40 @@ public class Mur extends Element implements Serializable {
 
         this.mPolygonePlan = new Polygone(Color.BLACK, p1, p2, p3, p4);
     }
+
+    public void genererPolygonePlanRetourAir()
+    {
+        Imperial x1, x2, y1, y2;
+
+        if(mCote.getDirection().estHorizontal())
+        {
+            Imperial xCentre = super.mX.add(mLargeur.divide(2));
+            Imperial yCentre = super.mY.add(mSalle.getEpaisseurMurs().divide(2));
+
+            x1 = xCentre.substract(largeurRetourAir.divide(2));
+            x2 = x1.add(largeurRetourAir);
+            y1 = yCentre.substract(mSalle.getHauteurTrouRetourAir().divide(2));
+            y2 = y1.add(mSalle.getHauteurTrouRetourAir());
+        }
+        else
+        {
+            Imperial xCentre = super.mX.add(mSalle.getEpaisseurMurs().divide(2));
+            Imperial yCentre = super.mY.add(mLargeur.divide(2));
+
+            x1 = xCentre.substract(mSalle.getHauteurTrouRetourAir().divide(2));
+            x2 = x1.add(mSalle.getHauteurTrouRetourAir());
+            y1 = yCentre.substract(largeurRetourAir.divide(2));
+            y2 = y1.add(largeurRetourAir);
+        }
+
+        PointImperial p1 = new PointImperial(x1, y1);
+        PointImperial p2 = new PointImperial(x1, y2);
+        PointImperial p3 = new PointImperial(x2, y2);
+        PointImperial p4 = new PointImperial(x2, y1);
+
+        this.mPolygonePlanRetourAir = new Polygone(Color.BLACK, p1, p2, p3, p4);
+    }
+
 
     public void genererPolygoneELV(boolean exterieur){
         Imperial x1;
@@ -225,9 +287,24 @@ public class Mur extends Element implements Serializable {
     public void setExterieur(boolean exterieur) {
         this.exterieur = exterieur;
     }
+    public boolean aRetourAir() {
+        return retourAir;
+    }
 
-    public boolean getExterieur(){
+    public boolean getExterieur() {
         return this.exterieur;
+    }
+
+    public void setRetourAir(boolean retourAir) {
+        this.retourAir = retourAir;
+    }
+
+    public Imperial getLargeurRetourAir() {
+        return largeurRetourAir;
+    }
+
+    public void setLargeurRetourAir(Imperial largeurRetourAir) {
+        this.largeurRetourAir = largeurRetourAir;
     }
 }
 

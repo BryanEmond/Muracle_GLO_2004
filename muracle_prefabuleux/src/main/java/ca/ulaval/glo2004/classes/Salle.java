@@ -17,6 +17,12 @@ public class Salle implements Serializable {
 
     int anglePliSoudure;
 
+    Imperial hauteurRetourAir;
+
+    Imperial positionRetourAir;
+
+    Imperial hauteurTrouRetourAir;
+
     ArrayList<Cote> cotes;
 
     public Salle(ArrayList<Cote> cotes) {
@@ -26,6 +32,9 @@ public class Salle implements Serializable {
         this.profondeur = new Imperial(144,0,1);
         this.largeurPliSoudure = new Imperial(1,0,1);
         this.anglePliSoudure = 45;
+        this.hauteurRetourAir = new Imperial(5);
+        this.hauteurTrouRetourAir = new Imperial(4);
+        this.positionRetourAir = new Imperial(5);
         this.cotes = cotes;
     }
     public ArrayList<Polygone> polygonePlan(){
@@ -126,14 +135,38 @@ public class Salle implements Serializable {
         return  false;
     }
 
-    public void AjouterRetourAir(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+    public boolean AjouterRetourAirPlan(PointImperial point)
+    {
+        Mur mur = getMurCliquePlan(point);
+        if(mur != null)
+        {
+            mur.setRetourAir(!mur.aRetourAir());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean AjouterRetourAirElevation(PointImperial point, Utilitaire.Direction direction, boolean interieur){
         // Mur ?
+        Cote cote = getCote(direction);
+        if(cote.PointEstDansCote(point)){
+
+            Mur mur = getMurCliqueElevation(cote, point, interieur);
+            if(mur != null)
+            {
+                mur.setRetourAir(!mur.aRetourAir());
+                return true;
+            }
+        }
+        return  false;
     }
 
 
     public void selection(PointImperial point, Utilitaire.Direction direction,boolean interieur){
 
         Cote cote = getCote(direction);
+        if(cote == null)
+            return;
 
         for (Mur mur: cote.murs) {
             //mur.genererPolygoneELV(interieur);
@@ -148,6 +181,20 @@ public class Salle implements Serializable {
                 ElementSelectionne = accessoire;
             }
         }
+    }
+
+    public Mur getMurCliquePlan(PointImperial point)
+    {
+        for(Cote cote : getCotes())
+        {
+            for(Mur mur : cote.getMurs())
+            {
+                if(mur.PointEstDansMur(point))
+                    return mur;
+            }
+        }
+
+        return null;
     }
 
     public ArrayList<Polygone> polygonesElevation(){
@@ -248,6 +295,19 @@ public class Salle implements Serializable {
         return null;
     }
 
+    private Mur getMurCliqueElevation(Cote cote, PointImperial point,boolean interieur)
+    {
+        for(Mur mur : cote.getMurs())
+        {
+            if(mur.polygonesElevation(interieur).PointEstDansPolygone(point))
+            {
+                return mur;
+            }
+        }
+
+        return null;
+    }
+
     public Imperial getEpaisseurMurs() {
         return epaisseurMurs;
     }
@@ -325,5 +385,29 @@ public class Salle implements Serializable {
 
     public void setAnglePliSoudure(int anglePliSoudure) {
         this.anglePliSoudure = anglePliSoudure;
+    }
+
+    public Imperial getHauteurRetourAir() {
+        return hauteurRetourAir;
+    }
+
+    public void setHauteurRetourAir(Imperial hauteurRetourAir) {
+        this.hauteurRetourAir = hauteurRetourAir;
+    }
+
+    public Imperial getPositionRetourAir() {
+        return positionRetourAir;
+    }
+
+    public void setPositionRetourAir(Imperial positionRetourAir) {
+        this.positionRetourAir = positionRetourAir;
+    }
+
+    public Imperial getHauteurTrouRetourAir() {
+        return hauteurTrouRetourAir;
+    }
+
+    public void setHauteurTrouRetourAir(Imperial hauteurTrouRetourAir) {
+        this.hauteurTrouRetourAir = hauteurTrouRetourAir;
     }
 }

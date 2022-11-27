@@ -9,15 +9,20 @@ public class MurDTO {
     private Imperial y;
     private Imperial largeur;
 
+    private boolean retourAir;
+    private Imperial largeurRetourAir;
+
     public MurDTO(Mur mur)
     {
-        this(mur.getmX().clone(), mur.getmY().clone(), mur.getmLargeur().clone());
+        this(mur.getmX().clone(), mur.getmY().clone(), mur.getmLargeur().clone(), mur.aRetourAir(), mur.getLargeurRetourAir().clone());
     }
 
-    public MurDTO(Imperial x, Imperial y, Imperial largeur) {
+    public MurDTO(Imperial x, Imperial y, Imperial largeur, boolean retourAir, Imperial largeurRetourAir) {
         this.x = x;
         this.y = y;
         this.largeur = largeur;
+        this.retourAir = retourAir;
+        this.largeurRetourAir = largeurRetourAir;
     }
 
     public Imperial getX() {
@@ -32,4 +37,11 @@ public class MurDTO {
         return largeur;
     }
 
+    public boolean aRetourAir() {
+        return retourAir;
+    }
+
+    public Imperial getLargeurRetourAir() {
+        return largeurRetourAir;
+    }
 }
