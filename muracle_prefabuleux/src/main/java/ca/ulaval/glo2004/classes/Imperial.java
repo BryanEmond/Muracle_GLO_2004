@@ -89,9 +89,9 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return other.entier == entier && newNumerateur1 == newNumerateur2;
     }
 
-    public long getValue()
+    public double getValue()
     {
-        return entier + ((long)numerateur / denominateur);
+        return entier + ((double)numerateur / denominateur);
     }
 
     /***

@@ -323,28 +323,29 @@ public class Salle implements Serializable {
         if(cote.PointEstDansCoteElevation(point)){
             Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
             if(polygone != null){
-                    if(!cote.PointSeparateurEstSurAccessoire(point.mX)){
-                        Mur mur = getMurCliqueElevation(cote,point,interieur);
+                if(!cote.PointSeparateurEstSurAccessoire(point.mX)) {
+                    Mur mur = getMurCliqueElevation(cote, point, interieur);
 
-                        if(mur.retourAir && mur.mPolygoneElevationRetourAir.SeparateurEstDansPolygoneNordSud(point)){
-                            return;
-                        }
-
-                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                        points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
-                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-                        points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-
-                        Imperial distanceBord = point.getmX();
-                        if(!interieur)
-                        {
-                            if(direction.estHorizontal())
-                                distanceBord = distanceBord.substract(largeur).abs();
-                            else
-                                distanceBord = distanceBord.substract(profondeur).abs();
-                        }
-                        cote.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points)));
+                    if (mur.retourAir && mur.mPolygoneElevationRetourAir.SeparateurEstDansPolygoneNordSud(point)) {
+                        return;
                     }
+
+                    points.add(new PointImperial(point.mX, polygone.points.get(0).mY));
+                    points.add(new PointImperial(point.mX, polygone.points.get(0).mY));
+                    points.add(new PointImperial(point.mX, polygone.points.get(2).mY));
+                    points.add(new PointImperial(point.mX, polygone.points.get(2).mY));
+
+                    Imperial distanceBord = point.getmX();
+                    if (!interieur) {
+                        if (direction.estHorizontal()){
+                            distanceBord = distanceBord.substract(largeur).abs();
+                        }
+                        else{
+                            distanceBord = distanceBord.substract(profondeur).abs();
+                        }
+                    }
+                    cote.AjouterSeparateur(new Separateur(point.mY, point.mX, distanceBord, cote, new Polygone(Color.BLACK, points)));
+                }
             }
         }
     }
@@ -359,8 +360,6 @@ public class Salle implements Serializable {
             if(var.PointEstDansCote(point)){
                 Polygone polygone = getPolygoneMurPlan(var,point);
                 Mur mur = getMurCliquePlan(point);
-
-
 
                 if (polygone == null){
                     return null;
@@ -377,10 +376,13 @@ public class Salle implements Serializable {
                         points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
                         points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
                         points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
-                        Imperial distanceBord = point.getmX();//.substract(var.getPremierMur().getmX());
+                        Imperial distanceBord = point.getmX();
                         direction = var.mDirection;
-                        var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
-                        return direction;
+                        if(epaisseurMurs.getValue() < distanceBord.getValue() && largeur.substract(epaisseurMurs).getValue() > distanceBord.getValue() ){
+                            var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
+                            return direction;
+                        }
+                        return null;
                     }
                 }else {
                     if(mur.retourAir && mur.mPolygonePlanRetourAir.SeparateurEstDansPolygonesEstOuest(point)){
@@ -392,10 +394,13 @@ public class Salle implements Serializable {
                         points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
                         points.add(new PointImperial(point.mY, polygone.points.get(1).mX));
                         points.add(new PointImperial(point.mY, polygone.points.get(1).mX));
-                        Imperial distanceBord = point.getmY();//.substract(var.getPremierMur().getmY());
+                        Imperial distanceBord = point.getmY();
                         direction = var.mDirection;
-                        var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
-                        return direction;
+                        if(epaisseurMurs.getValue() < distanceBord.getValue() && profondeur.substract(epaisseurMurs).getValue() > distanceBord.getValue()){
+                            var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
+                            return direction;
+                        }
+                        return null;
                     }
                 }
             };
