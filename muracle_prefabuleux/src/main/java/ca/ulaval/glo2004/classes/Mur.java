@@ -172,7 +172,7 @@ public class Mur extends Element implements Serializable {
         }
 
         boolean selectionne = this.mSalle.ElementSelectionne == this;
-        this.mPolygonePlan = new Polygone(selectionne ? Color.RED : Color.BLACK, p1, p2, p3, p4);
+        this.mPolygonePlan = new Polygone(selectionne ? Color.BLUE : Color.BLACK, p1, p2, p3, p4);
     }
 
     public void genererPolygonePlanRetourAir()
@@ -206,7 +206,7 @@ public class Mur extends Element implements Serializable {
         PointImperial p4 = new PointImperial(x2, y1);
 
         boolean selectionne = this.mSalle.ElementSelectionne == this;
-        this.mPolygonePlanRetourAir = new Polygone(selectionne ? Color.RED : Color.BLACK, p1, p2, p3, p4);
+        this.mPolygonePlanRetourAir = new Polygone(selectionne ? Color.BLUE : Color.BLACK, p1, p2, p3, p4);
     }
 
     public void genererPolygoneELV(boolean exterieur) {
@@ -278,7 +278,7 @@ public class Mur extends Element implements Serializable {
         }
 
         boolean selectionne = this.mSalle.ElementSelectionne == this;
-        this.mPolygoneElevation = new Polygone(selectionne ? Color.RED : Color.BLACK, new PointImperial(x1,y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
+        this.mPolygoneElevation = new Polygone(selectionne ? Color.BLUE : Color.BLACK, new PointImperial(x1,y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
     }
 
     public void genererPolygoneRetourAirELV(boolean exterieur) {
@@ -315,7 +315,7 @@ public class Mur extends Element implements Serializable {
         PointImperial p4 = new PointImperial(x2, y1);
 
         boolean selectionne = this.mSalle.ElementSelectionne == this;
-        this.mPolygoneElevationRetourAir = new Polygone(selectionne ? Color.RED : Color.BLACK, p1, p2, p3, p4);
+        this.mPolygoneElevationRetourAir = new Polygone(selectionne ? Color.BLUE : Color.BLACK, p1, p2, p3, p4);
     }
 
     public ArrayList<Polygone> getPolygoneAccessoires(){

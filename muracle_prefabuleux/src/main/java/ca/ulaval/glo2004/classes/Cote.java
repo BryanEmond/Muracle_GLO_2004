@@ -145,7 +145,7 @@ public class Cote extends Element implements Serializable {
             murs.get(i).genererPolygoneELV(exterieur);
             polygones.add((murs.get(i).mPolygoneElevation));
 
-            if(murs.get(i).aRetourAir())
+            if(murs.get(i).aRetourAir() && !exterieur)
             {
                 murs.get(i).genererPolygoneRetourAirELV(exterieur);
                 polygones.add(murs.get(i).mPolygoneElevationRetourAir);
@@ -168,7 +168,7 @@ public class Cote extends Element implements Serializable {
 
             Imperial y1 = new Imperial(0);
             Imperial y2 = mSalle.getHauteur();
-            polygones.add(new Polygone(Color.RED, new PointImperial(x, y1), new PointImperial(x, y2)));
+            polygones.add(new Polygone(Color.BLUE, new PointImperial(x, y1), new PointImperial(x, y2)));
         }
 
         return polygones;

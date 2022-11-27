@@ -82,6 +82,7 @@ public class Salle implements Serializable {
             }
 
             cote.accessoires.add(fenetre);
+            ElementSelectionne = fenetre;
             return  true;
         }
         return  false;
@@ -119,6 +120,7 @@ public class Salle implements Serializable {
                 }
             }
             cote.accessoires.add(porte);
+            ElementSelectionne = porte;
             return  true;}
         return  false;     }
 
@@ -198,6 +200,7 @@ public class Salle implements Serializable {
             }
 
             cote.accessoires.add(prisesElectrique);
+            ElementSelectionne = prisesElectrique;
             return  true;
         }
         return  false;
@@ -209,6 +212,7 @@ public class Salle implements Serializable {
         if(mur != null)
         {
             mur.setRetourAir(!mur.aRetourAir());
+            ElementSelectionne = mur;
             return true;
         }
         return false;
@@ -221,6 +225,7 @@ public class Salle implements Serializable {
         if(mur != null)
         {
             mur.setRetourAir(!mur.aRetourAir());
+            ElementSelectionne = mur;
             return true;
         }
         return  false;
@@ -319,7 +324,9 @@ public class Salle implements Serializable {
                             else
                                 distanceBord = distanceBord.substract(profondeur).abs();
                         }
-                        cote.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points)));
+                        Separateur separateur = new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points));
+                        cote.AjouterSeparateur(separateur);
+                        ElementSelectionne = separateur;
                     }
             }
         }
@@ -355,7 +362,9 @@ public class Salle implements Serializable {
                         points.add(new PointImperial(point.mX,polygone.points.get(2).mY));
                         Imperial distanceBord = point.getmX();//.substract(var.getPremierMur().getmX());
                         direction = var.mDirection;
-                        var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
+                        Separateur separateur = new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points));
+                        var.AjouterSeparateur(separateur);
+                        ElementSelectionne = separateur;
                         return direction;
                     }
                 }else {
@@ -370,7 +379,9 @@ public class Salle implements Serializable {
                         points.add(new PointImperial(point.mY, polygone.points.get(1).mX));
                         Imperial distanceBord = point.getmY();//.substract(var.getPremierMur().getmY());
                         direction = var.mDirection;
-                        var.AjouterSeparateur(new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points)));
+                        Separateur separateur = new Separateur(point.mY,point.mX,distanceBord,var,new Polygone(Color.BLACK,points));
+                        var.AjouterSeparateur(separateur);
+                        ElementSelectionne = separateur;
                         return direction;
                     }
                 }
@@ -471,13 +482,13 @@ public class Salle implements Serializable {
                 Imperial x = sep.getmCote().getmX().add(sep.getDistanceBordDeReference());
                 Imperial y1 = sep.getmCote().getmY();
                 Imperial y2 = y1.add(sep.getmCote().getmSalle().getEpaisseurMurs());
-                polygones.add(new Polygone(Color.RED, new PointImperial(x, y1), new PointImperial(x, y2)));
+                polygones.add(new Polygone(Color.BLUE, new PointImperial(x, y1), new PointImperial(x, y2)));
             }
             else {
                 Imperial y = sep.getmCote().getmY().add(sep.getDistanceBordDeReference());
                 Imperial x1 = sep.getmCote().getmX();
                 Imperial x2 = x1.add(sep.getmCote().getmSalle().getEpaisseurMurs());
-                polygones.add(new Polygone(Color.RED, new PointImperial(x1, y), new PointImperial(x2, y)));
+                polygones.add(new Polygone(Color.BLUE, new PointImperial(x1, y), new PointImperial(x2, y)));
             }
         }
 
@@ -533,6 +544,11 @@ public class Salle implements Serializable {
 
     public void setHauteurTrouRetourAir(Imperial hauteurTrouRetourAir) {
         this.hauteurTrouRetourAir = hauteurTrouRetourAir;
+    }
+
+    public void deselectionnerElement()
+    {
+        ElementSelectionne = null;
     }
 
     public Element getElementSelectionne()

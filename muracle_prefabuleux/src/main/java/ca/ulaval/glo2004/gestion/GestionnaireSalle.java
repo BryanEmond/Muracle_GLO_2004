@@ -1,5 +1,6 @@
 package ca.ulaval.glo2004.gestion;
 
+import ca.ulaval.glo2004.classes.dto.AccessoireDTO;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
@@ -404,6 +405,36 @@ public class GestionnaireSalle {
         return true;
     }
 
+    public AccessoireDTO getAccessoireSelectionne()
+    {
+        Element element = salleActive.getElementSelectionne();
+        if(!(element instanceof Accessoire))
+            return null;
+
+        Accessoire accessoire = (Accessoire) element;
+        return new AccessoireDTO(accessoire);
+    }
+
+    public int editAccessoireSelectionne(AccessoireDTO accessoireDTO)
+    {
+        Element element = salleActive.getElementSelectionne();
+        if(!(element instanceof Accessoire))
+            return -1;
+        Accessoire accessoire = (Accessoire) element;
+
+        accessoire.setmHauteur(accessoireDTO.getHauteur());
+        accessoire.setmLargeur(accessoireDTO.getLargeur());
+        accessoire.setmX(accessoireDTO.getX());
+
+        if(accessoireDTO.getTypeAccessoire() != Utilitaire.AccessoireEnum.Porte)
+            accessoire.setmY(accessoireDTO.getY());
+
+        if(accessoireDTO.getTypeAccessoire() == Utilitaire.AccessoireEnum.Fenetre)
+            ((Fenetre) accessoire).setBordure(accessoireDTO.getBordureFenetre());
+
+        return 0;
+    }
+
     public boolean GetvuePlan()
     {
         return this.vuePlan;
@@ -443,12 +474,14 @@ public class GestionnaireSalle {
     {
         this.vuePlan = true;
         this.vueCote = false;
+        salleActive.deselectionnerElement();
     }
 
     public void ChangementDeVueVersCote()
     {
         this.vuePlan = false;
         this.vueCote = true;
+        salleActive.deselectionnerElement();
     }
 
 

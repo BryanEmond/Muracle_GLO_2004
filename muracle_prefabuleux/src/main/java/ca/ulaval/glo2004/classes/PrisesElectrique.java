@@ -9,18 +9,14 @@ import java.util.ArrayList;
 
 public class PrisesElectrique extends Accessoire implements Serializable {
 
-    Imperial largeur = new Imperial(2,0,0);
-    Imperial hauteur = new Imperial(4,0,0);
-
-
     Boolean perceInterieur = true;
     Boolean perceExterieur = false;
 
 
     public PrisesElectrique(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, String mNom) {
         super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur);
-    this.hauteur = mHauteur;
-    this.largeur = mLargeur;
+    this.mHauteur = mHauteur;
+    this.mLargeur = mLargeur;
     this.perceExterieur = mPerceExtérieur;
     this.perceInterieur = mPerceInterieur;
 
@@ -35,8 +31,8 @@ public class PrisesElectrique extends Accessoire implements Serializable {
         Imperial x2;
         Imperial y2;
 
-        x2 = x1.add(largeur);
-        y2 = y1.add(hauteur);
+        x2 = x1.add(mLargeur);
+        y2 = y1.add(mHauteur);
 
         Polygone prise = this.mPolygoneElevation = new Polygone(Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
         ArrayList<Polygone> prises = new ArrayList<>();
