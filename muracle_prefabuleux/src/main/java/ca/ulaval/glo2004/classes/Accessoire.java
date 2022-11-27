@@ -12,6 +12,8 @@ public abstract class Accessoire extends Element implements Serializable {
     boolean mPerceInterieur;
     Imperial mLargeur;
     Imperial mHauteur;
+
+    Salle salle;
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
