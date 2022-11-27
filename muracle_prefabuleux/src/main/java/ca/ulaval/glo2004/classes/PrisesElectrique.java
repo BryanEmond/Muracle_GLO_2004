@@ -30,8 +30,8 @@ public class PrisesElectrique extends Accessoire implements Serializable {
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
         //TODO ajuster les point x1 et y1
-        Imperial x1 = super.mX;
-        Imperial y1 = super.mY;
+        Imperial x1 = mX;
+        Imperial y1 = mY;
         Imperial x2;
         Imperial y2;
 
