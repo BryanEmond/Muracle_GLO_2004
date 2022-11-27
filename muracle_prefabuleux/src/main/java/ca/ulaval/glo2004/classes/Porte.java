@@ -37,8 +37,9 @@ public class Porte extends Accessoire implements Serializable {
             x2 = x2.mirror(getCote());
         }
 
+        boolean sel = getCote().getmSalle().getElementSelectionne() == this;
         ArrayList<Polygone> portes = new ArrayList<>();
-        portes.add(this.mPolygoneElevation = new Polygone(Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1)));
+        portes.add(this.mPolygoneElevation = new Polygone(sel ? Color.BLUE : Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1)));
 
         super.mPolygoneElevation = portes.get(0);
         return portes;
