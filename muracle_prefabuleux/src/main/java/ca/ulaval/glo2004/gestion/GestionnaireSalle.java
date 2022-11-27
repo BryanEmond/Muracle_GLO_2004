@@ -5,6 +5,7 @@ import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
+import ca.ulaval.glo2004.enums.Direction;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -398,11 +399,30 @@ public class GestionnaireSalle {
         if(value <= 5 || (value + min) > (max - 5))
             return false;
 
-        if(sepPrec == null)
-            separateur.setDistanceBordDeReference(posRelative.clone());
-        else
-            separateur.setDistanceBordDeReference(sepPrec.getDistanceBordDeReference().add(posRelative));
+        Cote cote = separateur.getmCote();
+        Imperial nouvellePosition;
 
+        if(sepPrec == null)
+            nouvellePosition = posRelative.clone();
+        else
+            nouvellePosition = sepPrec.getDistanceBordDeReference().add(posRelative);
+
+        if(cote.PointSeparateurEstSurAccessoire(nouvellePosition, false))
+            return false;
+
+        ArrayList<Mur> murs = separateur.getmCote().getMurs();
+
+        int separateurIndex = separateur.getmCote().getSeparateurs().indexOf(separateur);
+        Mur murPrecedent = murs.get(separateurIndex);
+        Mur murSuivant = murs.get(separateurIndex + 1);
+
+        if(murPrecedent.aRetourAir() && murPrecedent.getLargeurRetourAir().getValue() >= posRelative.getValue())
+            return false;
+
+        if(murSuivant.aRetourAir() && murSuivant.getLargeurRetourAir().getValue() >= sepSuivant.getDistanceBordDeReference().substract(nouvellePosition).getValue())
+            return false;
+
+        separateur.setDistanceBordDeReference(nouvellePosition);
         separateur.getmCote().setMurs(updateMurs(direction));
         return true;
     }
