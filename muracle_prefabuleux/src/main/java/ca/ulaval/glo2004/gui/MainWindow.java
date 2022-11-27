@@ -364,7 +364,6 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
                                 break;
                             case Selection:
-
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                                 updatePanels();
                                 break;

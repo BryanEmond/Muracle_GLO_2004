@@ -122,21 +122,16 @@ public class Salle implements Serializable {
             return  true;}
         return  false;     }
 
-    public void SupprimerPlan(PointImperial point){
+    public  Utilitaire.Direction SupprimerPlan(PointImperial point){
         for (Cote var : cotes)
         {
             if(var.PointEstDansCote(point)){
                 for (Separateur separateur: var.separateurs)
                 {
+                    separateur.genererPolygonePlan();
                     if(separateur.mPolygonePlan.PointEstDansPolygone(point)){
-                        var.separateurs.remove(separateur);
-                    }
-                }
-
-                for (Separateur separateur: var.separateurs)
-                {
-                    if(separateur.mPolygonePlan.PointEstDansPolygone(point)){
-                        var.separateurs.remove(separateur);
+                        var.separateurs.remove(var.separateurs.indexOf(separateur));
+                        return var.mDirection;
                     }
                 }
 
@@ -144,12 +139,13 @@ public class Salle implements Serializable {
                 {
                     if(mur.aRetourAir() && mur.mPolygonePlanRetourAir.SeparateurEstDansPolygoneNordSud(point)){
                         mur.setRetourAir(false);
+                        return var.mDirection;
                     }
                 }
 
             };
         }
-
+        return null;
     }
 
     public void SupprimerElevation(PointImperial point, Utilitaire.Direction direction,boolean interieur){
@@ -161,6 +157,27 @@ public class Salle implements Serializable {
                     cote.accessoires.remove(accessoire);
                 }
             }
+
+            Imperial distanceBord = point.mX;
+
+            if(!interieur)
+            {
+                if(direction.estHorizontal())
+                    distanceBord = distanceBord.substract(largeur).abs();
+                else
+                    distanceBord = distanceBord.substract(profondeur).abs();
+            }
+
+
+            for (Separateur separateur: cote.separateurs) {
+                separateur.genererPolygoneELV(interieur);
+
+                if(separateur.distanceBordDeReference.getFormeNormal() + 1 >= distanceBord.getFormeNormal() &&
+                        separateur.distanceBordDeReference.getFormeNormal() - 1 <= distanceBord.getFormeNormal()){
+                    cote.separateurs.remove(separateur);
+                }
+            }
+
             for (Mur mur: cote.murs)
             {
                 if(mur.aRetourAir() && mur.mPolygoneElevationRetourAir.SeparateurEstDansPolygoneNordSud(point)){

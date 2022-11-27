@@ -106,11 +106,13 @@ public class GestionnaireSalle {
     }
 
     public void SupprimerPlan(int pixelX, int pixelY){
-        salleActive.SupprimerPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+        Utilitaire.Direction direction = salleActive.SupprimerPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+        if(direction != null)this.salleActive.getCote(direction).setMurs(updateMurs(direction));
     }
 
     public void SupprimerElevation(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
         salleActive.SupprimerElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+        this.salleActive.getCote(direction).setMurs(updateMurs(direction));
     }
 
     public void AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
