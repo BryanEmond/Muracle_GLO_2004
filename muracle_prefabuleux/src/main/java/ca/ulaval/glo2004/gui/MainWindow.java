@@ -328,11 +328,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterRetourAirElevation(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case Supprimer:
-                                if(gestionnaireSalle.GetvueCote()){
-                                    gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
-                                }else{
-                                    gestionnaireSalle.SupprimerPlan(e.getX(), e.getY());
-                                }
+                                gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case Porte:
                                 gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur);
@@ -358,6 +354,9 @@ public class MainWindow {
                         switch (AccessoireEnum){
                             case RetourAir:
                                 gestionnaireSalle.AjouterRetourAirPlan(e.getX(), e.getY());
+                                break;
+                            case Supprimer:
+                                gestionnaireSalle.SupprimerPlan(e.getX(), e.getY());
                                 break;
                             case Separateur:
                                 gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());

@@ -30,8 +30,8 @@ public class Fenetre extends Accessoire implements Serializable {
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
        //TODO CADRE DE BASE 1/8 CONFIGURABLE
-        Imperial x1 = super.mX;
-        Imperial y1 = super.mY;
+        Imperial x1 = mX;
+        Imperial y1 = mY;
         Imperial x2;
         Imperial y2;
 
@@ -54,6 +54,7 @@ public class Fenetre extends Accessoire implements Serializable {
         fenetres.add(cadre);
 
         PolygoneELV = fenetres;
+        super.mPolygoneElevation = cadre;
         return fenetres;
     }
 
