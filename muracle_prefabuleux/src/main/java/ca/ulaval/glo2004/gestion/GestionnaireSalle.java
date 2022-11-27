@@ -95,11 +95,11 @@ public class GestionnaireSalle {
     }
 
     public void selectionnerElementPlan(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.selection(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+        salleActive.selectionPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void selectionnerElementElevantion(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.selection(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+        salleActive.selectionElevantion(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
