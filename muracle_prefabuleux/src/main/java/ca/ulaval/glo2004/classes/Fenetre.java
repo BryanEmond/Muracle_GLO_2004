@@ -53,7 +53,7 @@ public class Fenetre extends Accessoire implements Serializable {
 
         boolean sel = getCote().getmSalle().getElementSelectionne() == this;
         //Polygone fenetre = this.mPolygoneElevation = new Polygone(Color.PINK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
-        Polygone fenetre = new Polygone(sel ? Color.BLUE : Color.PINK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
+        Polygone fenetre = new Polygone(sel ? Color.BLUE : Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
 
        // Polygone cadre = this.mPolygoneElevation = new Polygone(Color.PINK, new PointImperial(x3, y3), new PointImperial(x3, y4), new PointImperial(x4, y4), new PointImperial(x4, y3));
         Polygone cadre = new Polygone(sel ? Color.BLUE : Color.DARK_GRAY, new PointImperial(x3, y3), new PointImperial(x3, y4), new PointImperial(x4, y4), new PointImperial(x4, y3));

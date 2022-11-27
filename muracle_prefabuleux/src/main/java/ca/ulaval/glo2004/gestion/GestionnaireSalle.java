@@ -103,8 +103,8 @@ public class GestionnaireSalle {
         salleActive.selectionElevantion(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void SupprimerPlan(int pixelX, int pixelY){
@@ -117,21 +117,21 @@ public class GestionnaireSalle {
         this.salleActive.getCote(direction).setMurs(updateMurs(direction));
     }
 
-    public void AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterPriseElectrique(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterPriseElectrique(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void AjouterRetourAirPlan(int pixelX, int pixelY)
+    public boolean AjouterRetourAirPlan(int pixelX, int pixelY)
     {
-        salleActive.AjouterRetourAirPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+        return salleActive.AjouterRetourAirPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
     }
 
-    public void AjouterRetourAirElevation(int pixelX, int pixelY, Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterRetourAirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterRetourAirElevation(int pixelX, int pixelY, Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterRetourAirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void AjouterFenetre(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterFenetre(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterFenetre(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterFenetre(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void updateSalle()

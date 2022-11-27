@@ -61,13 +61,14 @@ public class Salle implements Serializable {
             }
             else{sallelargeur = cote.getmSalle().profondeur.entier;}
 
-            if (point.mX.entier + 25 > sallelargeur){
-                return false;
-            }
 
             if(!interieur)
                 point.mX = point.mX.mirror(cote);
 
+            int comparaison = point.mX.entier + cote.getmSalle().getEpaisseurMurs().entier * 2 ;
+            if (comparaison + 25 > sallelargeur){
+                return false;
+            }
             Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24));
             fenetre.setCote(cote);
             fenetre.setmPerceExtérieur(true);
@@ -117,12 +118,13 @@ public class Salle implements Serializable {
             }
             else{sallelargeur = cote.getmSalle().profondeur.entier;}
 
-            if (point.mX.entier + 40 > sallelargeur){
-                return false;
-            }
 
             if(!interieur)
                 point.mX = point.mX.mirror(cote);
+            int comparaison = point.mX.entier + cote.getmSalle().getEpaisseurMurs().entier * 2 ;
+            if (comparaison + 39 > sallelargeur){
+                return false;
+            }
 
             Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null);
 
@@ -225,6 +227,23 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
+
+            int sallelargeur=0;
+
+            if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD))
+            {
+                sallelargeur = cote.getmSalle().largeur.entier;
+            }
+            else{sallelargeur = cote.getmSalle().profondeur.entier;}
+
+
+            if(!interieur)
+                point.mX = point.mX.mirror(cote);
+            int comparaison = point.mX.entier + cote.getmSalle().getEpaisseurMurs().entier * 2 ;
+            if (comparaison + 3 > sallelargeur){
+                return false;
+            }
+
             PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(2),new Imperial(4), null)    ;
             prisesElectrique.setCote(cote);
             prisesElectrique.setmPerceExtérieur(false);

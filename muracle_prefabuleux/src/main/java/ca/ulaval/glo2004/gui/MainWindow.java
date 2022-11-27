@@ -26,6 +26,7 @@ public class MainWindow {
     private JPanel controlPanel;
     public JPanel mainPanel;
     private JPanel buttonsPanel;
+    private JOptionPane alertPanel;
     private JButton btnSave;
     private JButton btnUndo;
     private JButton btnRedo;
@@ -58,6 +59,7 @@ public class MainWindow {
     private JButton btnElvOuestINT;
     private JButton btnPlan;
 
+    private JOptionPane alertTextBox;
     public JPanel starterPanel;
     private JButton creerUnNouveauProjetButton;
     private JButton ouvrirUnProjectExistantButton;
@@ -333,21 +335,22 @@ public class MainWindow {
                     if (direction != null) {
                         switch (AccessoireEnum){
                             case Fenetre:
-                                gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur);
+                                if(!gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur)){setWarningMsg("impossible d'ajouter une fenetre");}
                                 break;
                             case RetourAir:
-                                gestionnaireSalle.AjouterRetourAirElevation(e.getX(), e.getY(),direction,interieur);
+                                if(!gestionnaireSalle.AjouterRetourAirElevation(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter un retour d'air");};
                                 break;
                             case Supprimer:
                                 gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case Porte:
-                                gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur);
+                                if(!gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter une porte");};
                                 break;
                             case PriseElectrique:
-                                gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur);
+                                if(!gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter une prise électrique");};
                                 break;
                             case Separateur:
+                                //TODO BOOLEAN QUAND AJOUTER UN SEPARATEUR MARCHE PAS
                                 gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
                                 break;
                             case Selection:
@@ -365,7 +368,7 @@ public class MainWindow {
 
                         switch (AccessoireEnum){
                             case RetourAir:
-                                gestionnaireSalle.AjouterRetourAirPlan(e.getX(), e.getY());
+                                if(!gestionnaireSalle.AjouterRetourAirPlan(e.getX(), e.getY())){setWarningMsg("Impossible d'ajouter un retour d'air");};
                                 break;
                             case Supprimer:
                                 gestionnaireSalle.SupprimerPlan(e.getX(), e.getY());
@@ -480,6 +483,20 @@ public class MainWindow {
                 proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
                 proprietesSalle.setError("positionRetourAir", result == 4);
                 proprietesSalle.setError("hauteurRetourAir", result == 4);
+
+                if(result == 1){
+                    setWarningMsg("La largeur du retour d'air est invalide");
+                }
+                if (result == 2){
+                    setWarningMsg("la profondeur du retour d'air est invalide");
+                }
+                if (result == 3 ){
+                    setWarningMsg("La hauteur du trou du retour d'air est invalide");
+                }
+                if (result == 4){
+                    setWarningMsg("La position ou la hauteur du retour d'air est invalide");
+                }
+
             });
         }
         else
@@ -539,8 +556,10 @@ public class MainWindow {
 
                             mainPanel.validate();
                             mainPanel.repaint();
-                        } else
+                        } else{
                             proprietesSeparateur.setError("posRel", true);
+                       // setWarningMsg("La position du separateur est invalide.");
+                            }
                     });
         }
 
@@ -612,6 +631,41 @@ public class MainWindow {
 //        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
+
+    public static void setWarningMsg(String text){
+        //Toolkit.getDefaultToolkit().beep();
+        JOptionPane alertTextBox = new JOptionPane(text, JOptionPane.WARNING_MESSAGE);
+      //  alertTextBox.setBackground(Color.red);
+        JDialog dialog = alertTextBox.createDialog("ERREUR!");
+        //dialog.setLocation(1000,100);
+
+        dialog.setBackground(Color.red);
+
+        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(1100);
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            dialog.setVisible(false);
+            }
+        }).start();
+
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+
+    }
+
+    public static void addWarningMsg(String text){
+        //TODO message en haut a droite qui affiche les erreurs dans une liste : label qui affiche les erreurs
+    }
+
+    public static void removeWarningMsg(String text){
+        //TODO enlève les erreurs résolue dans le warning message
+    }
     /**
      * Method generated by IntelliJ IDEA GUI Designer
      * >>> IMPORTANT!! <<<
@@ -678,10 +732,114 @@ public class MainWindow {
         propertiesPanel.setMinimumSize(new Dimension(235, 0));
         propertiesPanel.setPreferredSize(new Dimension(235, 700));
 
+
+
         JScrollPane propertiesScroll = new JScrollPane(propertiesPanel);
         propertiesScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         propertiesScroll.setPreferredSize(new Dimension(235, 0));
         rootPanel.add(propertiesScroll, BorderLayout.WEST);
+
+        proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
+        proprietesSalle.addProperty("largeur", "LARGEUR :");
+        proprietesSalle.addProperty("profondeur", "PROFONDEUR :");
+        proprietesSalle.addProperty("hauteur", "HAUTEUR :");
+        proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :");
+        proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :");
+        proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :");
+        proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :");
+        proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :");
+        proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :");
+        proprietesSalle.generateLayout();
+        propertiesPanel.add(proprietesSalle);
+
+        proprietesSalle.setOnChangeListener(values -> {
+            Imperial largeur = proprietesSalle.getImperial("largeur");
+            Imperial profondeur = proprietesSalle.getImperial("profondeur");
+            Imperial hauteur = proprietesSalle.getImperial("hauteur");
+            Imperial epaisseurMur = proprietesSalle.getImperial("epaisseurMur");
+            Imperial largeurPli = proprietesSalle.getImperial("largeurPli");
+            int pliSoudure = proprietesSalle.getInt("pliSoudure");
+            Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
+            Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
+            Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
+
+            if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
+                    pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
+                return;
+
+            int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
+
+            if(result == 0)
+            {
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+
+            proprietesSalle.setError("largeur", result == 1);
+            proprietesSalle.setError("profondeur", result == 2);
+            proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
+            proprietesSalle.setError("positionRetourAir", result == 4);
+            proprietesSalle.setError("hauteurRetourAir", result == 4);
+
+            if(result ==1){
+                setWarningMsg("largeur invalide");
+            }
+            if(result == 2){
+                setWarningMsg("profondeur invalide");
+            }
+            if(result == 3 ){
+                setWarningMsg("L'hauteur du trou de 'Retour d'air' est invalide");
+            }
+            if (result == 4){
+                setWarningMsg("position ou hauteur du retour d'air invalide");
+            }
+
+        });
+
+        proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 0);
+        proprietesMur.addProperty("x", "POSITION X :", "", true);
+        proprietesMur.addProperty("y", "POSITION Y :", "", true);
+        proprietesMur.addProperty("largeur", "LARGEUR :", "", true);
+        proprietesMur.generateLayout();
+        propertiesPanel.add(proprietesMur);
+
+        proprietesMur.setOnChangeListener(values -> {
+            Imperial largeurRetourAir = proprietesMur.getImperial("largeurRetourAir");
+
+            if(largeurRetourAir != null)
+            {
+                boolean result = gestionnaireSalle.editMurSelectionne(largeurRetourAir);
+
+                proprietesMur.setError("largeurRetourAir", !result);
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+        });
+
+        proprietesSeparateur = new PanelProprietes("SÉPARATEUR", 100);
+        proprietesSeparateur.addProperty("pos", "POSITION :", "", true);
+        proprietesSeparateur.addProperty("posRel", "SEP. PRÉCÉDENT :");
+        proprietesSeparateur.generateLayout();
+        propertiesPanel.add(proprietesSeparateur);
+
+        proprietesSeparateur.setOnChangeListener(values -> {
+
+            Imperial posRel = proprietesSeparateur.getImperial("posRel");
+
+            if(posRel != null && gestionnaireSalle.editSeparateurSelectionne(posRel))
+            {
+                proprietesSeparateur.setError("posRel", false);
+                SeparateurDTO newValue = gestionnaireSalle.getSeparateurSelectionne();
+                proprietesSeparateur.setValue("pos", newValue.getPosition().toString());
+
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+            else
+                proprietesSeparateur.setError("posRel", true);
+                setWarningMsg("separateur en erreur");
+
+        });
 
         rightPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(rightPanel, BorderLayout.CENTER);
