@@ -1,10 +1,8 @@
 
 package ca.ulaval.glo2004.gui;
 
-import ca.ulaval.glo2004.classes.Cote;
-import ca.ulaval.glo2004.classes.Imperial;
-import ca.ulaval.glo2004.classes.Mur;
-import ca.ulaval.glo2004.classes.Polygone;
+import ca.ulaval.glo2004.classes.*;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -24,6 +22,30 @@ public class AfficheurElevationCote extends Afficheur{
         setOffset(10,10);
 
         ArrayList<Polygone> polygones = cote.getPolygoneElevation(exterieur);
+        for (int i = 0; i < cote.getAccessoires().size(); i++){
+            if (!exterieur && cote.getAccessoires().get(i).getmNom().equals("Prise"))
+            {
+                //TODO créer generer polygone accessoire
+                //TODO créer getmPolygone accessoire
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+            }
+
+            if(!exterieur && cote.getAccessoires().get(i).getmNom().equals("RetourAir"))
+            {
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+            }
+
+            if(cote.getAccessoires().get(i).getmNom().equals("Porte"))
+            {
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+            }
+
+            if(cote.getAccessoires().get(i).getmNom().equals("Fenetre"))
+            {
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+            }
+        }
+        //TODO generer polygone accessoire
         dessinerPolygones(g, polygones);
     }
 }

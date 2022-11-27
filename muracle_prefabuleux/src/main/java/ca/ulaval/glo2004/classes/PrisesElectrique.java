@@ -11,6 +11,7 @@ public class PrisesElectrique extends Accessoire implements Serializable {
 
     Imperial largeur = new Imperial(2,0,0);
     Imperial hauteur = new Imperial(4,0,0);
+    String mNom = "Prise";
 
     Boolean perceInterieur = true;
     Boolean perceExterieur = false;
@@ -22,6 +23,7 @@ public class PrisesElectrique extends Accessoire implements Serializable {
     this.largeur = mLargeur;
     this.perceExterieur = mPerceExtérieur;
     this.perceInterieur = mPerceInterieur;
+    this.mNom = "Prise";
     }
 
 

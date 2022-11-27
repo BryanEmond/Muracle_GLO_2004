@@ -124,6 +124,17 @@ public class PanelProprietes extends JPanel
         this.addProperty(name, label, "", false);
     }
 
+    public void removeProperty(String name)
+    {
+        for(int i = 0; i < properties.size(); i++)
+        {
+            if(properties.get(0).name.equalsIgnoreCase(name))
+            {
+                properties.remove(i);
+            }
+        }
+    }
+
     public String getValue(String propertyName)
     {
         if(!values.containsKey(propertyName))

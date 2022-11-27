@@ -1,5 +1,7 @@
 package ca.ulaval.glo2004.classes;
 
+import jdk.vm.ci.code.site.ImplicitExceptionDispatch;
+
 import java.io.Serializable;
 
 public class Imperial implements Comparable<Imperial>,Serializable {
@@ -126,6 +128,21 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return new Imperial(-this.entier, -this.numerateur, this.denominateur);
     }
 
+
+    public Imperial multiply(int multiplier)
+    {
+        return new Imperial(entier * multiplier, numerateur * multiplier, denominateur);
+    }
+
+    public Imperial divide(int divisor)
+    {
+        int newNumerator = (numerateur + entier * denominateur);
+        int newDenominator = denominateur * divisor;
+        int newEntier = newNumerator / newDenominator;
+
+        return new Imperial(newEntier, newNumerator % newDenominator, newDenominator);
+    }
+
     @Override
     public String toString() {
         if(numerateur == 0)
@@ -139,14 +156,14 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         int entier = 0;
         int numerateur = 0;
         int denominateur = 1;
-        String[] parts = imperial.trim().split(" ");
+        String[] parts = imperial.trim().replace("\"", "").split(" ");
 
         if(parts.length < 1)
             return null;
 
         try
         {
-            entier = Integer.parseInt(parts[0].replace("\"", "").trim());
+            entier = Integer.parseInt(parts[0].trim());
 
             if(parts.length == 2)
             {
@@ -175,4 +192,7 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return new Imperial(entier, numerateur, denominateur);
     }
 
+    public Imperial abs() {
+        return new Imperial(Math.abs(this.entier), Math.abs(this.numerateur), Math.abs(this.denominateur));
+    }
 }
