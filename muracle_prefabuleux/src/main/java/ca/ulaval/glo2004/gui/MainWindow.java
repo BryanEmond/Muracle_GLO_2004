@@ -440,16 +440,47 @@ public class MainWindow {
         if(salleSelect != null)
         {
             proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
-            proprietesSalle.setValue("largeur", salleSelect.getLargeur().toString());
-            proprietesSalle.setValue("hauteur", salleSelect.getHauteur().toString());
-            proprietesSalle.setValue("profondeur", salleSelect.getProfondeur().toString());
-            proprietesSalle.setValue("epaisseurMur", salleSelect.getEpaisseurMurs().toString());
-            proprietesSalle.setValue("largeurPli", salleSelect.getLargeurPli().toString());
-            proprietesSalle.setValue("pliSoudure", salleSelect.getAnglePliSoudure() + "");
-            proprietesSalle.setValue("hauteurRetourAir", salleSelect.getHauteurRetourAir().toString());
-            proprietesSalle.setValue("positionRetourAir", salleSelect.getPositionRetourAir().toString());
-            proprietesSalle.setValue("hauteurTrouRetourAir", salleSelect.getHauteurTrouRetourAir().toString());
-            proprietesSalle.updateValues();
+            proprietesSalle.addProperty("largeur", "LARGEUR :", salleSelect.getLargeur().toString(), false);
+            proprietesSalle.addProperty("profondeur", "PROFONDEUR :", salleSelect.getProfondeur().toString(), false);
+            proprietesSalle.addProperty("hauteur", "HAUTEUR :", salleSelect.getHauteur().toString(), false);
+            proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :", salleSelect.getEpaisseurMurs().toString(), false);
+            proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :", salleSelect.getLargeurPli().toString(), false);
+            proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :", salleSelect.getAnglePliSoudure() + "", false);
+            proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :", salleSelect.getHauteurRetourAir().toString(), false);
+            proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :", salleSelect.getPositionRetourAir().toString(), false);
+            proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :", salleSelect.getHauteurTrouRetourAir().toString(), false);
+            proprietesSalle.generateLayout();
+            propertiesPanel.add(proprietesSalle);
+
+            proprietesSalle.setOnChangeListener(values -> {
+                Imperial largeur = proprietesSalle.getImperial("largeur");
+                Imperial profondeur = proprietesSalle.getImperial("profondeur");
+                Imperial hauteur = proprietesSalle.getImperial("hauteur");
+                Imperial epaisseurMur = proprietesSalle.getImperial("epaisseurMur");
+                Imperial largeurPli = proprietesSalle.getImperial("largeurPli");
+                int pliSoudure = proprietesSalle.getInt("pliSoudure");
+                Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
+                Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
+                Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
+
+                if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
+                        pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
+                    return;
+
+                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
+
+                if(result == 0)
+                {
+                    mainPanel.validate();
+                    mainPanel.repaint();
+                }
+
+                proprietesSalle.setError("largeur", result == 1);
+                proprietesSalle.setError("profondeur", result == 2);
+                proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
+                proprietesSalle.setError("positionRetourAir", result == 4);
+                proprietesSalle.setError("hauteurRetourAir", result == 4);
+            });
         }
         else
         {
