@@ -207,8 +207,7 @@ public class Mur extends Element implements Serializable {
         this.mPolygonePlanRetourAir = new Polygone(Color.BLACK, p1, p2, p3, p4);
     }
 
-
-    public void genererPolygoneELV(boolean exterieur){
+    public void genererPolygoneELV(boolean exterieur) {
         Imperial x1;
         Imperial y1;
         Imperial x2;
@@ -217,9 +216,7 @@ public class Mur extends Element implements Serializable {
             x1 = super.mX;
             y1 = new Imperial(0);
 
-        }
-
-        else{
+        } else {
             x1 = super.mY;
             y1 = new Imperial(0);
         }
@@ -227,7 +224,7 @@ public class Mur extends Element implements Serializable {
         x2 = x1.add(mLargeur);
         y2 = y1.add(mSalle.getHauteur());
 
-        if (!exterieur && this.equals(mCote.getPremierMur()) && mCote.murs.size() > 1){
+        if (!exterieur && this.equals(mCote.getPremierMur()) && mCote.murs.size() > 1) {
 
             Imperial epaisseurMur = new Imperial(mSalle.epaisseurMurs.entier, mSalle.epaisseurMurs.numerateur, mSalle.epaisseurMurs.denominateur);
             Imperial newLargeur = new Imperial(mLargeur.entier, mLargeur.numerateur, mLargeur.denominateur);
@@ -238,7 +235,7 @@ public class Mur extends Element implements Serializable {
             //TODO retirer epaisseur du mur à la largeur et appliquer au point
         }
 
-        if (!exterieur && this.equals(mCote.getDernierMur()) && mCote.murs.size() > 1){
+        if (!exterieur && this.equals(mCote.getDernierMur()) && mCote.murs.size() > 1) {
             //TODO retirer epaisseur du mur a la largeur et appliquer au point
             Imperial epaisseurMur = new Imperial(mSalle.epaisseurMurs.entier, mSalle.epaisseurMurs.numerateur, mSalle.epaisseurMurs.denominateur);
             Imperial newLargeur = new Imperial(mLargeur.entier, mLargeur.numerateur, mLargeur.denominateur);
@@ -246,26 +243,38 @@ public class Mur extends Element implements Serializable {
 
             x2 = x1.add(newLargeur);
 
-            }
+        }
 
-        if (!exterieur && mCote.murs.size() == 1){
+        if (!exterieur && mCote.murs.size() == 1) {
             //TODO retirer 2x l'épaisseur de la largeur
             Imperial epaisseurMur = new Imperial(mSalle.epaisseurMurs.entier, mSalle.epaisseurMurs.numerateur, mSalle.epaisseurMurs.denominateur);
             Imperial newLargeur = new Imperial(mLargeur.entier, mLargeur.numerateur, mLargeur.denominateur);
-            Imperial epaisseurMurDouble = new Imperial(epaisseurMur.entier * 2 );
+            Imperial epaisseurMurDouble = new Imperial(epaisseurMur.entier * 2);
             newLargeur = newLargeur.add(epaisseurMurDouble.negative());
 
 
             x1 = x1.add(epaisseurMur);
             x2 = x1.add(newLargeur);
         }
-/*
-        if (mCote.getExterieur()){
+
+        if (exterieur) {
+
+            if (mCote.mDirection.equals(Utilitaire.Direction.NORD) || mCote.mDirection.equals(Utilitaire.Direction.SUD)) {
+
+                Imperial xSoustrait = new Imperial(mSalle.largeur.entier, mSalle.largeur.numerateur, mSalle.largeur.denominateur);
+                x1 = x1.substract(xSoustrait).abs();
+                x2 = x2.substract(xSoustrait).abs();
 
 
-            //TODO faire un miroir sur le coté au complet a voir
+                //TODO faire un miroir sur le coté au complet a voir
+            }
+            else {
+                Imperial xSoustrait = new Imperial(mSalle.profondeur.entier, mSalle.profondeur.numerateur, mSalle.profondeur.denominateur);
+                x1 = x1.substract(xSoustrait).abs();
+                x2 = x2.substract(xSoustrait).abs();
+            }
         }
-        */
+
         this.mPolygoneElevation = new Polygone(Color.BLACK, new PointImperial(x1,y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
     }
 

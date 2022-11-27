@@ -195,4 +195,7 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return new Imperial(entier, numerateur, denominateur);
     }
 
+    public Imperial abs() {
+        return new Imperial(Math.abs(this.entier), Math.abs(this.numerateur), Math.abs(this.denominateur));
+    }
 }
