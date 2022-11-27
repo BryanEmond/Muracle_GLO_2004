@@ -43,7 +43,7 @@ public class Salle implements Serializable {
 
     public boolean AjouterFenetre(PointImperial point, Utilitaire.Direction direction,boolean interieur){
         Cote cote = getCote(direction);
-        if(cote.PointEstDansCote(point)){
+        if(cote.PointEstDansCoteElevation(point)){
             Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
             if (polygone == null){
                 return false;
@@ -73,7 +73,7 @@ public class Salle implements Serializable {
 
     public boolean AjouterPorte(PointImperial point, Utilitaire.Direction direction,boolean interieur){
         Cote cote = getCote(direction);
-        if(cote.PointEstDansCote(point)){
+        if(cote.PointEstDansCoteElevation(point)){
             Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
             if (polygone == null){
                 return false;
@@ -111,7 +111,7 @@ public class Salle implements Serializable {
 
     public boolean AjouterPriseElectrique(PointImperial point, Utilitaire.Direction direction,boolean interieur){
         Cote cote = getCote(direction);
-        if(cote.PointEstDansCote(point)){
+        if(cote.PointEstDansCoteElevation(point)){
             Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
             if (polygone == null){
                 return false;
@@ -153,7 +153,8 @@ public class Salle implements Serializable {
     public boolean AjouterRetourAirElevation(PointImperial point, Utilitaire.Direction direction, boolean interieur){
         // Mur ?
         Cote cote = getCote(direction);
-        if(cote.PointEstDansCote(point)){
+        //?cote.PointEstDansCote(point)
+        if(cote.PointEstDansCoteElevation(point)){
 
             Mur mur = getMurCliqueElevation(cote, point, interieur);
             if(mur != null)

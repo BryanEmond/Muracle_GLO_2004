@@ -344,7 +344,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
                                 break;
                             default:
-                                gestionnaireSalle.selectionnerElement(e.getX(), e.getY(),direction,interieur);
+                                gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                         }
 
 
