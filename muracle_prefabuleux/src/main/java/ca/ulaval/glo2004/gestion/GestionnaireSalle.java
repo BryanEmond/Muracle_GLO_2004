@@ -176,7 +176,7 @@ public class GestionnaireSalle {
         ArrayList<Separateur> listSep = this.salleActive.getCote(direction).getSeparateurs();
         Salle salle = this.salleActive;
         Cote cote = salleActive.getCote(direction);
-        ArrayList<Mur> oldMurs = new ArrayList<>(cote.getMurs());
+        ArrayList<Mur> oldMurs = cote.getMurs();
 
         if(listSep.size() == 0)
         {
@@ -236,18 +236,44 @@ public class GestionnaireSalle {
 
                 murs.add(new Mur(salle, cote, y, x, largeur));
             }
-
-            if(i < oldMurs.size())
-            {
-                Mur oldMur = oldMurs.get(i);
-                Mur newMur = murs.get(i);
-
-                newMur.setRetourAir(oldMur.aRetourAir());
-                newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
-            }
-
+            murs.get(i).genererPolygonePlan();
         }
+        for(Mur oldMur : oldMurs){
+            if(oldMur.aRetourAir()){
+                Polygone polygoneRetourAir = oldMur.getPolygonePlanRetourAir();
+                ArrayList<PointImperial> pointRetourAir = polygoneRetourAir.getPoints();
+                for(Mur newMur : murs){
+                    ArrayList<PointImperial> murPointImperial = newMur.getPolygonePlan().getPoints();
+                    if(direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD){
+                        if(pointRetourAir.get(0).getmX().getValue() >= murPointImperial.get(0).getmX().getValue() &&
+                                pointRetourAir.get(2).getmX().getValue() <= murPointImperial.get(2).getmX().getValue() &&
+                                pointRetourAir.get(0).getmX().getValue() >= this.salleActive.getEpaisseurMurs().getValue() ){
+                            newMur.setRetourAir(oldMur.aRetourAir());
+                            newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+                        }
+                    }
 
+                }
+            }
+//            if(i < oldMurs.size())
+//            {
+//                Mur oldMur = oldMurs.get(i);
+//                Mur newMur = murs.get(i);
+//                double valueRetourAir = oldMur.getLargeurRetourAir().getValue();
+//                double newMurValue =newMur.getmLargeur().getValue();
+//                if(oldMur.aRetourAir()){
+//                    Polygone polRd = oldMur.getPolygonePlanRetourAir();
+//                    if(newMurValue >= valueRetourAir){
+//                        newMur.setRetourAir(oldMur.aRetourAir());
+//                        newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+//                    }
+////                    else{
+////                        oldMurs.get(i+1).setRetourAir(true);
+////                        oldMurs.get(i+1).setLargeurRetourAir(new Imperial(15));
+////                    }
+//                }
+//            }
+        }
         return murs;
     }
     public void chargerSalle(String path)

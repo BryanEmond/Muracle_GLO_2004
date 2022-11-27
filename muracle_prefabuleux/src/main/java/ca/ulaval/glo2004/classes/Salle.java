@@ -338,11 +338,6 @@ public class Salle implements Serializable {
 
         return null;
     }
-
-    public ArrayList<Polygone> polygonesElevation(){
-        return new ArrayList<Polygone>();
-    }
-
     public void separateurElevation(PointImperial point,Utilitaire.Direction direction,boolean interieur){
         ArrayList<PointImperial> points = new ArrayList<>();
         Cote cote = getCote(direction);
