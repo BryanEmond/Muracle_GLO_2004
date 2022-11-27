@@ -152,17 +152,19 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24), null)    ;
+            PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(2),new Imperial(4), null)    ;
+            prisesElectrique.setCote(cote);
+            prisesElectrique.setmPerceExtérieur(false);
             ArrayList<Polygone> prisesElectriques = prisesElectrique.genererPolygoneELV();
-            for (PointImperial pointImperial:prisesElectriques.get(0).getPoints()
-            )
+
+            for (PointImperial pointImperial:prisesElectriques.get(0).getPoints())
             {
                 if(!polygone.PointEstDansPolygone(pointImperial)){
                     return false;
                 }
 
-                for (Accessoire accessoire: cote.accessoires
-                ) {
+                for (Accessoire accessoire: cote.accessoires)
+                {
                     if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
                         return false;
                     }
