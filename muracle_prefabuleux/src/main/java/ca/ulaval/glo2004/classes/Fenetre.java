@@ -54,6 +54,7 @@ public class Fenetre extends Accessoire implements Serializable {
         fenetres.add(cadre);
 
         PolygoneELV = fenetres;
+        super.mPolygoneElevation = cadre;
         return fenetres;
     }
 

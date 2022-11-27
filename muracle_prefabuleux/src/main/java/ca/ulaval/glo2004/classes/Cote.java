@@ -235,6 +235,7 @@ public class Cote extends Element implements Serializable {
 
     public boolean PointSeparateurEstSurAccessoire(Imperial point) {
         for (Accessoire accessoire: accessoires) {
+            accessoire.genererPolygoneELV();
             ArrayList<Double> coins = accessoire.mPolygoneElevation.getCoinsDouble();
             if(point.getFormeNormal() >= coins.get(0) && point.getFormeNormal() <= coins.get(1)) return true;
         }

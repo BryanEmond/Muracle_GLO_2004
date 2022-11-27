@@ -37,5 +37,6 @@ public class Porte extends Accessoire implements Serializable {
         ArrayList<Polygone> portes = new ArrayList<>();
         portes.add(this.mPolygoneElevation = new Polygone(Color.PINK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1)));
 
+        super.mPolygoneElevation = portes.get(0);
         return portes;
     }}
