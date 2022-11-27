@@ -179,9 +179,10 @@ public class Salle implements Serializable {
             for (Separateur separateur: cote.separateurs) {
                 separateur.genererPolygoneELV(interieur);
 
-                if(separateur.distanceBordDeReference.getFormeNormal() + 1 >= distanceBord.getFormeNormal() &&
-                        separateur.distanceBordDeReference.getFormeNormal() - 1 <= distanceBord.getFormeNormal()){
+                if(separateur.distanceBordDeReference.getFormeNormal() + 0.5 >= distanceBord.getFormeNormal() &&
+                        separateur.distanceBordDeReference.getFormeNormal() - 0.5 <= distanceBord.getFormeNormal()){
                     cote.separateurs.remove(separateur);
+                    break;
                 }
             }
 

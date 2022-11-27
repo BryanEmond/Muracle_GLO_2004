@@ -112,7 +112,7 @@ public class GestionnaireSalle {
 
     public void SupprimerElevation(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
         salleActive.SupprimerElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
-        //this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+        this.salleActive.getCote(direction).setMurs(updateMurs(direction));
     }
 
     public void AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
