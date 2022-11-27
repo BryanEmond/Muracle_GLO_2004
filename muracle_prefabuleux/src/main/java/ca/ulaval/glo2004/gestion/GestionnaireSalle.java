@@ -11,7 +11,6 @@ import java.util.Arrays;
 
 public class GestionnaireSalle {
 
-    private Salle mSalle;
     private Cote mCoteCourant;
     private Mur mMurCourant;
     private Accessoire mAccessoire;
@@ -310,6 +309,12 @@ public class GestionnaireSalle {
         if(salle.getProfondeur().getValue() < profondeurMin)
             return 2;
 
+        if(salle.getHauteurTrouRetourAir().getValue() > salle.getEpaisseurMurs().getValue() - 1)
+            return 3;
+
+        if(salle.getPositionRetourAir().getValue() + salle.getHauteurRetourAir().getValue() > salle.getHauteur().getValue() - 1)
+            return 4;
+
         this.salleActive.setHauteur(salle.getHauteur());
         this.salleActive.setLargeur(salle.getLargeur());
         this.salleActive.setProfondeur(salle.getProfondeur());
@@ -326,29 +331,32 @@ public class GestionnaireSalle {
 
     public MurDTO getMurSelectionne()
     {
-        if(this.mMurCourant == null)
+        Mur mur = salleActive.getElementSelectionne();
+        if(mur == null)
             return null;
 
-        return new MurDTO(this.mMurCourant);
+        return new MurDTO(mur);
     }
 
     public boolean editMurSelectionne(Imperial largeurRetourAir)
     {
-        if(this.mMurCourant == null)
+        Mur mur = salleActive.getElementSelectionne();
+        if(mur == null)
             return false;
 
-        mMurCourant.setLargeurRetourAir(largeurRetourAir);
-        mMurCourant.genererPolygonePlanRetourAir();
+        mur.setLargeurRetourAir(largeurRetourAir);
+        mur.genererPolygonePlanRetourAir();
         return true;
     }
 
     public SeparateurDTO getSeparateurSelectionne()
     {
-        if(this.mSeparateur == null)
+        Separateur separateur = salleActive.getElementSelectionne();
+        if(separateur == null)
             return null;
 
-        Separateur separateurPrec = mSeparateur.getSeparateurPrecedent();
-        Imperial position = mSeparateur.getDistanceBordDeReference().clone();
+        Separateur separateurPrec = separateur.getSeparateurPrecedent();
+        Imperial position = separateur.getDistanceBordDeReference().clone();
         Imperial positionRelative;
 
         if(separateurPrec == null)
@@ -361,10 +369,14 @@ public class GestionnaireSalle {
 
     public boolean editSeparateurSelectionne(Imperial posRelative)
     {
-        Separateur sepPrec = mSeparateur.getSeparateurPrecedent();
-        Separateur sepSuivant = mSeparateur.getSeparateurSuivant();
+        Separateur separateur = salleActive.getElementSelectionne();
+        if(separateur == null)
+            return false;
 
-        Utilitaire.Direction direction = mSeparateur.getmCote().getDirection();
+        Separateur sepPrec = separateur.getSeparateurPrecedent();
+        Separateur sepSuivant = separateur.getSeparateurSuivant();
+
+        Utilitaire.Direction direction = separateur.getmCote().getDirection();
         Imperial tailleSalle = direction.estHorizontal() ? salleActive.getLargeur() : salleActive.getProfondeur();
 
         double min = (sepPrec == null ? 0 : sepPrec.getDistanceBordDeReference().getValue());
@@ -375,11 +387,11 @@ public class GestionnaireSalle {
             return false;
 
         if(sepPrec == null)
-            mSeparateur.setDistanceBordDeReference(posRelative.clone());
+            separateur.setDistanceBordDeReference(posRelative.clone());
         else
-            mSeparateur.setDistanceBordDeReference(sepPrec.getDistanceBordDeReference().add(posRelative));
+            separateur.setDistanceBordDeReference(sepPrec.getDistanceBordDeReference().add(posRelative));
 
-        mSeparateur.getmCote().setMurs(updateMurs(direction));
+        separateur.getmCote().setMurs(updateMurs(direction));
         return true;
     }
 
@@ -429,5 +441,7 @@ public class GestionnaireSalle {
         this.vuePlan = false;
         this.vueCote = true;
     }
+
+
 
 }

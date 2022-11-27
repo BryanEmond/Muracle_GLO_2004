@@ -48,8 +48,10 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24), null)    ;
+            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24))    ;
+
             ArrayList<Polygone> fenetres = fenetre.genererPolygoneELV();
+            fenetre.setmPolygoneElevation(fenetre.genererPolygoneELV().get(0));
             for (PointImperial pointImperial:fenetres.get(1).getPoints()
                  )
             {
@@ -78,28 +80,20 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null)    ;
+            Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null);
             ArrayList<Polygone> portes = porte.genererPolygoneELV();
-            for (PointImperial pointImperial:portes.get(0).getPoints()
-            )
-            {
-                if(!polygone.PointEstDansPolygone(pointImperial)){
-                    return false;
+            for (PointImperial pointImperial:portes.get(0).getPoints())
+            { //                if(polygone.PointEstDansPolygone(pointImperial)){ //
+                // return false; //                }
+                for (Accessoire accessoire: cote.accessoires) {
+                if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
+                return false;
                 }
-
-                for (Accessoire accessoire: cote.accessoires
-                ) {
-                    if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
-                        return false;
-                    }
                 }
             }
-
             cote.accessoires.add(porte);
-            return  true;
-        }
-        return  false;
-    }
+            return  true;}
+        return  false;     }
 
     public boolean SupprimerPlan(PointImperial point){
         return  false;
@@ -438,5 +432,13 @@ public class Salle implements Serializable {
 
     public void setHauteurTrouRetourAir(Imperial hauteurTrouRetourAir) {
         this.hauteurTrouRetourAir = hauteurTrouRetourAir;
+    }
+
+    public <T extends Element>T getElementSelectionne()
+    {
+        if(ElementSelectionne == null)
+            return null;
+
+        return (T) ElementSelectionne;
     }
 }

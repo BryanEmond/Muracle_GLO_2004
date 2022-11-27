@@ -12,32 +12,30 @@ public class Porte extends Accessoire implements Serializable {
     Boolean perceInterieur = true;
     Boolean perceExterieur = false;
 
-    String nom = "Porte";
+
 
 
     public Porte(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur, Imperial mLargeur, Imperial mHauteur, String mNom) {
-        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur, mNom);
+        super(mY, mX, mPerceExtérieur, mPerceInterieur, mLargeur, mHauteur);
     this.largeur = mLargeur;
     this.hauteur = mHauteur;
     this.perceInterieur = mPerceInterieur;
     this.perceExterieur = mPerceExtérieur;
-    this.nom = mNom;
     }
 
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
         //TODO largeur et hauteur configurable
-        Imperial x1 = super.mX;
-        Imperial y1;
-        Imperial x2;
-        Imperial y2 = new Imperial(0);
-
-        x2 = x1.add(largeur);
-        y1 = y2.add(hauteur);
+        Imperial x1 = new Imperial(10);
+        Imperial y1 = new Imperial(20);
+        Imperial x2 = new Imperial(20);
+        Imperial y2 = new Imperial(30);
+//
+//        x2 = x1.add(largeur);
+//        y1 = y2.add(hauteur);
 
         ArrayList<Polygone> portes = new ArrayList<>();
         portes.add(this.mPolygoneElevation = new Polygone(Color.PINK, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1)));
 
         return portes;
-    }
-}
+    }}

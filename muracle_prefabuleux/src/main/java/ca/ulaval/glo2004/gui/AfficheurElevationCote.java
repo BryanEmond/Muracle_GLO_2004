@@ -23,29 +23,13 @@ public class AfficheurElevationCote extends Afficheur{
 
         ArrayList<Polygone> polygones = cote.getPolygoneElevation(exterieur);
         for (int i = 0; i < cote.getAccessoires().size(); i++){
-            if (!exterieur && cote.getAccessoires().get(i).getmNom().equals("Prise"))
-            {
-                //TODO créer generer polygone accessoire
-                //TODO créer getmPolygone accessoire
-                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
-            }
-
-            if(!exterieur && cote.getAccessoires().get(i).getmNom().equals("RetourAir"))
+            if (!exterieur)
             {
                 polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
             }
-
-            if(cote.getAccessoires().get(i).getmNom().equals("Porte"))
-            {
-                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
-            }
-
-            if(cote.getAccessoires().get(i).getmNom().equals("Fenetre"))
-            {
-                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
-            }
+        //TODO penser a gérer l'affichage de prise et de retourd'air ne doivent pas s'afficher dehors
         }
-        //TODO generer polygone accessoire
+
         dessinerPolygones(g, polygones);
     }
 }
