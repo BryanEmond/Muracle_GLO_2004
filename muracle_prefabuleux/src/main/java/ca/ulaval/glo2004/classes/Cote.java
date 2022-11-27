@@ -132,15 +132,14 @@ public class Cote extends Element implements Serializable {
 
         for(int i = 0; i < murs.size(); i++)
         {
-
-            if (exterieur) {
-                murs.get(i).genererPolygoneELV(exterieur);
-            }
-
-            if (!exterieur){
-                murs.get(i).genererPolygoneELV(exterieur);
-            }
+            murs.get(i).genererPolygoneELV(exterieur);
             polygones.add((murs.get(i).mPolygoneElevation));
+
+            if(murs.get(i).aRetourAir())
+            {
+                murs.get(i).genererPolygoneRetourAirELV(exterieur);
+                polygones.add(murs.get(i).mPolygoneElevationRetourAir);
+            }
         }
 
         return polygones;

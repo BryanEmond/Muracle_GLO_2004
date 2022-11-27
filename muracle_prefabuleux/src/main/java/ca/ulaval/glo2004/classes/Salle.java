@@ -153,15 +153,11 @@ public class Salle implements Serializable {
     public boolean AjouterRetourAirElevation(PointImperial point, Utilitaire.Direction direction, boolean interieur){
         // Mur ?
         Cote cote = getCote(direction);
-        //?cote.PointEstDansCote(point)
-        if(cote.PointEstDansCoteElevation(point)){
-
-            Mur mur = getMurCliqueElevation(cote, point, interieur);
-            if(mur != null)
-            {
-                mur.setRetourAir(!mur.aRetourAir());
-                return true;
-            }
+        Mur mur = getMurCliqueElevation(cote, point, interieur);
+        if(mur != null)
+        {
+            mur.setRetourAir(!mur.aRetourAir());
+            return true;
         }
         return  false;
     }
