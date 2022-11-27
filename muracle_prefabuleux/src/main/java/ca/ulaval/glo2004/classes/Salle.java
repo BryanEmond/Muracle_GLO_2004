@@ -95,6 +95,8 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
+
+
             int sallelargeur=0;
             if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD))
             {
@@ -106,6 +108,7 @@ public class Salle implements Serializable {
                 return false;
             }
             Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null);
+
             porte.setCote(cote);
             porte.setmPerceExtérieur(true);
             ArrayList<Polygone> portes = porte.genererPolygoneELV();
@@ -116,6 +119,10 @@ public class Salle implements Serializable {
                 if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
                 return false;
                 }
+                }
+
+                if(!polygone.PointEstDansPolygone(pointImperial)){
+                    return false;
                 }
             }
             cote.accessoires.add(porte);

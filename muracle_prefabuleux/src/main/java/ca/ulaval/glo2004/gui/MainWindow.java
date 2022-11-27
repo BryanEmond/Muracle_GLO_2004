@@ -368,8 +368,6 @@ public class MainWindow {
                                 updatePanels();
                                 break;
                         }
-
-
                     }
                 }
                 mainPanel.validate();
