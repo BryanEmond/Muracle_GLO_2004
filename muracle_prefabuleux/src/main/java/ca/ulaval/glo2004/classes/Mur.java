@@ -355,5 +355,15 @@ public class Mur extends Element implements Serializable {
     public void setLargeurRetourAir(Imperial largeurRetourAir) {
         this.largeurRetourAir = largeurRetourAir;
     }
+
+    public void setRetourAirePolygone(Polygone polygoneRetourAir){
+        this.mPolygonePlanRetourAir = polygoneRetourAir;
+    }
+    public Polygone getPolygonePlanRetourAir(){
+        return this.mPolygonePlanRetourAir;
+    }
+    public Polygone getPolygonePlan(){
+        return this.mPolygonePlan;
+    }
 }
 
