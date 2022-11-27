@@ -24,7 +24,7 @@ public class PrisesElectrique extends Accessoire implements Serializable {
 
 
     @Override
-    public ArrayList<Polygone> genererPolygoneELV() {
+    public ArrayList<Polygone> genererPolygoneELV(boolean exterieur) {
         //TODO ajuster les point x1 et y1
         Imperial x1 = mX;
         Imperial y1 = mY;
@@ -33,6 +33,12 @@ public class PrisesElectrique extends Accessoire implements Serializable {
 
         x2 = x1.add(mLargeur);
         y2 = y1.add(mHauteur);
+
+        if(exterieur)
+        {
+            x1 = x1.mirror(cote);
+            x2 = x2.mirror(cote);
+        }
 
         Polygone prise = this.mPolygoneElevation = new Polygone(Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
         ArrayList<Polygone> prises = new ArrayList<>();

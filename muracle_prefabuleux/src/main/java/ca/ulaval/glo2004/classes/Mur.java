@@ -318,11 +318,11 @@ public class Mur extends Element implements Serializable {
         this.mPolygoneElevationRetourAir = new Polygone(selectionne ? Color.BLUE : Color.BLACK, p1, p2, p3, p4);
     }
 
-    public ArrayList<Polygone> getPolygoneAccessoires(){
+    public ArrayList<Polygone> getPolygoneAccessoires(boolean exterieur){
         ArrayList<Polygone> polygonesAccessoires = new ArrayList<>();
 
         for(Accessoire accessoire : mCote.accessoires){
-                polygonesAccessoires.addAll(accessoire.genererPolygoneELV());
+                polygonesAccessoires.addAll(accessoire.genererPolygoneELV(exterieur));
             }
         return polygonesAccessoires;
         };

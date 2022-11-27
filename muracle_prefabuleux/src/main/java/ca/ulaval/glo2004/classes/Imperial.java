@@ -143,6 +143,16 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return new Imperial(newEntier, newNumerator % newDenominator, newDenominator);
     }
 
+    public Imperial mirror(Cote cote)
+    {
+        Utilitaire.Direction direction = cote.getDirection();
+
+        if(direction.estHorizontal())
+            return this.substract(cote.getmSalle().getLargeur()).abs();
+        else
+            return this.substract(cote.getmSalle().getProfondeur()).abs();
+    }
+
     @Override
     public String toString() {
         if(numerateur == 0)

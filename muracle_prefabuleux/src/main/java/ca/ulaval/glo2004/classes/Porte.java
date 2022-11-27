@@ -21,7 +21,7 @@ public class Porte extends Accessoire implements Serializable {
     }
 
     @Override
-    public ArrayList<Polygone> genererPolygoneELV() {
+    public ArrayList<Polygone> genererPolygoneELV(boolean exterieur) {
         //TODO largeur et hauteur configurable
         Imperial x1 = new Imperial(mX.entier, mX.numerateur, mX.denominateur);
         Imperial y1 = new Imperial(cote.getmSalle().hauteur.entier, cote.getmSalle().hauteur.numerateur, cote.getmSalle().hauteur.denominateur);
@@ -30,6 +30,12 @@ public class Porte extends Accessoire implements Serializable {
 
         x2 = x1.add(mLargeur);
         y2 = y1.add(mHauteur.negative());
+
+        if(exterieur)
+        {
+            x1 = x1.mirror(getCote());
+            x2 = x2.mirror(getCote());
+        }
 
         ArrayList<Polygone> portes = new ArrayList<>();
         portes.add(this.mPolygoneElevation = new Polygone(Color.DARK_GRAY, new PointImperial(x1, y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1)));
