@@ -13,16 +13,17 @@ public abstract class Accessoire extends Element implements Serializable {
     Imperial mHauteur;
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
-    String mNom;
+
 
     public Accessoire(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur,
-                      Imperial mLargeur, Imperial mHauteur, String mNom) {
+                      Imperial mLargeur, Imperial mHauteur) {
         super(mY, mX);
         this.mPerceExtérieur = mPerceExtérieur;
         this.mPerceInterieur = mPerceInterieur;
         this.mLargeur = mLargeur;
         this.mHauteur = mHauteur;
-        this.mNom = mNom;
+
+
     }
 
     public abstract ArrayList<Polygone> genererPolygoneELV();
@@ -93,11 +94,4 @@ public abstract class Accessoire extends Element implements Serializable {
         this.mPolygoneElevation = mPolygoneElevation;
     }
 
-    public String getmNom() {
-        return mNom;
-    }
-
-    public void setmNom(String mNom) {
-        this.mNom = mNom;
-    }
 }

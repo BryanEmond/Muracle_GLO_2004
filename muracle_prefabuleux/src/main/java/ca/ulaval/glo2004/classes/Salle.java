@@ -48,8 +48,10 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24), null)    ;
+            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24))    ;
+
             ArrayList<Polygone> fenetres = fenetre.genererPolygoneELV();
+            fenetre.setmPolygoneElevation(fenetre.genererPolygoneELV().get(0));
             for (PointImperial pointImperial:fenetres.get(1).getPoints()
                  )
             {
@@ -78,28 +80,20 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null)    ;
+            Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null);
             ArrayList<Polygone> portes = porte.genererPolygoneELV();
-            for (PointImperial pointImperial:portes.get(0).getPoints()
-            )
-            {
-                if(!polygone.PointEstDansPolygone(pointImperial)){
-                    return false;
+            for (PointImperial pointImperial:portes.get(0).getPoints())
+            { //                if(polygone.PointEstDansPolygone(pointImperial)){ //
+                // return false; //                }
+                for (Accessoire accessoire: cote.accessoires) {
+                if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
+                return false;
                 }
-
-                for (Accessoire accessoire: cote.accessoires
-                ) {
-                    if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
-                        return false;
-                    }
                 }
             }
-
             cote.accessoires.add(porte);
-            return  true;
-        }
-        return  false;
-    }
+            return  true;}
+        return  false;     }
 
     public boolean SupprimerPlan(PointImperial point){
         return  false;
@@ -264,12 +258,19 @@ public class Salle implements Serializable {
         {
             if(var.PointEstDansCote(point)){
                 Polygone polygone = getPolygoneMurPlan(var,point);
+                Mur mur = getMurCliquePlan(point);
+
+
 
                 if (polygone == null){
                     return null;
                 }
 
                 if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
+
+                    if(mur.retourAir && mur.mPolygonePlanRetourAir.SeparateurEstDansPolygoneNordSud(point)){
+                        return null;
+                    }
 
                     if(!var.PointSeparateurEstSurAccessoire(point.mX)){
                         points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
@@ -282,6 +283,10 @@ public class Salle implements Serializable {
                         return direction;
                     }
                 }else {
+                    if(mur.retourAir && mur.mPolygonePlanRetourAir.SeparateurEstDansPolygonesEstOuest(point)){
+                        return null;
+                    }
+
                     if(!var.PointSeparateurEstSurAccessoire(point.mY)) {
                         points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
                         points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
