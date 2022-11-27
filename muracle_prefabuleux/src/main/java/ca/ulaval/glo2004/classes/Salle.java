@@ -261,12 +261,19 @@ public class Salle implements Serializable {
         {
             if(var.PointEstDansCote(point)){
                 Polygone polygone = getPolygoneMurPlan(var,point);
+                Mur mur = getMurCliquePlan(point);
+
+
 
                 if (polygone == null){
                     return null;
                 }
 
                 if(var.mDirection == Utilitaire.Direction.NORD || var.mDirection == Utilitaire.Direction.SUD){
+
+                    if(mur.retourAir && mur.mPolygonePlanRetourAir.SeparateurEstDansPolygoneNordSud(point)){
+                        return null;
+                    }
 
                     if(!var.PointSeparateurEstSurAccessoire(point.mX)){
                         points.add(new PointImperial(point.mX,polygone.points.get(0).mY));
@@ -279,6 +286,10 @@ public class Salle implements Serializable {
                         return direction;
                     }
                 }else {
+                    if(mur.retourAir && mur.mPolygonePlanRetourAir.SeparateurEstDansPolygonesEstOuest(point)){
+                        return null;
+                    }
+
                     if(!var.PointSeparateurEstSurAccessoire(point.mY)) {
                         points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
                         points.add(new PointImperial(point.mY, polygone.points.get(0).mX));
