@@ -33,6 +33,7 @@ public class MainWindow {
     private JButton btnPrise;
     private JButton btnRetourAir;
     private JButton btnSupprimer;
+    private JButton btnSeparateur;
     private JPanel DimensionsPanel;
     private JButton btnDimensionsCollapse;
     private JPanel dimensionPanelContent;
@@ -290,9 +291,19 @@ public class MainWindow {
                 AccessoireEnum = Utilitaire.AccessoireEnum.Supprimer;
             }
         });
+        btnSeparateur.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e) {
+                resetButtonAccessoires();
+                btnSeparateur.setBorder(BorderFactory.createLineBorder(Color.red));
+                AccessoireEnum = Utilitaire.AccessoireEnum.Separateur;
+            }
+        });
         this.mainPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                // if(AccessoireEnum != null){
+
                 if(e.getClickCount() == 2 && gestionnaireSalle.GetvuePlan() && AccessoireEnum != Utilitaire.AccessoireEnum.Supprimer) {
                     gestionnaireSalle.onClickEvents(e.getX(), e.getY(),Utilitaire.AccessoireEnum.Separateur,false,null);
                 }
@@ -325,6 +336,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur);
                                 break;
                             case Separateur:
+                                gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
                                 break;
                             default:
                                 if(gestionnaireSalle.GetvueCote()){
@@ -333,6 +345,9 @@ public class MainWindow {
                                     gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                                 }
                         }
+                    }
+                    else{
+                        gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
                     }
                 }
                 mainPanel.validate();
@@ -432,6 +447,7 @@ public class MainWindow {
         btnPrise.setBorder(null);
         btnPorte.setBorder(null);
         btnFenetre.setBorder(null);
+        btnSeparateur.setBorder(null);
     }
     {
         $$$setupUI$$$();
@@ -484,6 +500,7 @@ public class MainWindow {
         btnRedo = new JButton();
         btnUndo = new JButton();
         btnSave = new JButton();
+        btnSeparateur = new JButton();
         buttonsPanel = new JPanel();
         controlPanel = new JPanel();
         rightPanel = new JPanel();
@@ -711,6 +728,18 @@ public class MainWindow {
         mainPanel.setBackground(new Color(-1));
         mainPanel.setMinimumSize(new Dimension(200, 24));
         mainPanel.setPreferredSize(new Dimension(200, 24));
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2, 2, 2, 2);
+        buttonsPanel.add(btnSeparateur, gbc);
+        btnSeparateur.setMargin(new Insets(0, 0, 0, 0));
+        btnSeparateur.setMaximumSize(new Dimension(70, 50));
+        btnSeparateur.setMinimumSize(new Dimension(70, 50));
+        btnSeparateur.setPreferredSize(new Dimension(70, 50));
+        btnSeparateur.setText("Separateur");
+        btnSeparateur.setBackground(Color.white);
         rightPanel.add(mainPanel, BorderLayout.CENTER);
 
 
