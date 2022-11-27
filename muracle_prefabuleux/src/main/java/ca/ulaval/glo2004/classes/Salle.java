@@ -164,13 +164,16 @@ public class Salle implements Serializable {
 
 
     public void selectionPlan(PointImperial point, Utilitaire.Direction direction,boolean interieur){
-        for (Cote cote:cotes) {
+        if(getCote(Utilitaire.Direction.NORD).getMurs().size() >= 2)
+            ElementSelectionne = getCote(Utilitaire.Direction.NORD).getMurs().get(1);
+
+        /*for (Cote cote:cotes) {
             for (Separateur separateur: cote.separateurs) {
                 if(separateur.mPolygoneElevation.PointEstDansPolygone(point)){
                     ElementSelectionne = separateur;
                 }
             }
-        }
+        }*/
     }
 
     public void selectionElevantion(PointImperial point, Utilitaire.Direction direction,boolean interieur){

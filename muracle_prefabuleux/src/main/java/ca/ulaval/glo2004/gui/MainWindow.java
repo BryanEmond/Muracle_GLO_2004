@@ -642,7 +642,9 @@ public class MainWindow {
 
             if(largeurRetourAir != null)
             {
-                gestionnaireSalle.editMurSelectionne(largeurRetourAir);
+                boolean result = gestionnaireSalle.editMurSelectionne(largeurRetourAir);
+
+                proprietesMur.setError("largeurRetourAir", !result);
                 mainPanel.validate();
                 mainPanel.repaint();
             }

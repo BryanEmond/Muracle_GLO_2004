@@ -344,7 +344,11 @@ public class GestionnaireSalle {
         if(mur == null)
             return false;
 
+        if(largeurRetourAir.getValue() > mur.getmLargeur().getValue() - 1)
+            return false;
+
         mur.setLargeurRetourAir(largeurRetourAir);
+
         mur.genererPolygonePlanRetourAir();
         return true;
     }
