@@ -48,7 +48,7 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24, 0, 0),new Imperial(24, 0, 0), null)    ;
+            Fenetre fenetre = new Fenetre(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24), null)    ;
             ArrayList<Polygone> fenetres = fenetre.genererPolygoneELV();
             for (PointImperial pointImperial:fenetres.get(1).getPoints()
                  )
@@ -78,7 +78,7 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38, 0, 0),new Imperial(88, 0, 0), null)    ;
+            Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null)    ;
             ArrayList<Polygone> portes = porte.genererPolygoneELV();
             for (PointImperial pointImperial:portes.get(0).getPoints()
             )
@@ -116,7 +116,7 @@ public class Salle implements Serializable {
             if (polygone == null){
                 return false;
             }
-            PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(24, 0, 0),new Imperial(24, 0, 0), null)    ;
+            PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(24),new Imperial(24), null)    ;
             ArrayList<Polygone> prisesElectriques = prisesElectrique.genererPolygoneELV();
             for (PointImperial pointImperial:prisesElectriques.get(0).getPoints()
             )
