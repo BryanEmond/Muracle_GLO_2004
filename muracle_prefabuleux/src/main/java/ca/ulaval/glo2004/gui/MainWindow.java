@@ -1,6 +1,7 @@
 package ca.ulaval.glo2004.gui;
 
 import ca.ulaval.glo2004.classes.Imperial;
+import ca.ulaval.glo2004.classes.PointImperial;
 import ca.ulaval.glo2004.classes.Utilitaire;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
@@ -318,6 +319,16 @@ public class MainWindow {
                 if(e.getButton() != MouseEvent.BUTTON1)
                     return;
 
+                System.out.println();
+                System.out.println("=========================");
+                System.out.println("X : " + e.getX());
+                System.out.println("Y : " + e.getY());
+                PointImperial point = Conversion.getConversion().trouverCoordonneImperial(e.getX(), e.getY());
+                System.out.println("IMP : " + point);
+                Point p = Conversion.getConversion().trouverCoordonneePixel(point.getmX(), point.getmY());
+                System.out.println("X : " + p.getX());
+                System.out.println("Y : " + p.getY());
+
                 if(AccessoireEnum != null){
                     if (direction != null) {
                         switch (AccessoireEnum){
@@ -340,6 +351,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
                                 break;
                             case Selection:
+
                                 if(gestionnaireSalle.GetvueCote()){
                                     gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
                                 }else{
@@ -362,6 +374,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
                                 break;
                             case Selection:
+
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                                 updatePanels();
                                 break;
