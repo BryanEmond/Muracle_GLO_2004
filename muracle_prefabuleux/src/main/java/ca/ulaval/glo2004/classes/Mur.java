@@ -278,6 +278,42 @@ public class Mur extends Element implements Serializable {
         this.mPolygoneElevation = new Polygone(Color.BLACK, new PointImperial(x1,y1), new PointImperial(x1, y2), new PointImperial(x2, y2), new PointImperial(x2, y1));
     }
 
+    public void genererPolygoneRetourAirELV(boolean exterieur) {
+        Imperial xCentre;
+
+        if(mCote.getDirection().estHorizontal())
+            xCentre = super.mX.add(mLargeur.divide(2));
+        else
+            xCentre = super.mY.add(mLargeur.divide(2));
+
+        Imperial x1 = xCentre.substract(largeurRetourAir.divide(2));
+        Imperial x2 = x1.add(largeurRetourAir.clone());
+        Imperial y2 = mSalle.getHauteur().substract(mSalle.getPositionRetourAir());
+        Imperial y1 = y2.substract(mSalle.getHauteurRetourAir());
+
+        if(exterieur)
+        {
+            if (mCote.mDirection.equals(Utilitaire.Direction.NORD) || mCote.mDirection.equals(Utilitaire.Direction.SUD)) {
+
+                Imperial xSoustrait = new Imperial(mSalle.largeur.entier, mSalle.largeur.numerateur, mSalle.largeur.denominateur);
+                x1 = x1.substract(xSoustrait).abs();
+                x2 = x2.substract(xSoustrait).abs();
+            }
+            else {
+                Imperial xSoustrait = new Imperial(mSalle.profondeur.entier, mSalle.profondeur.numerateur, mSalle.profondeur.denominateur);
+                x1 = x1.substract(xSoustrait).abs();
+                x2 = x2.substract(xSoustrait).abs();
+            }
+        }
+
+        PointImperial p1 = new PointImperial(x1, y1);
+        PointImperial p2 = new PointImperial(x1, y2);
+        PointImperial p3 = new PointImperial(x2, y2);
+        PointImperial p4 = new PointImperial(x2, y1);
+
+        this.mPolygoneElevationRetourAir = new Polygone(Color.BLACK, p1, p2, p3, p4);
+    }
+
     public ArrayList<Polygone> getPolygoneAccessoires(){
         ArrayList<Polygone> polygonesAccessoires = new ArrayList<>();
 
