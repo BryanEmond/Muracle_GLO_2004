@@ -535,7 +535,7 @@ public class GestionnaireSalle {
                 fenetreClone.setCote(salleActive.getCote(mCoteCourant));
                 fenetreClone.genererPolygoneELV(false);
                 Polygone bordurePoints =((Fenetre)fenetreClone).genererPolygoneELV(false).get(1);
-
+                mur.genererPolygoneELV(false);
                 for (PointImperial pointImperial:bordurePoints.getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
                         accessoireCote.genererPolygoneELV(false);

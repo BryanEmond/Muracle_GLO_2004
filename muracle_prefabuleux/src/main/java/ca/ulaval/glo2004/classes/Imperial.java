@@ -29,7 +29,7 @@ public class Imperial implements Comparable<Imperial>,Serializable {
 
     public Double getFormeNormal() {
         if(denominateur != 0 && numerateur != 0)
-            return (double)entier + (numerateur/denominateur);
+            return (double)entier + ((double)numerateur/(double)denominateur);
 
         return (double)entier;
     }

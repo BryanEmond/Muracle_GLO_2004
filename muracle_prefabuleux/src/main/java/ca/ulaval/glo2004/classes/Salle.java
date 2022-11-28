@@ -330,9 +330,9 @@ public class Salle implements Serializable {
             PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(2),new Imperial(4), null)    ;
             prisesElectrique.setCote(cote);
             prisesElectrique.setmPerceExtérieur(false);
-            ArrayList<Polygone> prisesElectriques = prisesElectrique.genererPolygoneELV(!interieur);
+            Polygone prisesElectriques = prisesElectrique.genererPolygoneELV(!interieur).get(0);
 
-            for (PointImperial pointImperial:prisesElectriques.get(0).getPoints())
+            for (PointImperial pointImperial:prisesElectriques.getPoints())
             {
                 if(!polygone.PointEstDansPolygone(pointImperial)){
                     return false;
@@ -340,11 +340,19 @@ public class Salle implements Serializable {
 
                 for (Accessoire accessoire: cote.accessoires)
                 {
+                    accessoire.genererPolygoneELV(interieur);
                     if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
                         return false;
                     }
+
+                    for(PointImperial pointDeAccessoire: accessoire.getmPolygoneElevation(interieur).getPoints()) {
+                        if(prisesElectriques.PointEstDansPolygone(pointDeAccessoire)){
+                            return false;
+                        }
+                    }
                 }
             }
+
 
             cote.accessoires.add(prisesElectrique);
             ElementSelectionne = prisesElectrique;
