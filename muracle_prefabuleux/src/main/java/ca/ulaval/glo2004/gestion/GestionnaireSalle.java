@@ -533,8 +533,9 @@ public class GestionnaireSalle {
                 fenetreClone.setBordure(accessoireDTO.getBordureFenetre());
                 fenetreClone.setCote(salleActive.getCote(mCoteCourant));
                 fenetreClone.genererPolygoneELV(false);
+                Polygone bordurePoints =((Fenetre)fenetreClone).genererPolygoneELV(false).get(1);
 
-                for (PointImperial pointImperial:fenetreClone.getmPolygoneElevation(false).getPoints()){
+                for (PointImperial pointImperial:bordurePoints.getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
                         accessoireCote.genererPolygoneELV(false);
                         if(accessoireCote.getmPolygoneElevation(false).PointEstDansPolygone(pointImperial)){
@@ -542,7 +543,7 @@ public class GestionnaireSalle {
                         }
                     }
 
-                    if(!mur.polygonesElevation(true).PointEstDansPolygone(pointImperial)){
+                    if(!mur.polygonesElevation(false).PointEstDansPolygone(pointImperial)){
                         return -1;
                     }
                 }
