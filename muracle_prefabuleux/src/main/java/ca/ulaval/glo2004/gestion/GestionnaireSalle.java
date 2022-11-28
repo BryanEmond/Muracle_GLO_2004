@@ -5,6 +5,7 @@ import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
+import ca.ulaval.glo2004.enums.Direction;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ public class GestionnaireSalle {
     private boolean vuePlan;
 
     private boolean vueCote;
-
+    private boolean addToNextMur = false;
+    private Imperial largeurRetourAir;
     public GestionnaireSalle()
     {
     }
@@ -106,8 +108,8 @@ public class GestionnaireSalle {
         mMurCourant = salleActive.selectionElevantion(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void SupprimerPlan(int pixelX, int pixelY){
@@ -120,21 +122,21 @@ public class GestionnaireSalle {
         this.salleActive.getCote(direction).setMurs(updateMurs(direction));
     }
 
-    public void AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterPriseElectrique(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterPriseElectrique(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void AjouterRetourAirPlan(int pixelX, int pixelY)
+    public boolean AjouterRetourAirPlan(int pixelX, int pixelY)
     {
-        salleActive.AjouterRetourAirPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+        return salleActive.AjouterRetourAirPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
     }
 
-    public void AjouterRetourAirElevation(int pixelX, int pixelY, Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterRetourAirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterRetourAirElevation(int pixelX, int pixelY, Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterRetourAirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
-    public void AjouterFenetre(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.AjouterFenetre(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterFenetre(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
+        return salleActive.AjouterFenetre(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void updateSalle()
@@ -180,7 +182,7 @@ public class GestionnaireSalle {
         ArrayList<Separateur> listSep = this.salleActive.getCote(direction).getSeparateurs();
         Salle salle = this.salleActive;
         Cote cote = salleActive.getCote(direction);
-        ArrayList<Mur> oldMurs = new ArrayList<>(cote.getMurs());
+        ArrayList<Mur> oldMurs = cote.getMurs();
 
         if(listSep.size() == 0)
         {
@@ -220,8 +222,9 @@ public class GestionnaireSalle {
                     largeur = listSep.get(i).getDistanceBordDeReference().substract(x);
                 else
                     largeur = this.salleActive.getLargeur().substract(listSep.get(i - 1).getDistanceBordDeReference());
-
-                murs.add(new Mur(salle, cote, y, x, largeur));
+                Mur mur = new Mur(salle, cote, y, x, largeur);
+                mur.genererPolygonePlan();
+                murs.add(mur);
             }
             else{
                 Imperial y;
@@ -237,21 +240,55 @@ public class GestionnaireSalle {
                     largeur = listSep.get(i).getDistanceBordDeReference().substract(y);
                 else
                     largeur = this.salleActive.getProfondeur().substract(listSep.get(i - 1).getDistanceBordDeReference()).substract(this.salleActive.getEpaisseurMurs());
-
-                murs.add(new Mur(salle, cote, y, x, largeur));
+                Mur mur = new Mur(salle, cote, y, x, largeur);
+                mur.genererPolygonePlan();
+                murs.add(mur);
             }
+            for(Mur oldMur : oldMurs) {
+                if (oldMur.aRetourAir()) {
+                    Polygone polygoneRetourAir = oldMur.getPolygonePlanRetourAir();
+                    ArrayList<PointImperial> pointRetourAir = polygoneRetourAir.getPoints();
+                    for (Mur newMur : murs) {
+                        ArrayList<PointImperial> murPointImperial = newMur.getPolygonePlan().getPoints();
+                        if (direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD) {
+                            double valueX1RetourAir = pointRetourAir.get(0).getmX().getValue();
+                            double valueX1MurPoint =murPointImperial.get(0).getmX().getValue();
+                            double valueX2RetourAir= pointRetourAir.get(2).getmX().getValue() ;
+                            double valueX2MurPoint=murPointImperial.get(2).getmX().getValue();
+                            Imperial epaisseur = this.salleActive.getEpaisseurMurs();
+                            if (valueX1RetourAir >= valueX1MurPoint
+                                    && valueX2RetourAir <= valueX2MurPoint
+                                    && valueX1RetourAir >= epaisseur.getValue()){
+                                if(murs.size() - 1 == murs.indexOf(newMur)){
+                                    double largeurMur = newMur.getmLargeur().getValue();
+                                    double retourAirPlusEpaisseur = oldMur.getLargeurRetourAir().add(epaisseur).add(epaisseur.divide(2)).getValue();
+                                    if(retourAirPlusEpaisseur <= largeurMur){
+                                        newMur.setRetourAir(oldMur.aRetourAir());
+                                        newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+                                    }
+                                }else{
+                                    newMur.setRetourAir(oldMur.aRetourAir());
+                                    newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+                                }
+                            }
 
-            if(i < oldMurs.size())
-            {
-                Mur oldMur = oldMurs.get(i);
-                Mur newMur = murs.get(i);
+                        }else{
+                            double valueY1RetourAir = pointRetourAir.get(0).getmY().getValue();
+                            double valueY1MurPoint =murPointImperial.get(0).getmY().getValue();
+                            double valueY2RetourAir= pointRetourAir.get(2).getmY().getValue() ;
+                            double valueY2MurPoint=murPointImperial.get(2).getmY().getValue();
+                            if (valueY1RetourAir >= valueY1MurPoint
+                                    && valueY2RetourAir <= valueY2MurPoint &&
+                                    valueY1RetourAir >= this.salleActive.getEpaisseurMurs().getValue()) {
+                                newMur.setRetourAir(oldMur.aRetourAir());
+                                newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+                            }
+                        }
 
-                newMur.setRetourAir(oldMur.aRetourAir());
-                newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+                    }
+                }
             }
-
         }
-
         return murs;
     }
     public void chargerSalle(String path)
@@ -402,11 +439,30 @@ public class GestionnaireSalle {
         if(value <= 5 || (value + min) > (max - 5))
             return false;
 
-        if(sepPrec == null)
-            separateur.setDistanceBordDeReference(posRelative.clone());
-        else
-            separateur.setDistanceBordDeReference(sepPrec.getDistanceBordDeReference().add(posRelative));
+        Cote cote = separateur.getmCote();
+        Imperial nouvellePosition;
 
+        if(sepPrec == null)
+            nouvellePosition = posRelative.clone();
+        else
+            nouvellePosition = sepPrec.getDistanceBordDeReference().add(posRelative);
+
+        if(cote.PointSeparateurEstSurAccessoire(nouvellePosition, false))
+            return false;
+
+        ArrayList<Mur> murs = separateur.getmCote().getMurs();
+
+        int separateurIndex = separateur.getmCote().getSeparateurs().indexOf(separateur);
+        Mur murPrecedent = murs.get(separateurIndex);
+        Mur murSuivant = murs.get(separateurIndex + 1);
+
+        if(murPrecedent.aRetourAir() && murPrecedent.getLargeurRetourAir().getValue() >= posRelative.getValue())
+            return false;
+
+        if(murSuivant.aRetourAir() && murSuivant.getLargeurRetourAir().getValue() >= sepSuivant.getDistanceBordDeReference().substract(nouvellePosition).getValue())
+            return false;
+
+        separateur.setDistanceBordDeReference(nouvellePosition);
         separateur.getmCote().setMurs(updateMurs(direction));
         return true;
     }

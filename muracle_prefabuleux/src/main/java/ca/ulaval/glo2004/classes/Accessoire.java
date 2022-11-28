@@ -31,7 +31,7 @@ public abstract class Accessoire extends Element implements Serializable {
         this.mHauteur = mHauteur;
     }
 
-    public abstract ArrayList<Polygone> genererPolygoneELV();
+    public abstract ArrayList<Polygone> genererPolygoneELV(boolean exterieur);
 
     public void calculeDisposition(){ }
 

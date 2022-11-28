@@ -23,11 +23,11 @@ public class AfficheurElevationCote extends Afficheur{
         for (int i = 0; i < cote.getAccessoires().size(); i++){
             if (exterieur && cote.getAccessoires().get(i).ismPerceExtérieur())
             {
-                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV());
+                polygones.addAll(cote.getAccessoires().get(i).genererPolygoneELV(exterieur));
             }
             if (!exterieur)
             {
-                polygones.addAll((cote.getAccessoires().get(i).genererPolygoneELV()));
+                polygones.addAll((cote.getAccessoires().get(i).genererPolygoneELV(exterieur)));
             }
         //TODO penser a gérer l'affichage de prise et de retourd'air ne doivent pas s'afficher dehors
         }

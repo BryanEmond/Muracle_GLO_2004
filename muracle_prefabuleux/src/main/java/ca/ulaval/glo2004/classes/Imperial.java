@@ -109,8 +109,8 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         int newEntier = entier + other.entier;
         int newDenominateur = Math.max(denominateur, other.denominateur);
 
-        int newNumerateur1 = (numerateur * 1000 / denominateur * newDenominateur / 1000);
-        int newNumerateur2 = (other.numerateur * 1000 / other.denominateur * newDenominateur / 1000);
+        int newNumerateur1 = (numerateur * 1024 / denominateur * newDenominateur / 1024);
+        int newNumerateur2 = (other.numerateur * 1024 / other.denominateur * newDenominateur / 1024);
 
         int totalNumerator = newNumerateur1 + newNumerateur2;
         newEntier += totalNumerator / newDenominateur;
@@ -141,6 +141,16 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         int newEntier = newNumerator / newDenominator;
 
         return new Imperial(newEntier, newNumerator % newDenominator, newDenominator);
+    }
+
+    public Imperial mirror(Cote cote)
+    {
+        Utilitaire.Direction direction = cote.getDirection();
+
+        if(direction.estHorizontal())
+            return this.substract(cote.getmSalle().getLargeur()).abs();
+        else
+            return this.substract(cote.getmSalle().getProfondeur()).abs();
     }
 
     @Override
