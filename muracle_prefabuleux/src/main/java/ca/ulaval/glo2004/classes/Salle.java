@@ -284,6 +284,7 @@ public class Salle implements Serializable {
         if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue())
         {
             mur.setRetourAir(!mur.aRetourAir());
+
             ElementSelectionne = mur;
             return true;
         }
