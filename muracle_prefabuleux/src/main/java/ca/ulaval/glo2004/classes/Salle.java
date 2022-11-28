@@ -287,9 +287,10 @@ public class Salle implements Serializable {
     public boolean AjouterRetourAirPlan(PointImperial point)
     {
         Mur mur = getMurCliquePlan(point);
-        if(mur != null)
+        if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue())
         {
             mur.setRetourAir(!mur.aRetourAir());
+
             ElementSelectionne = mur;
             return true;
         }
@@ -329,16 +330,18 @@ public class Salle implements Serializable {
         }
     }
 
-    public void selectionElevantion(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+    public Mur selectionElevantion(PointImperial point, Utilitaire.Direction direction,boolean interieur){
 
         Cote cote = getCote(direction);
         if(cote == null)
-            return;
+            return null;
 
+        Mur murSelectionne = null;
         for (Mur mur: cote.murs) {
             mur.genererPolygoneELV(!interieur);
             if(mur.polygonesElevation(interieur).PointEstDansPolygone(point)){
                 ElementSelectionne = mur;
+                murSelectionne = mur;
             }
         }
 
@@ -355,7 +358,7 @@ public class Salle implements Serializable {
                 ElementSelectionne = accessoire;
             }
         }
-
+        return murSelectionne;
     }
 
     public Mur getMurCliquePlan(PointImperial point)
@@ -486,7 +489,7 @@ public class Salle implements Serializable {
         return null;
     }
 
-    private Mur getMurCliqueElevation(Cote cote, PointImperial point,boolean interieur)
+    public Mur getMurCliqueElevation(Cote cote, PointImperial point,boolean interieur)
     {
         for(Mur mur : cote.getMurs())
         {

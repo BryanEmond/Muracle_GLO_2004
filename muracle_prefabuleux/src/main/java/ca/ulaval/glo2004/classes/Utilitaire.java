@@ -7,6 +7,7 @@ public abstract class Utilitaire implements Serializable {
         Porte,
         Fenetre,
         PriseElectrique,
+        PrisesElectrique,
         RetourAir,
         Supprimer,
         Separateur,

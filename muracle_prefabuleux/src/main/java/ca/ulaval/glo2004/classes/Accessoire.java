@@ -2,11 +2,13 @@ package ca.ulaval.glo2004.classes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 //as un impacte sur le poid du mur...
 
 public abstract class Accessoire extends Element implements Serializable {
 
     Cote cote;
+    public int Id;
     Mur mur;
     boolean mPerceExtérieur;
     boolean mPerceInterieur;
@@ -17,9 +19,12 @@ public abstract class Accessoire extends Element implements Serializable {
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
+    private static AtomicInteger ID_GENERATOR = new AtomicInteger(1000);
+
     public Accessoire(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur,
                       Imperial mLargeur, Imperial mHauteur) {
         super(mY, mX);
+        Id = ID_GENERATOR.getAndDecrement();
         this.mPerceExtérieur = mPerceExtérieur;
         this.mPerceInterieur = mPerceInterieur;
         this.mLargeur = mLargeur;
@@ -98,7 +103,26 @@ public abstract class Accessoire extends Element implements Serializable {
         return cote;
     }
 
+    public Accessoire clonePorte()
+    {
+        return new Porte(this.mY.clone(),this.mX.clone(),this.mPerceExtérieur,this.mPerceInterieur,this.mLargeur.clone(),this.mHauteur.clone(),"nom");
+    }
+
+    public Accessoire cloneFenetre()
+    {
+        return new Fenetre(this.mY.clone(),this.mX.clone(),this.mPerceExtérieur,this.mPerceInterieur,this.mLargeur.clone(),this.mHauteur.clone());
+    }
+
+    public Accessoire clonePriseElectrique()
+    {
+        return new PrisesElectrique(this.mY.clone(),this.mX.clone(),this.mPerceExtérieur,this.mPerceInterieur,this.mLargeur.clone(),this.mHauteur.clone(),"nom");
+    }
+
     public void setCote(Cote cote) {
         this.cote = cote;
+    }
+
+    public int getId() {
+        return Id;
     }
 }

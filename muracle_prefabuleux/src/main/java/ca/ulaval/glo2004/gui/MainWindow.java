@@ -144,6 +144,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                gestionnaireSalle.ChangementDeVueVersCote();
+               gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.EST);
                direction = Utilitaire.Direction.EST;
                interieur = true;
                updatePanels();
@@ -159,6 +160,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersCote();
+                gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.EST);
                 direction = Utilitaire.Direction.EST;
                 interieur = false;
                 updatePanels();
@@ -173,6 +175,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersCote();
+                gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.SUD);
                 direction = Utilitaire.Direction.SUD;
                 interieur = true;
                 updatePanels();
@@ -187,6 +190,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersCote();
+                gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.SUD);
                 direction = Utilitaire.Direction.SUD;
                 interieur = false;
                 updatePanels();
@@ -201,6 +205,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersCote();
+                gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.OUEST);
                 direction = Utilitaire.Direction.OUEST;
                 interieur = true;
                 updatePanels();
@@ -216,6 +221,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersCote();
+                gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.OUEST);
                 direction = Utilitaire.Direction.OUEST;
                 interieur = false;
                 updatePanels();
@@ -230,6 +236,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersCote();
+                gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.NORD);
                 direction = Utilitaire.Direction.NORD;
                 interieur = true;
                 updatePanels();
@@ -245,6 +252,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersCote();
+                gestionnaireSalle.setmCoteCourant(Utilitaire.Direction.OUEST);
                 direction = Utilitaire.Direction.NORD;
                 interieur = false;
                 updatePanels();
@@ -259,6 +267,7 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.ChangementDeVueVersPlan();
+                gestionnaireSalle.setmCoteCourant(null);
                 direction = null;
                 interieur = false;
                 updatePanels();
@@ -354,13 +363,7 @@ public class MainWindow {
                                 gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
                                 break;
                             case Selection:
-
-                                if(gestionnaireSalle.GetvueCote()){
-                                    gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
-                                }else{
-                                    gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
-                                }
-                                updatePanels();
+                                gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
                                 break;
                         }
                     }
