@@ -193,6 +193,7 @@ public class Salle implements Serializable {
                 if(accessoire.mPolygoneElevation.PointEstDansPolygone(point)){
                     cote.accessoires.remove(accessoire);
                     deselectionnerElement();
+                    break;
                 }
             }
 
