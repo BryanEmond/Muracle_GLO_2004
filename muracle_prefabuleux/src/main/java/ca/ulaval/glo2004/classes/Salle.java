@@ -121,7 +121,7 @@ public class Salle implements Serializable {
 
             if(!interieur)
                 point.mX = point.mX.mirror(cote);
-            int comparaison = point.mX.entier + cote.getmSalle().getEpaisseurMurs().entier * 2 ;
+            int comparaison = point.mX.entier + cote.getmSalle().getEpaisseurMurs().entier;
             if (comparaison + 39 > sallelargeur){
                 return false;
             }
@@ -130,32 +130,81 @@ public class Salle implements Serializable {
 
             porte.setCote(cote);
             porte.setmPerceExtérieur(true);
-            ArrayList<Polygone> portes = porte.genererPolygoneELV(!interieur);
+            ArrayList<Polygone> portes = porte.genererPolygoneELV(interieur);
             for (PointImperial pointImperial:portes.get(0).getPoints())
             { //                if(polygone.PointEstDansPolygone(pointImperial)){ //
                 // return false; //                }
                 for (Accessoire accessoire: cote.accessoires) {
-                if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
-                return false;
-                }
-                    ArrayList<Polygone> polygonesObstruant = cote.getPolygoneElevation(!interieur);
+                    if (accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)) {
+                        return false;
+                    }
+
+                    if (!polygone.PointEstDansPolygone(pointImperial)) {
+                        return false;
+                    }
+
+                }}
+                //TODO verifier si l'accessoire est dans la porte
+               /* for (PointImperial pointImperiall: cote.accessoires.get(0).getmPolygoneElevation(interieur).getPoints()){
+                    for(Porte porteIndex: ){
+                        if(porteIndex.mPolygoneElevation.PointEstDansPolygone(pointImperial)){return false;}
+                    }
+                }*/
+
+            for(Accessoire accessoire : cote.accessoires){
+                accessoire.getmPolygoneElevation(interieur);
+                for(PointImperial pointDeAccessoire: accessoire.getmPolygoneElevation(interieur).getPoints())
+                {
+                    if(portes.get(0).PointEstDansPolygone(pointDeAccessoire)){return false;}
+                }}
+
+
+                //for(){}
+
+                  /*  ArrayList<Polygone> polygonesObstruant = cote.getPolygoneElevation(!interieur);
                     for (int i = 0; i < cote.getAccessoires().size(); i++){
-                        polygonesObstruant.addAll(cote.getAccessoires().get(i).genererPolygoneELV(!interieur));
+                        //polygonesObstruant.addAll(cote.getAccessoires().get(i).genererPolygoneELV(!interieur));
                         polygonesObstruant.add(cote.getAccessoires().get(i).getmPolygoneElevation(interieur));}
-                    for (int ii=0; ii<polygonesObstruant.size(); ii++){
-                        if(polygonesObstruant.get(ii).PointEstDansPolygone(pointImperial))
+                  //  for (int ii=0; ii<polygonesObstruant.size(); ii++){
+                        if(polygonesObstruant.get().PointEstDansPolygone(pointImperial))
                             return false;
                     }
-                }
+/*
+                    if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD))
+                    {
+                        for (int i =0; i < cote.getMurs().size();i++)
+                        {
+                            Imperial pointDebutMur = cote.getMurs().get(i).mX.clone();
+                            Imperial pointFinMur = cote.getMurs().get(i).mX.clone().add(cote.getMurs().get(i).mLargeur);
+                        }
+                    }
+                    else{
+                        for (int i = 0; i < cote.getMurs().size();i++)
+                        {
+                            Imperial pointDebutMur = cote.getMurs().get(i).mY.clone();
+                            Imperial pointFinMur = cote.getMurs().get(i).mY.clone().add(cote.getMurs().get(i).mLargeur);
+                        }
+                    }
+                    */
+                    /*for (int i =0; i < cote.getMurs().size();i++)
+                    {
+                        Imperial pointDebutMur = cote.getMurs().get(i).mX.clone();
+                        Imperial pointFinMur = cote.getMurs().get(i).mX.clone().add(cote.getMurs().get(i).mLargeur);
 
-                if(!polygone.PointEstDansPolygone(pointImperial)){
-                    return false;
-                }
-            }
+                        if ( pointDebutMur.entier < pointImperial.mX.entier && pointImperial.mX.entier > pointFinMur.entier ){
+                            return false;
+                        }
+
+                    }*/
+
+
+
+
+
             cote.accessoires.add(porte);
             ElementSelectionne = porte;
             return  true;}
-        return  false;     }
+        return  false;   }
 
     public  Utilitaire.Direction SupprimerPlan(PointImperial point){
         for (Cote var : cotes)

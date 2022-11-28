@@ -271,6 +271,8 @@ public class Cote extends Element implements Serializable {
         return false;
     }
 
+
+
     public void SupprimerSeparateur(Separateur separateur) {separateurs.remove(separateur);}
 
     public void AjouterAccessoire(Accessoire accessoire) {accessoires.add(accessoire);}
