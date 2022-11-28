@@ -499,22 +499,22 @@ public class GestionnaireSalle {
                 accessoireClone.setmHauteur(accessoireDTO.getHauteur());
                 accessoireClone.setmLargeur(accessoireDTO.getLargeur());
                 accessoireClone.setCote(salleActive.getCote(mCoteCourant));
-                accessoireClone.genererPolygoneELV();
+                accessoireClone.genererPolygoneELV(false);
 
                 Porte porteAccessoire = (Porte) accessoireClone;
                 porteAccessoire.setmX(accessoireDTO.getX());
                 porteAccessoire.setCote(salleActive.getCote(mCoteCourant));
-                porteAccessoire.genererPolygoneELV();
+                porteAccessoire.genererPolygoneELV(false);
 
-                for (PointImperial pointImperial:accessoireClone.getmPolygoneElevation(true).getPoints()){
+                for (PointImperial pointImperial:accessoireClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
-                        accessoireCote.genererPolygoneELV();
-                        if(accessoireCote.getmPolygoneElevation(true).PointEstDansPolygone(pointImperial)){
+                        accessoireCote.genererPolygoneELV(false);
+                        if(accessoireCote.getmPolygoneElevation(false).PointEstDansPolygone(pointImperial)){
                             return -1;
                         }
                     }
 
-                    if(!mur.polygonesElevation(true).PointEstDansPolygone(pointImperial)){
+                    if(!mur.polygonesElevation(false).PointEstDansPolygone(pointImperial)){
                         return -1;
                     }
                 }
@@ -532,12 +532,12 @@ public class GestionnaireSalle {
                 fenetreClone.setmLargeur(accessoireDTO.getLargeur());
                 fenetreClone.setBordure(accessoireDTO.getBordureFenetre());
                 fenetreClone.setCote(salleActive.getCote(mCoteCourant));
-                fenetreClone.genererPolygoneELV();
+                fenetreClone.genererPolygoneELV(false);
 
-                for (PointImperial pointImperial:fenetreClone.getmPolygoneElevation(true).getPoints()){
+                for (PointImperial pointImperial:fenetreClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
-                        accessoireCote.genererPolygoneELV();
-                        if(accessoireCote.getmPolygoneElevation(true).PointEstDansPolygone(pointImperial)){
+                        accessoireCote.genererPolygoneELV(false);
+                        if(accessoireCote.getmPolygoneElevation(false).PointEstDansPolygone(pointImperial)){
                             return -1;
                         }
                     }
@@ -561,17 +561,17 @@ public class GestionnaireSalle {
                 priseElectriqueClone.setmHauteur(accessoireDTO.getHauteur());
                 priseElectriqueClone.setmLargeur(accessoireDTO.getLargeur());
                 priseElectriqueClone.setCote(salleActive.getCote(mCoteCourant));
-                priseElectriqueClone.genererPolygoneELV();
+                priseElectriqueClone.genererPolygoneELV(false);
 
-                for (PointImperial pointImperial:priseElectriqueClone.getmPolygoneElevation(true).getPoints()){
+                for (PointImperial pointImperial:priseElectriqueClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
-                        accessoireCote.genererPolygoneELV();
-                        if(accessoireCote.getmPolygoneElevation(true).PointEstDansPolygone(pointImperial)){
+                        accessoireCote.genererPolygoneELV(false);
+                        if(accessoireCote.getmPolygoneElevation(false).PointEstDansPolygone(pointImperial)){
                             return -1;
                         }
                     }
 
-                    if(!mur.polygonesElevation(true).PointEstDansPolygone(pointImperial)){
+                    if(!mur.polygonesElevation(false).PointEstDansPolygone(pointImperial)){
                         return -1;
                     }
                 }
