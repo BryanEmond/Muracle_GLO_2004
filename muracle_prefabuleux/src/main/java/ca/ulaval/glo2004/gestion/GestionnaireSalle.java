@@ -242,6 +242,7 @@ public class GestionnaireSalle {
             }
             for(Mur oldMur : oldMurs) {
                 if (oldMur.aRetourAir()) {
+                    oldMur.genererPolygonePlanRetourAir();
                     Polygone polygoneRetourAir = oldMur.getPolygonePlanRetourAir();
                     ArrayList<PointImperial> pointRetourAir = polygoneRetourAir.getPoints();
                     for (Mur newMur : murs) {

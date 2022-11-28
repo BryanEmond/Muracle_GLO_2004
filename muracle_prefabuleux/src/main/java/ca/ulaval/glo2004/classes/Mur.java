@@ -215,11 +215,11 @@ public class Mur extends Element implements Serializable {
         Imperial x2;
         Imperial y2;
         if (mCote.mDirection.equals(Utilitaire.Direction.NORD) || mCote.mDirection.equals(Utilitaire.Direction.SUD)) {
-            x1 = super.mX;
+            x1 = super.mX.substract(mCote.mX);
             y1 = new Imperial(0);
 
         } else {
-            x1 = super.mY;
+            x1 = super.mY.substract(mCote.mY);
             y1 = new Imperial(0);
         }
 
