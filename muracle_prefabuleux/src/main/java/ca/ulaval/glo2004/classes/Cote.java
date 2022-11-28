@@ -157,6 +157,8 @@ public class Cote extends Element implements Serializable {
             Separateur sep = (Separateur) mSalle.ElementSelectionne;
 
             Imperial x = sep.getDistanceBordDeReference();
+            if(!getDirection().estHorizontal())
+                x = x.substract(mSalle.getEpaisseurMurs());
 
             if(exterieur)
             {

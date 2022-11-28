@@ -215,11 +215,10 @@ public class Mur extends Element implements Serializable {
         Imperial x2;
         Imperial y2;
         if (mCote.mDirection.equals(Utilitaire.Direction.NORD) || mCote.mDirection.equals(Utilitaire.Direction.SUD)) {
-            x1 = super.mX.substract(mCote.mX);
+            x1 = super.mX;
             y1 = new Imperial(0);
-
         } else {
-            x1 = super.mY.substract(mCote.mY);
+            x1 = super.mY.substract(mSalle.getEpaisseurMurs());
             y1 = new Imperial(0);
         }
 
@@ -244,7 +243,6 @@ public class Mur extends Element implements Serializable {
             newLargeur = newLargeur.add(epaisseurMur.negative());
 
             x2 = x1.add(newLargeur);
-
         }
 
         if (!exterieur && mCote.murs.size() == 1) {

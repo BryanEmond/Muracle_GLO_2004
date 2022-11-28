@@ -109,11 +109,14 @@ public class Separateur extends Element implements Serializable, Comparable<Sepa
         Imperial x1, x2, y1, y2;
 
         Imperial center = distanceBordDeReference;
+        if(!mCote.mDirection.estHorizontal())
+            center = center.substract(mCote.getmSalle().getEpaisseurMurs());
         x1 = center.substract(new Imperial(1));
         x2 = center.add(new Imperial(1));
 
         y1 = new Imperial(0);
         y2 = salle.getHauteur();
+
 
         if(exterieur)
         {

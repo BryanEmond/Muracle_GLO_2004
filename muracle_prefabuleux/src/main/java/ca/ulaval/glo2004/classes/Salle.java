@@ -41,23 +41,22 @@ public class Salle implements Serializable {
         return new ArrayList<Polygone>();
     }
 
-    public boolean AjouterFenetre(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+    public boolean AjouterAccessoire(PointImperial point, Utilitaire.Direction direction, boolean interieur, Accessoire accessoire, Imperial marge)
+    {
         //TODO NE PAS METTRE SUR UN SEPARATEUR OU UN RETOUR D'AIR ou autre accessoire
         Cote cote = getCote(direction);
-        Imperial bordure = new Imperial(0, 1, 8);
 
-        Imperial debutX = point.getmX().substract(bordure);
-        Imperial finX = point.getmX().add(new Imperial(24)).add(bordure);
-
-       /* if(!interieur)
-        {
-            debutX = point.getmX().add(new Imperial(24)).add(bordure);
-            finX = point.getmX().substract(bordure);
-        }*/
+        Imperial debutX = point.getmX().substract(marge);
+        Imperial finX = point.getmX().add(accessoire.getmLargeur()).add(marge);
 
         for (Separateur sep : cote.getSeparateurs()) {
             Imperial posSep = sep.getDistanceBordDeReference();
-            posSep = posSep.mirror(cote);
+
+            if(!direction.estHorizontal())
+                posSep = posSep.substract(cote.getmSalle().getEpaisseurMurs());
+
+            if(!interieur)
+                posSep = posSep.mirror(cote);
 
             if (posSep.getValue() >= debutX.getValue() - 1 && posSep.getValue() <= finX.getValue() + 1)
                 return false;
@@ -67,38 +66,57 @@ public class Salle implements Serializable {
         if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD)) {
             sallelargeur = cote.getmSalle().largeur.getValue();
         } else {
-            sallelargeur = cote.getmSalle().profondeur.getValue();
+            sallelargeur = cote.getmSalle().profondeur.substract(cote.getmSalle().getEpaisseurMurs().multiply(2)).getValue();
+
+            if(!interieur)
+                sallelargeur = cote.getmSalle().profondeur.add(cote.getmSalle().getEpaisseurMurs().multiply(3)).getValue();
         }
 
-        if (point.mX.getValue() + 24.5 > sallelargeur - cote.getmSalle().getEpaisseurMurs().getValue() ||
-                point.mX.getValue() - 1 < cote.getmSalle().getEpaisseurMurs().getValue()) {
+        if (point.mX.getValue() + accessoire.getmLargeur().getValue() + .5 > sallelargeur - cote.getmSalle().getEpaisseurMurs().getValue())
             return false;
+
+        if(interieur)
+        {
+            if(point.mX.getValue() - 1 < cote.getmSalle().getEpaisseurMurs().getValue())
+                return false;
+        }
+        else {
+            if(point.mX.getValue() - 1 < cote.getmSalle().getEpaisseurMurs().getValue() * 3)
+                return false;
         }
 
-        if (point.mY.getValue() + 24.5 > cote.getmSalle().getHauteur().getValue() ||
+        if (point.mY.getValue() + accessoire.getmHauteur().getValue() > cote.getmSalle().getHauteur().getValue() ||
                 point.mY.getValue() < 1)
             return false;
 
         if (!interieur)
-            point.mX = point.mX.add(new Imperial(24)).mirror(cote);
+            accessoire.mX = accessoire.mX.add(accessoire.getmLargeur()).mirror(cote);
 
-        Fenetre fenetre = new Fenetre(point.mY, point.mX, interieur, interieur, new Imperial(24), new Imperial(24));
-        fenetre.setCote(cote);
+        accessoire.setmPerceExtérieur(true);
+        ArrayList<Polygone> polygones = accessoire.genererPolygoneELV(!interieur);
 
-        fenetre.setmPerceExtérieur(true);
-        ArrayList<Polygone> fenetres = fenetre.genererPolygoneELV(!interieur);
-
-        for (PointImperial pointImperial : fenetres.get(1).getPoints()) {
-            for (Accessoire accessoire : cote.accessoires) {
-                if (accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)) {
+        for (PointImperial pointImperial : polygones.get(1).getPoints()) {
+            for (Accessoire a : cote.accessoires) {
+                if (a.mPolygoneElevation.PointEstDansPolygone(pointImperial)) {
                     return false;
                 }
             }
         }
 
-        cote.accessoires.add(fenetre);
-        ElementSelectionne = fenetre;
+        cote.accessoires.add(accessoire);
+        ElementSelectionne = accessoire;
         return true;
+    }
+
+    public boolean AjouterFenetre(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+        Cote cote = getCote(direction);
+
+        Fenetre fenetre = new Fenetre(point.mY, point.mX, interieur, interieur, new Imperial(24), new Imperial(24));
+        fenetre.setCote(cote);
+        fenetre.setmPerceExtérieur(true);
+        fenetre.setmPerceInterieur(true);
+
+        return AjouterAccessoire(point, direction, interieur, fenetre, new Imperial(0, 1, 8));
     }
 
     public boolean AjouterPorte(PointImperial point, Utilitaire.Direction direction,boolean interieur){
@@ -211,12 +229,15 @@ public class Salle implements Serializable {
                     distanceBord = distanceBord.substract(profondeur).abs();
             }
 
-
             for (Separateur separateur: cote.separateurs) {
                 separateur.genererPolygoneELV(interieur);
 
-                if(separateur.distanceBordDeReference.getFormeNormal() + 0.5 >= distanceBord.getFormeNormal() &&
-                        separateur.distanceBordDeReference.getFormeNormal() - 0.5 <= distanceBord.getFormeNormal()){
+                Imperial distSep = separateur.distanceBordDeReference;
+                if(!separateur.getmCote().mDirection.estHorizontal())
+                    distSep = distSep.substract(epaisseurMurs);
+
+                if(distSep.getFormeNormal() + 0.5 >= distanceBord.getFormeNormal() &&
+                        distSep.getFormeNormal() - 0.5 <= distanceBord.getFormeNormal()){
                     cote.separateurs.remove(separateur);
                     deselectionnerElement();
                     break;
@@ -393,12 +414,16 @@ public class Salle implements Serializable {
                     points.add(new PointImperial(point.mX, polygone.points.get(2).mY));
 
                     Imperial distanceBord = point.getmX();
+
+                    if(!direction.estHorizontal())
+                        distanceBord = distanceBord.add(cote.getmSalle().getEpaisseurMurs());
+
                     if (!interieur) {
                         if (direction.estHorizontal()){
                             distanceBord = distanceBord.substract(largeur).abs();
                         }
                         else{
-                            distanceBord = distanceBord.substract(profondeur).abs();
+                            distanceBord = distanceBord.substract(profondeur).substract(cote.getmSalle().getEpaisseurMurs().multiply(2)).abs();
                         }
                     }
                     Separateur separateur = new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points));
