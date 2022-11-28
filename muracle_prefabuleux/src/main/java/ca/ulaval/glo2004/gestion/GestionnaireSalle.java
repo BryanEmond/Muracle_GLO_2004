@@ -12,10 +12,13 @@ import java.util.Arrays;
 
 public class GestionnaireSalle {
 
-    private Cote mCoteCourant;
+    private Utilitaire.Direction mCoteCourant;
     private Mur mMurCourant;
     private Accessoire mAccessoire;
     private Separateur mSeparateur;
+
+    private PointImperial DernierPointSelectionner;
+
     private boolean mDecoupage;
     private String filePath;
     private Salle salleActive;
@@ -99,7 +102,8 @@ public class GestionnaireSalle {
     }
 
     public void selectionnerElementElevantion(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.selectionElevantion(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+        DernierPointSelectionner = Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY);
+        mMurCourant = salleActive.selectionElevantion(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
     }
 
     public void AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
@@ -419,21 +423,109 @@ public class GestionnaireSalle {
 
     public int editAccessoireSelectionne(AccessoireDTO accessoireDTO)
     {
+        ArrayList<Accessoire> listAccessoire = new ArrayList<>(salleActive.getCote(mCoteCourant).getAccessoires());
+
         Element element = salleActive.getElementSelectionne();
+
         if(!(element instanceof Accessoire))
             return -1;
+
+        listAccessoire.removeIf(e -> e.Id == ((Accessoire) element).getId());
+
         Accessoire accessoire = (Accessoire) element;
 
-        accessoire.setmHauteur(accessoireDTO.getHauteur());
-        accessoire.setmLargeur(accessoireDTO.getLargeur());
-        accessoire.setmX(accessoireDTO.getX());
+        Mur mur = salleActive.getMurCliqueElevation(salleActive.getCote(mCoteCourant),new PointImperial(accessoire.getmX().clone(),accessoire.getmY().clone()),true);
 
-        if(accessoireDTO.getTypeAccessoire() != Utilitaire.AccessoireEnum.Porte)
-            accessoire.setmY(accessoireDTO.getY());
+        switch(accessoireDTO.getTypeAccessoire()) {
+            case  Porte:
 
-        if(accessoireDTO.getTypeAccessoire() == Utilitaire.AccessoireEnum.Fenetre)
-            ((Fenetre) accessoire).setBordure(accessoireDTO.getBordureFenetre());
+                Accessoire accessoireClone = accessoire.clonePorte();
+                accessoireClone.setmHauteur(accessoireDTO.getHauteur());
+                accessoireClone.setmLargeur(accessoireDTO.getLargeur());
+                accessoireClone.setCote(salleActive.getCote(mCoteCourant));
+                accessoireClone.genererPolygoneELV();
 
+                Porte porteAccessoire = (Porte) accessoireClone;
+                porteAccessoire.setmX(accessoireDTO.getX());
+                porteAccessoire.setCote(salleActive.getCote(mCoteCourant));
+                porteAccessoire.genererPolygoneELV();
+
+                for (PointImperial pointImperial:accessoireClone.getmPolygoneElevation(true).getPoints()){
+                    for (Accessoire accessoireCote: listAccessoire) {
+                        accessoireCote.genererPolygoneELV();
+                        if(accessoireCote.getmPolygoneElevation(true).PointEstDansPolygone(pointImperial)){
+                            return -1;
+                        }
+                    }
+
+                    if(!mur.polygonesElevation(true).PointEstDansPolygone(pointImperial)){
+                        return -1;
+                    }
+                }
+
+                accessoire.setmHauteur(accessoireDTO.getHauteur());
+                accessoire.setmLargeur(accessoireDTO.getLargeur());
+                accessoire.setmX(accessoireDTO.getX());
+
+                break;
+            case  Fenetre:
+                Fenetre fenetreClone = (Fenetre) accessoire.cloneFenetre();
+                fenetreClone.setmX(accessoireDTO.getX());
+                ((Fenetre)fenetreClone).setmY(accessoireDTO.getY());
+                fenetreClone.setmHauteur(accessoireDTO.getHauteur());
+                fenetreClone.setmLargeur(accessoireDTO.getLargeur());
+                fenetreClone.setBordure(accessoireDTO.getBordureFenetre());
+                fenetreClone.setCote(salleActive.getCote(mCoteCourant));
+                fenetreClone.genererPolygoneELV();
+
+                for (PointImperial pointImperial:fenetreClone.getmPolygoneElevation(true).getPoints()){
+                    for (Accessoire accessoireCote: listAccessoire) {
+                        accessoireCote.genererPolygoneELV();
+                        if(accessoireCote.getmPolygoneElevation(true).PointEstDansPolygone(pointImperial)){
+                            return -1;
+                        }
+                    }
+
+                    if(!mur.polygonesElevation(true).PointEstDansPolygone(pointImperial)){
+                        return -1;
+                    }
+                }
+
+                accessoire.setmHauteur(accessoireDTO.getHauteur());
+                accessoire.setmLargeur(accessoireDTO.getLargeur());
+                ((Fenetre)accessoire).setBordure(accessoireDTO.getBordureFenetre());
+                accessoire.setmX(accessoireDTO.getX());
+                accessoire.setmY(accessoireDTO.getY());
+
+                break;
+            case PrisesElectrique:
+                PrisesElectrique priseElectriqueClone = (PrisesElectrique) accessoire.clonePriseElectrique();
+                priseElectriqueClone.setmX(accessoireDTO.getX());
+                ((PrisesElectrique)priseElectriqueClone).setmY(accessoireDTO.getY());
+                priseElectriqueClone.setmHauteur(accessoireDTO.getHauteur());
+                priseElectriqueClone.setmLargeur(accessoireDTO.getLargeur());
+                priseElectriqueClone.setCote(salleActive.getCote(mCoteCourant));
+                priseElectriqueClone.genererPolygoneELV();
+
+                for (PointImperial pointImperial:priseElectriqueClone.getmPolygoneElevation(true).getPoints()){
+                    for (Accessoire accessoireCote: listAccessoire) {
+                        accessoireCote.genererPolygoneELV();
+                        if(accessoireCote.getmPolygoneElevation(true).PointEstDansPolygone(pointImperial)){
+                            return -1;
+                        }
+                    }
+
+                    if(!mur.polygonesElevation(true).PointEstDansPolygone(pointImperial)){
+                        return -1;
+                    }
+                }
+
+                accessoire.setmHauteur(accessoireDTO.getHauteur());
+                accessoire.setmLargeur(accessoireDTO.getLargeur());
+                accessoire.setmX(accessoireDTO.getX());
+                accessoire.setmY(accessoireDTO.getY());
+                break;
+        }
         return 0;
     }
 
@@ -486,6 +578,12 @@ public class GestionnaireSalle {
         salleActive.deselectionnerElement();
     }
 
+    public Utilitaire.Direction getmCoteCourant() {
+        return mCoteCourant;
+    }
 
+    public void setmCoteCourant(Utilitaire.Direction mCoteCourant) {
+        this.mCoteCourant = mCoteCourant;
+    }
 
 }

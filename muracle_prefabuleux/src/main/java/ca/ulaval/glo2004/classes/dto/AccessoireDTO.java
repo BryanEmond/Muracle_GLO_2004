@@ -14,7 +14,11 @@ public class AccessoireDTO {
     public AccessoireDTO(Accessoire accessoire)
     {
         x = accessoire.getmX().clone();
-        y = accessoire.getmY().clone();
+        if(!(accessoire instanceof Porte)){
+            y = accessoire.getmY().clone();
+        }else{
+            y= new Imperial(0);
+        }
 
         hauteur = accessoire.getmHauteur().clone();
         largeur = accessoire.getmLargeur().clone();

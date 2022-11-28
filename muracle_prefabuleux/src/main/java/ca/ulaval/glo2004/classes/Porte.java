@@ -19,6 +19,11 @@ public class Porte extends Accessoire implements Serializable {
     this.perceInterieur = mPerceInterieur;
     this.perceExterieur = mPerceExtérieur;
     }
+    public Porte clone()
+    {
+        return new Porte(this.mY,this.mX,this.mPerceExtérieur,this.mPerceInterieur,this.mLargeur,this.mHauteur,"nom");
+    }
+
 
     @Override
     public ArrayList<Polygone> genererPolygoneELV() {
@@ -37,3 +42,5 @@ public class Porte extends Accessoire implements Serializable {
         super.mPolygoneElevation = portes.get(0);
         return portes;
     }}
+
+
