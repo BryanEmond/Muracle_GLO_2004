@@ -281,7 +281,7 @@ public class Salle implements Serializable {
     public boolean AjouterRetourAirPlan(PointImperial point)
     {
         Mur mur = getMurCliquePlan(point);
-        if(mur != null)
+        if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue())
         {
             mur.setRetourAir(!mur.aRetourAir());
             ElementSelectionne = mur;
