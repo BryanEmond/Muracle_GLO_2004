@@ -219,12 +219,6 @@ public class GestionnaireSalle {
                 else
                     largeur = this.salleActive.getLargeur().substract(listSep.get(i - 1).getDistanceBordDeReference());
                 Mur mur = new Mur(salle, cote, y, x, largeur);
-                if(addToNextMur){
-                    mur.setRetourAir(addToNextMur);
-                    mur.setLargeurRetourAir(largeurRetourAir);
-                    addToNextMur = false;
-                    murs.get(i-1).setRetourAir(false);
-                }
                 mur.genererPolygonePlan();
                 murs.add(mur);
             }
@@ -243,103 +237,50 @@ public class GestionnaireSalle {
                 else
                     largeur = this.salleActive.getProfondeur().substract(listSep.get(i - 1).getDistanceBordDeReference()).substract(this.salleActive.getEpaisseurMurs());
                 Mur mur = new Mur(salle, cote, y, x, largeur);
-                if(addToNextMur){
-                    mur.setRetourAir(addToNextMur);
-                    mur.setLargeurRetourAir(largeurRetourAir);
-                    murs.get(i-1).setRetourAir(false);
-                }
                 mur.genererPolygonePlan();
                 murs.add(mur);
             }
+            for(Mur oldMur : oldMurs) {
+                if (oldMur.aRetourAir()) {
+                    Polygone polygoneRetourAir = oldMur.getPolygonePlanRetourAir();
+                    ArrayList<PointImperial> pointRetourAir = polygoneRetourAir.getPoints();
+                    for (Mur newMur : murs) {
+                        ArrayList<PointImperial> murPointImperial = newMur.getPolygonePlan().getPoints();
+                        if (direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD) {
+                            double valueX1RetourAir = pointRetourAir.get(0).getmX().getValue();
+                            double valueX1MurPoint =murPointImperial.get(0).getmX().getValue();
+                            double valueX2RetourAir= pointRetourAir.get(2).getmX().getValue() ;
+                            double valueX2MurPoint=murPointImperial.get(2).getmX().getValue();
+                            Imperial epaisseur = this.salleActive.getEpaisseurMurs();
+                            if (valueX1RetourAir >= valueX1MurPoint
+                                    && valueX2RetourAir <= valueX2MurPoint
+                                    && valueX1RetourAir >= epaisseur.getValue()){
+                                if(murs.size() - 1 == murs.indexOf(newMur)){
+                                    double largeurMur = newMur.getmLargeur().getValue();
+                                    double retourAirPlusEpaisseur = oldMur.getLargeurRetourAir().add(epaisseur).add(epaisseur.divide(2)).getValue();
+                                    if(retourAirPlusEpaisseur <= largeurMur){
+                                        newMur.setRetourAir(oldMur.aRetourAir());
+                                        newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+                                    }
+                                }else{
+                                    newMur.setRetourAir(oldMur.aRetourAir());
+                                    newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
+                                }
+                            }
 
-            if(oldMurs.size() > i){
-                Mur oldMur = oldMurs.get(i);
-                Mur newMur = murs.get(i);
-                Imperial epaisseurMur = this.salleActive.getEpaisseurMurs().add(new Imperial(1));
-                Imperial firstOldMurPolygoneXValue = oldMur.getPolygonePlanRetourAir().getPoints().get(0).getmX();
-                Imperial firstOldMurPolygoneYValue = oldMur.getPolygonePlanRetourAir().getPoints().get(0).getmY();
-                Imperial epaisseurMurPlusLargeurRetourAir = epaisseurMur.add(oldMur.getLargeurRetourAir());
-                Imperial tirdNewMurPolygoneXValue = newMur.getPolygonePlan().getPoints().get(2).getmX();
-                Imperial tirdNewMurPolygoneYValue = newMur.getPolygonePlan().getPoints().get(2).getmX();
-                if(oldMurs.get(i).aRetourAir() && (direction == Utilitaire.Direction.NORD || direction == Utilitaire.Direction.SUD)) {
-                    if (i == 0) {
-                        if (epaisseurMur.getValue() > firstOldMurPolygoneXValue.getValue()) {
-                            murs.remove(newMur);
-                            murs.add(oldMur);
-                        }
-                        else if (epaisseurMurPlusLargeurRetourAir.getValue() < tirdNewMurPolygoneXValue.getValue()){
-                            newMur.setRetourAir(oldMur.aRetourAir());
-                            newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                        }
-                        else{
-                            for(int y = 0; y < oldMurs.size()-1; y++){
-                                if(oldMurs.get(y).aRetourAir()){
-                                    oldMurs.get(y+1).setRetourAir(oldMur.aRetourAir());
-                                    oldMurs.get(y+1).setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                                }
+                        }else{
+                            double valueY1RetourAir = pointRetourAir.get(0).getmY().getValue();
+                            double valueY1MurPoint =murPointImperial.get(0).getmY().getValue();
+                            double valueY2RetourAir= pointRetourAir.get(2).getmY().getValue() ;
+                            double valueY2MurPoint=murPointImperial.get(2).getmY().getValue();
+                            if (valueY1RetourAir >= valueY1MurPoint
+                                    && valueY2RetourAir <= valueY2MurPoint &&
+                                    valueY1RetourAir >= this.salleActive.getEpaisseurMurs().getValue()) {
+                                newMur.setRetourAir(oldMur.aRetourAir());
+                                newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
                             }
                         }
-                    } else if(i == oldMurs.size() -1){
-                        Imperial largeurMoinEpaisseur = this.salleActive.getLargeur().substract(this.salleActive.getEpaisseurMurs());
-                        Imperial all = newMur.getPolygonePlan().getPoints().get(2).getmX().add(new Imperial(2));
-                        if(all.add(oldMur.getLargeurRetourAir()).getValue() <= largeurMoinEpaisseur.getValue()){
-                            addToNextMur =true;
-                            largeurRetourAir = oldMur.getLargeurRetourAir();
-                            newMur.setRetourAir(false);
-                        }
-                        else {
-                            newMur.setRetourAir(oldMur.aRetourAir());
-                            newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                        }
-                    }else {
-                        if (oldMur.getLargeurRetourAir().getValue() < newMur.getmLargeur().getValue()) {
-                            newMur.setRetourAir(oldMur.aRetourAir());
-                            newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                        }
-                        else{
-                            for(int y = 0; y < oldMurs.size()-1; y++){
-                                if(y ==  oldMurs.size()-1){
 
-                                }else if(oldMurs.get(y).aRetourAir()){
-                                    oldMurs.get(y+1).setRetourAir(oldMur.aRetourAir());
-                                    oldMurs.get(y+1).setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                                }
-                            }
-                        }
-                    }
-                }else{
-                    if (i == 0) {
-                        if (epaisseurMur.getValue() > firstOldMurPolygoneYValue.getValue()){
-//                               && this.salleActive.getLargeur().substract(this.salleActive.getEpaisseurMurs()).getValue() > oldMur.getPolygonePlanRetourAir().getPoints().get(2).getmX().getValue()) {
-                            murs.remove(newMur);
-                            murs.add(oldMur);
-                        } else if (epaisseurMurPlusLargeurRetourAir.getValue() <tirdNewMurPolygoneYValue.getValue()){
-                            newMur.setRetourAir(oldMur.aRetourAir());
-                            newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                        }
-                        else{
-                            for(int y = 0; y < oldMurs.size()-1; y++){
-                                if(oldMurs.get(y).aRetourAir()){
-                                    oldMurs.get(y+1).setRetourAir(oldMur.aRetourAir());
-                                    oldMurs.get(y+1).setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                                }
-                            }
-                        }
-                    } else {
-                        if (oldMur.getLargeurRetourAir().getValue() < newMur.getmLargeur().getValue()) {
-                            newMur.setRetourAir(oldMur.aRetourAir());
-                            newMur.setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                        }
-                        else{
-                            for(int y = 0; y < oldMurs.size()-1; y++){
-                                if(y ==  oldMurs.size()-1){
-
-                                }else if(oldMurs.get(y).aRetourAir()){
-                                    oldMurs.get(y+1).setRetourAir(oldMur.aRetourAir());
-                                    oldMurs.get(y+1).setLargeurRetourAir(oldMur.getLargeurRetourAir());
-                                }
-                            }
-                        }
                     }
                 }
             }
