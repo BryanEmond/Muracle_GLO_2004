@@ -152,33 +152,32 @@ public class Salle implements Serializable {
 
             porte.setCote(cote);
             porte.setmPerceExtérieur(true);
-            ArrayList<Polygone> portes = porte.genererPolygoneELV(interieur);
-            for (PointImperial pointImperial:portes.get(0).getPoints())
-            { //                if(polygone.PointEstDansPolygone(pointImperial)){ //
-                // return false; //                }
+            Polygone portePolygone = porte.genererPolygoneELV(interieur).get(0);
+            for (PointImperial pointImperial:portePolygone.getPoints()) {
+
                 for (Accessoire accessoire: cote.accessoires) {
+                    accessoire.genererPolygoneELV(interieur);
                     if (accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)) {
                         return false;
                     }
 
-                    if (!polygone.PointEstDansPolygone(pointImperial)) {
-                        return false;
+                    for(PointImperial pointDeAccessoire: accessoire.getmPolygoneElevation(interieur).getPoints()) {
+                        if(portePolygone.PointEstDansPolygone(pointDeAccessoire)){
+                            return false;
+                        }
                     }
+                }
 
-                }}
+                if (!polygone.PointEstDansPolygone(pointImperial)) {
+                    return false;
+                }
+            }
                 //TODO verifier si l'accessoire est dans la porte
                /* for (PointImperial pointImperiall: cote.accessoires.get(0).getmPolygoneElevation(interieur).getPoints()){
                     for(Porte porteIndex: ){
                         if(porteIndex.mPolygoneElevation.PointEstDansPolygone(pointImperial)){return false;}
                     }
                 }*/
-
-            for(Accessoire accessoire : cote.accessoires){
-                accessoire.getmPolygoneElevation(interieur);
-                for(PointImperial pointDeAccessoire: accessoire.getmPolygoneElevation(interieur).getPoints())
-                {
-                    if(portes.get(0).PointEstDansPolygone(pointDeAccessoire)){return false;}
-                }}
 
 
                 //for(){}
