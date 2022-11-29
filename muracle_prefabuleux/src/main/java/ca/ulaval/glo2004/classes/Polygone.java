@@ -110,12 +110,15 @@ public class Polygone implements Serializable {
         return pointsCoin;
     }
 
+    public boolean PointEstDansPolygone(PointImperial pointe) {
+        return PointEstDansPolygone(pointe, 0);
+    }
 
-    public boolean PointEstDansPolygone(PointImperial point) {
+    public boolean PointEstDansPolygone(PointImperial point, double marge) {
         ArrayList<Double> coins = getCoinsDouble();
 
-        return point.mX.getFormeNormal() >= coins.get(0) && point.mX.getFormeNormal() <= coins.get(1) &&
-                point.mY.getFormeNormal() >= coins.get(2) && point.mY.getFormeNormal() <= coins.get(3);
+        return point.mX.getFormeNormal() >= coins.get(0) - marge && point.mX.getFormeNormal() <= coins.get(1) + marge &&
+                point.mY.getFormeNormal() >= coins.get(2) - marge && point.mY.getFormeNormal() <= coins.get(3) + marge;
     }
 
     public boolean SeparateurEstDansPolygoneNordSud(PointImperial point) {

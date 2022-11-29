@@ -89,23 +89,26 @@ public class Salle implements Serializable {
                 point.mY.getValue() < 1)
             return false;
 
+        // Vérifier si l'accessoire est en collision avec un retour d'air
         if(isAccessoirInterfereAvecRetourAir(accessoire, cote, interieur))
             return false;
 
         if (!interieur)
             accessoire.mX = accessoire.mX.add(accessoire.getmLargeur()).mirror(cote);
 
+        // Vérifier si accessoire est en collision avec un autre accessoire
         Polygone fenetrePolygone = accessoire.genererPolygoneELV(interieur).get(indexPolygone);
+
         for (PointImperial pointImperial: fenetrePolygone.getPoints()) {
 
             for (Accessoire autreAccessoire: cote.accessoires) {
                 autreAccessoire.genererPolygoneELV(interieur);
-                if (autreAccessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)) {
+                if (autreAccessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial, 1)) {
                     return false;
                 }
 
                 for(PointImperial pointDeAccessoire: autreAccessoire.getmPolygoneElevation(interieur).getPoints()) {
-                    if(fenetrePolygone.PointEstDansPolygone(pointDeAccessoire)){
+                    if(fenetrePolygone.PointEstDansPolygone(pointDeAccessoire, 1)){
                         return false;
                     }
                 }
