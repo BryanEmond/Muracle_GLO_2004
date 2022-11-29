@@ -599,6 +599,13 @@ public class MainWindow {
                 Imperial bordure = proprietesAccessoire.getImperial("brodureFenetre");
 
                 int result = gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(x, y, hauteur, largeur, bordure, accessoireSelect.getTypeAccessoire()));
+
+                proprietesAccessoire.setError("x", result == -1);
+                proprietesAccessoire.setError("y", result == -1);
+                proprietesAccessoire.setError("largeur", result == -1);
+                proprietesAccessoire.setError("hauteur", result == -1);
+                proprietesAccessoire.setError("brodureFenetre", result == -1);
+
                 mainPanel.validate();
                 mainPanel.repaint();
             });
