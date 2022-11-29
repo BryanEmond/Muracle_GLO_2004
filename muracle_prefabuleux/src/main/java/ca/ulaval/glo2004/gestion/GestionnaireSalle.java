@@ -191,12 +191,15 @@ public class GestionnaireSalle implements Serializable{
                 mur = new Mur(salle, cote, new Imperial(0), new Imperial(0), salle.getLargeur());
                 mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
                 mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+
             }
             else if(direction == Utilitaire.Direction.SUD)
             {
                 mur = new Mur(salle, cote, salle.getProfondeur().substract(salle.getEpaisseurMurs()), new Imperial(0), salle.getLargeur());
                 mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
                 mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
             }
             else if(direction == Utilitaire.Direction.EST)
             {
@@ -204,6 +207,7 @@ public class GestionnaireSalle implements Serializable{
                 mur = new Mur(salle, cote, salle.getEpaisseurMurs(), salle.getLargeur().substract(salle.getEpaisseurMurs()), taille);
                 mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
                 mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
             }
             else
             {
@@ -211,6 +215,7 @@ public class GestionnaireSalle implements Serializable{
                 mur = new Mur(salle, cote, salle.getEpaisseurMurs(), new Imperial(0), taille);
                 mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
                 mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
             }
 
             return new ArrayList<>(Arrays.asList(mur));
