@@ -669,7 +669,7 @@ public class MainWindow {
         }).start();
 
         dialog.setAlwaysOnTop(true);
-        //dialog.setVisible(true);
+        dialog.setVisible(true);
 
     }
 

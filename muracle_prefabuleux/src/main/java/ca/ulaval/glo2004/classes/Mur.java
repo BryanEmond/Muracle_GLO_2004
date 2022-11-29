@@ -370,6 +370,9 @@ public class Mur extends Element implements Serializable {
     public void setRetourAirePolygone(Polygone polygoneRetourAir){
         this.mPolygonePlanRetourAir = polygoneRetourAir;
     }
+    public void setRetourAirePolygoneElv(Polygone polygoneRetourAir){
+        this.mPolygonePlanRetourAir = polygoneRetourAir;
+    }
     public Polygone getPolygonePlanRetourAir(){
         return this.mPolygonePlanRetourAir;
     }

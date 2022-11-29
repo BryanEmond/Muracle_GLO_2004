@@ -187,19 +187,35 @@ public class GestionnaireSalle implements Serializable{
         {
             Mur mur;
 
-            if(direction == Utilitaire.Direction.NORD)
+            if(direction == Utilitaire.Direction.NORD){
                 mur = new Mur(salle, cote, new Imperial(0), new Imperial(0), salle.getLargeur());
+                mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
+                mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+
+            }
             else if(direction == Utilitaire.Direction.SUD)
+            {
                 mur = new Mur(salle, cote, salle.getProfondeur().substract(salle.getEpaisseurMurs()), new Imperial(0), salle.getLargeur());
+                mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
+                mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+            }
             else if(direction == Utilitaire.Direction.EST)
             {
                 Imperial taille = salle.getProfondeur().substract(salle.getEpaisseurMurs()).substract(salle.getEpaisseurMurs());
                 mur = new Mur(salle, cote, salle.getEpaisseurMurs(), salle.getLargeur().substract(salle.getEpaisseurMurs()), taille);
+                mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
+                mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
             }
             else
             {
                 Imperial taille = salle.getProfondeur().substract(salle.getEpaisseurMurs()).substract(salle.getEpaisseurMurs());
                 mur = new Mur(salle, cote, salle.getEpaisseurMurs(), new Imperial(0), taille);
+                mur.setRetourAir(this.salleActive.getCote(direction).getMurs().get(0).aRetourAir());
+                mur.setRetourAirePolygone(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
+                mur.setRetourAirePolygoneElv(this.salleActive.getCote(direction).getMurs().get(0).getPolygonePlanRetourAir());
             }
 
             return new ArrayList<>(Arrays.asList(mur));
@@ -222,6 +238,7 @@ public class GestionnaireSalle implements Serializable{
                 else
                     largeur = this.salleActive.getLargeur().substract(listSep.get(i - 1).getDistanceBordDeReference());
                 Mur mur = new Mur(salle, cote, y, x, largeur);
+                mur.accessoires();
                 mur.genererPolygonePlan();
                 murs.add(mur);
             }
@@ -507,6 +524,9 @@ public class GestionnaireSalle implements Serializable{
                 porteAccessoire.setCote(salleActive.getCote(mCoteCourant));
                 porteAccessoire.genererPolygoneELV(false);
                 mur.genererPolygoneELV(false);
+                if(this.salleActive.isAccessoirInterfereAvecRetourAir(porteAccessoire,salleActive.getCote(mCoteCourant),false)){
+                    return -1;
+                }
                 for (PointImperial pointImperial:accessoireClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
                         accessoireCote.genererPolygoneELV(false);
@@ -546,6 +566,9 @@ public class GestionnaireSalle implements Serializable{
                 fenetreClone.genererPolygoneELV(false);
                 Polygone bordurePoints =((Fenetre)fenetreClone).genererPolygoneELV(false).get(1);
                 mur.genererPolygoneELV(false);
+                if(this.salleActive.isAccessoirInterfereAvecRetourAir(fenetreClone,salleActive.getCote(mCoteCourant),false)){
+                    return -1;
+                }
                 for (PointImperial pointImperial:bordurePoints.getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
                         accessoireCote.genererPolygoneELV(false);
@@ -587,7 +610,9 @@ public class GestionnaireSalle implements Serializable{
                 priseElectriqueClone.setCote(salleActive.getCote(mCoteCourant));
                 priseElectriqueClone.genererPolygoneELV(false);
                 mur.genererPolygoneELV(false);
-
+                if(this.salleActive.isAccessoirInterfereAvecRetourAir(priseElectriqueClone,salleActive.getCote(mCoteCourant),false)){
+                    return -1;
+                }
                 for (PointImperial pointImperial:priseElectriqueClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
                         accessoireCote.genererPolygoneELV(false);
