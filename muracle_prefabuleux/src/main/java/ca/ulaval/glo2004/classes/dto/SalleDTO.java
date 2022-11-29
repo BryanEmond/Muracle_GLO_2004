@@ -3,7 +3,9 @@ package ca.ulaval.glo2004.classes.dto;
 import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.Salle;
 
-public class SalleDTO {
+import java.io.Serializable;
+
+public class SalleDTO implements Serializable {
     private Imperial largeur;
     private Imperial profondeur;
     private Imperial hauteur;

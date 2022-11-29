@@ -2,7 +2,9 @@ package ca.ulaval.glo2004.classes.dto;
 
 import ca.ulaval.glo2004.classes.Imperial;
 
-public class SeparateurDTO
+import java.io.Serializable;
+
+public class SeparateurDTO implements Serializable
 {
     private Imperial position;
     private Imperial positionRelative;

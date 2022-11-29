@@ -5,13 +5,12 @@ import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
-import ca.ulaval.glo2004.enums.Direction;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class GestionnaireSalle {
+public class GestionnaireSalle implements Serializable{
 
     private Utilitaire.Direction mCoteCourant;
     private Mur mMurCourant;
@@ -643,7 +642,7 @@ public class GestionnaireSalle {
     }
 
     public Salle getSalleActive(){
-        return salleActive;
+        return this.salleActive;
     }
 
     public void ChangementDeVueVersPlan()

@@ -2,6 +2,7 @@ package ca.ulaval.glo2004.gui;
 
 import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.PointImperial;
+import ca.ulaval.glo2004.classes.Salle;
 import ca.ulaval.glo2004.classes.Utilitaire;
 import ca.ulaval.glo2004.classes.dto.AccessoireDTO;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
@@ -149,6 +150,7 @@ public class MainWindow {
                interieur = true;
                updatePanels();
                 resetButtonView();
+                AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnElvEstINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), false));
@@ -165,6 +167,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 resetButtonView();
+                AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnElvEstEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST), true));
@@ -180,6 +183,7 @@ public class MainWindow {
                 interieur = true;
                 updatePanels();
                 resetButtonView();
+                AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnELVSudINT.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurElevationCote(mainWindow.gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD), false));
@@ -194,6 +198,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.SUD;
                 interieur = false;
                 updatePanels();
+                AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvSudEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -209,6 +214,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.OUEST;
                 interieur = true;
                 updatePanels();
+                AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -225,6 +231,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.OUEST;
                 interieur = false;
                 updatePanels();
+                AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -240,6 +247,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.NORD;
                 interieur = true;
                 updatePanels();
+                AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -256,6 +264,7 @@ public class MainWindow {
                 direction = Utilitaire.Direction.NORD;
                 interieur = false;
                 updatePanels();
+                AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -271,6 +280,7 @@ public class MainWindow {
                 direction = null;
                 interieur = false;
                 updatePanels();
+                AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
                 btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));

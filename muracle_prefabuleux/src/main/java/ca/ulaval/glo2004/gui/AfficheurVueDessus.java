@@ -10,12 +10,9 @@ import java.util.ArrayList;
 public class AfficheurVueDessus extends Afficheur {
 
     private Salle salle;
-
     public AfficheurVueDessus(Salle salle) {
         this.salle = salle;
     }
-
-
     @Override
     public void affiche(Graphics g) {
         ArrayList<Polygone> polygones = salle.getPolygonesPlan();

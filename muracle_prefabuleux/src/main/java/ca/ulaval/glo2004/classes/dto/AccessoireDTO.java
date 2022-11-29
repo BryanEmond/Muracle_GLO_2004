@@ -2,7 +2,9 @@ package ca.ulaval.glo2004.classes.dto;
 
 import ca.ulaval.glo2004.classes.*;
 
-public class AccessoireDTO {
+import java.io.Serializable;
+
+public class AccessoireDTO implements Serializable {
 
     private Imperial x;
     private Imperial y;

@@ -3,7 +3,9 @@ package ca.ulaval.glo2004.classes.dto;
 import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.Mur;
 
-public class MurDTO {
+import java.io.Serializable;
+
+public class MurDTO implements Serializable {
 
     private Imperial x;
     private Imperial y;

@@ -80,12 +80,24 @@ public class Mur extends Element implements Serializable {
     public ArrayList<Accessoire> accessoires() {
 
         ArrayList<Accessoire> listAccessoires = new ArrayList<>();
+        this.genererPolygoneELV(false);
+        Imperial xDebut= this.mPolygoneElevation.getPoints().get(0).mX;
+        Imperial xFin=this.mPolygoneElevation.getPoints().get(2).mX ;
+        Imperial yDebut=this.mPolygoneElevation.getPoints().get(0).mY ;
+        Imperial yFin=this.mPolygoneElevation.getPoints().get(2).mY ;
 
-        for (Accessoire var : mCote.accessoires)
+        for (Accessoire accessoire : mCote.accessoires)
         {
-            if (var.mur.uniqueID == uniqueID){
-                listAccessoires.add(var);
-            };
+            Imperial xDebutAccessoire= accessoire.mPolygoneElevation.getPoints().get(0).mX;
+            Imperial xFinAccessoire= accessoire.mPolygoneElevation.getPoints().get(2).mX;
+            Imperial yDebutAccessoire= accessoire.mPolygoneElevation.getPoints().get(1).mY;
+            Imperial yFinAccessoire= accessoire.mPolygoneElevation.getPoints().get(3).mY;
+            if(xDebut.getValue() <= xDebutAccessoire.getValue()
+                    && yDebut.getValue() <= yDebutAccessoire.getValue()
+                    && xFin.getValue() >=xFinAccessoire.getValue()
+                    && yFin.getValue() >=yFinAccessoire.getValue()){
+                listAccessoires.add(accessoire);
+            }
         }
 
         return listAccessoires;
@@ -359,6 +371,9 @@ public class Mur extends Element implements Serializable {
     }
     public Polygone getPolygonePlanRetourAir(){
         return this.mPolygonePlanRetourAir;
+    }
+    public Polygone getPolygoneElvRetourAir(){
+        return this.mPolygoneElevationRetourAir;
     }
     public Polygone getPolygonePlan(){
         return this.mPolygonePlan;

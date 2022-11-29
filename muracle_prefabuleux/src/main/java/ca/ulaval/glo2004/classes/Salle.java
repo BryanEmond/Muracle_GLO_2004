@@ -99,13 +99,15 @@ public class Salle implements Serializable {
         fenetre.setCote(cote);
         fenetre.setmPerceExtérieur(true);
         fenetre.setmPerceInterieur(true);
-
+        if(isAccessoirInterfereAvecRetourAir(fenetre,cote,interieur)){
+            return false;
+        }
         if(!VerifierPositionAccessoire(point, direction, interieur, fenetre, new Imperial(0, 1, 8)))
             return false;
 
         if (!interieur)
             fenetre.mX = fenetre.mX.add(fenetre.getmLargeur()).mirror(cote);
-        if (!interieur)
+        if (interieur)
             fenetre.mX = fenetre.mX.add(fenetre.getmLargeur()).mirror(cote);
 
         Polygone fenetrePolygone = fenetre.genererPolygoneELV(interieur).get(1);
@@ -133,20 +135,31 @@ public class Salle implements Serializable {
         ElementSelectionne = fenetre;
         return true;
     }
-
+    public boolean isAccessoirInterfereAvecRetourAir(Accessoire accessoire, Cote cote,boolean interieur){
+        accessoire.genererPolygoneELV(!interieur);
+        ArrayList<Double> coinsAccessoires = accessoire.getmPolygoneElevation(interieur).getCoinsDouble();
+        for(Mur mur : cote.getMurs()){
+            if(mur.aRetourAir()){
+                ArrayList<Double> coinsRetourAir= mur.getPolygoneElvRetourAir().getCoinsDouble();
+                if(coinsRetourAir.get(0) <= coinsAccessoires.get(0) && coinsRetourAir.get(1) >= coinsAccessoires.get(1)){
+                    return true;
+                }
+                if((coinsRetourAir.get(0) <= coinsAccessoires.get(0) && coinsAccessoires.get(0) <= coinsRetourAir.get(1))
+                ||(coinsRetourAir.get(0) <= coinsAccessoires.get(1) && coinsAccessoires.get(1) <= coinsRetourAir.get(1))){
+                    return true;
+                }
+                if(coinsAccessoires.get(0) <= coinsRetourAir.get(0) && coinsAccessoires.get(1) >= coinsRetourAir.get(1)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public boolean AjouterPorte(PointImperial point, Utilitaire.Direction direction,boolean interieur){
         // TODO NE PAS METRE SUR SEPARATEUR OU RETOUR D'AIR ou autre accessoire
         Cote cote = getCote(direction);
 
-        //if(!interieur)
-        //  point.mX = point.mX.add(new Imperial(38));
-
         if(cote.PointEstDansCoteElevation(point)){
-            /*Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
-
-        if (polygone == null){
-                return false;
-            }*/
             Imperial debutX = point.getmX();
             Imperial finX = point.getmX().add(new Imperial(32));
 
@@ -178,8 +191,10 @@ public class Salle implements Serializable {
             }
 
             Porte porte = new Porte(point.mY, point.mX,interieur,interieur, new Imperial(38),new Imperial(88), null);
-
             porte.setCote(cote);
+            if(isAccessoirInterfereAvecRetourAir(porte,cote,interieur)){
+                return false;
+            }
             porte.setmPerceExtérieur(true);
             Polygone portePolygone = porte.genererPolygoneELV(interieur).get(0);
             for (PointImperial pointImperial:portePolygone.getPoints()) {
@@ -196,10 +211,6 @@ public class Salle implements Serializable {
                         }
                     }
                 }
-
-                //if (!polygone.PointEstDansPolygone(pointImperial)) {
-                //  return false;
-                //}
             }
             if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD)) {
                 sallelargeur = cote.getmSalle().largeur.getValue();
@@ -226,8 +237,10 @@ public class Salle implements Serializable {
 
             cote.accessoires.add(porte);
             ElementSelectionne = porte;
-            return  true;}
-        return  false;   }
+            return  true;
+        }
+        return  false;
+    }
 
     public  Utilitaire.Direction SupprimerPlan(PointImperial point){
         for (Cote var : cotes)
@@ -329,11 +342,13 @@ public class Salle implements Serializable {
                 return false;
             }
 
-            PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,interieur,interieur, new Imperial(2),new Imperial(4), null)    ;
+            PrisesElectrique prisesElectrique = new PrisesElectrique(point.mY, point.mX,false,true, new Imperial(2),new Imperial(4), null)    ;
             prisesElectrique.setCote(cote);
             prisesElectrique.setmPerceExtérieur(false);
             Polygone prisesElectriques = prisesElectrique.genererPolygoneELV(!interieur).get(0);
-
+            if(isAccessoirInterfereAvecRetourAir(prisesElectrique,cote,interieur)){
+                return false;
+            }
             for (PointImperial pointImperial:prisesElectriques.getPoints())
             {
                 if(!polygone.PointEstDansPolygone(pointImperial)){
@@ -368,9 +383,10 @@ public class Salle implements Serializable {
         Mur mur = getMurCliquePlan(point);
         Cote cote = getCotePlan(point);
         mur.genererPolygoneRetourAirELV(false);
+        ArrayList<Accessoire> listAccessoire = mur.accessoires();
         if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue()
-                && !RetourAirEstSurAccessoire(mur.mPolygoneElevationRetourAir,false,cote.getAccessoires())
-                && !RetourAirAuDessusAccessoire(mur.mPolygoneElevationRetourAir,false,cote.getAccessoires()))
+                && !RetourAirEstSurAccessoire(mur.mPolygoneElevationRetourAir,false,listAccessoire)
+                && !RetourAirAuDessusAccessoire(mur.mPolygoneElevationRetourAir,false,listAccessoire))
         {
             mur.setRetourAir(!mur.aRetourAir());
 
@@ -384,7 +400,11 @@ public class Salle implements Serializable {
         // Mur ?
         Cote cote = getCote(direction);
         Mur mur = getMurCliqueElevation(cote, point, interieur);
-        if(mur != null)
+        mur.genererPolygoneRetourAirELV(false);
+        ArrayList<Accessoire> listAccessoire = mur.accessoires();
+        if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue()
+                && !RetourAirEstSurAccessoire(mur.mPolygoneElevationRetourAir,false,listAccessoire)
+                &&!RetourAirAuDessusAccessoire(mur.mPolygoneElevationRetourAir,false,listAccessoire))
         {
             mur.setRetourAir(!mur.aRetourAir());
             ElementSelectionne = mur;
