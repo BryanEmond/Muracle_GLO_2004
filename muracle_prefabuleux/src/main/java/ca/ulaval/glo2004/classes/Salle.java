@@ -131,6 +131,28 @@ public class Salle implements Serializable {
         return AjouterAccessoire(point, direction, interieur, fenetre, new Imperial(0, 1, 8), 1);
     }
 
+    public boolean anyAccessoireInterfereAvecRetourAir(Polygone polygoneRetourAir, Cote cote,boolean interieur)
+    {
+        ArrayList<Double> coinsRetourAir= polygoneRetourAir.getCoinsDouble();
+        for(Accessoire accessoire : cote.getAccessoires())
+        {
+            accessoire.genererPolygoneELV(!interieur);
+            ArrayList<Double> coinsAccessoires = accessoire.getmPolygoneElevation(interieur).getCoinsDouble();
+
+            if(coinsRetourAir.get(0) <= coinsAccessoires.get(0) && coinsRetourAir.get(1) >= coinsAccessoires.get(1)){
+                return true;
+            }
+            if((coinsRetourAir.get(0) <= coinsAccessoires.get(0) && coinsAccessoires.get(0) <= coinsRetourAir.get(1))
+                    ||(coinsRetourAir.get(0) <= coinsAccessoires.get(1) && coinsAccessoires.get(1) <= coinsRetourAir.get(1))){
+                return true;
+            }
+            if(coinsAccessoires.get(0) <= coinsRetourAir.get(0) && coinsAccessoires.get(1) >= coinsRetourAir.get(1)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isAccessoirInterfereAvecRetourAir(Accessoire accessoire, Cote cote,boolean interieur){
         accessoire.genererPolygoneELV(!interieur);
         ArrayList<Double> coinsAccessoires = accessoire.getmPolygoneElevation(interieur).getCoinsDouble();

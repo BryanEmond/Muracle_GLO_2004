@@ -413,6 +413,13 @@ public class GestionnaireSalle implements Serializable{
         if(largeurRetourAir.getValue() > mur.getmLargeur().getValue() - 1)
             return false;
 
+        Mur murCopie = mur.copieMur();
+        murCopie.setLargeurRetourAir(largeurRetourAir);
+        murCopie.genererPolygoneRetourAirELV(false);
+
+        if(salleActive.anyAccessoireInterfereAvecRetourAir(murCopie.getPolygoneElvRetourAir(), mur.getCote(), true))
+            return false;
+
         mur.setLargeurRetourAir(largeurRetourAir);
         mur.genererPolygonePlanRetourAir();
         return true;
@@ -524,9 +531,11 @@ public class GestionnaireSalle implements Serializable{
                 porteAccessoire.setCote(salleActive.getCote(mCoteCourant));
                 porteAccessoire.genererPolygoneELV(false);
                 mur.genererPolygoneELV(false);
-                if(this.salleActive.isAccessoirInterfereAvecRetourAir(porteAccessoire,salleActive.getCote(mCoteCourant),false)){
+
+                if(this.salleActive.isAccessoirInterfereAvecRetourAir(porteAccessoire,salleActive.getCote(mCoteCourant),true)){
                     return -1;
                 }
+
                 for (PointImperial pointImperial:accessoireClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
                         accessoireCote.genererPolygoneELV(false);
@@ -566,7 +575,7 @@ public class GestionnaireSalle implements Serializable{
                 fenetreClone.genererPolygoneELV(false);
                 Polygone bordurePoints =((Fenetre)fenetreClone).genererPolygoneELV(false).get(1);
                 mur.genererPolygoneELV(false);
-                if(this.salleActive.isAccessoirInterfereAvecRetourAir(fenetreClone,salleActive.getCote(mCoteCourant),false)){
+                if(this.salleActive.isAccessoirInterfereAvecRetourAir(fenetreClone,salleActive.getCote(mCoteCourant),true)){
                     return -1;
                 }
                 for (PointImperial pointImperial:bordurePoints.getPoints()){
@@ -580,7 +589,6 @@ public class GestionnaireSalle implements Serializable{
                     if(!mur.polygonesElevation(false).PointEstDansPolygone(pointImperial)){
                         return -1;
                     }
-
 
                 }
 
@@ -610,7 +618,7 @@ public class GestionnaireSalle implements Serializable{
                 priseElectriqueClone.setCote(salleActive.getCote(mCoteCourant));
                 priseElectriqueClone.genererPolygoneELV(false);
                 mur.genererPolygoneELV(false);
-                if(this.salleActive.isAccessoirInterfereAvecRetourAir(priseElectriqueClone,salleActive.getCote(mCoteCourant),false)){
+                if(this.salleActive.isAccessoirInterfereAvecRetourAir(priseElectriqueClone,salleActive.getCote(mCoteCourant),true)){
                     return -1;
                 }
                 for (PointImperial pointImperial:priseElectriqueClone.getmPolygoneElevation(false).getPoints()){

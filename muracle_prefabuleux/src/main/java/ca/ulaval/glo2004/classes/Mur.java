@@ -382,5 +382,9 @@ public class Mur extends Element implements Serializable {
     public Polygone getPolygonePlan(){
         return this.mPolygonePlan;
     }
+
+    public Cote getCote() {
+        return mCote;
+    }
 }
 

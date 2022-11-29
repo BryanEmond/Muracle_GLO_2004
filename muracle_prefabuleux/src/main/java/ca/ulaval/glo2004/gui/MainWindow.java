@@ -667,7 +667,7 @@ public class MainWindow {
             @Override
             public void run() {
                 try{
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e){
                     e.printStackTrace();
                 }
@@ -760,7 +760,7 @@ public class MainWindow {
         propertiesScroll.setPreferredSize(new Dimension(235, 0));
         rootPanel.add(propertiesScroll, BorderLayout.WEST);
 
-        proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
+        /*proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
         proprietesSalle.addProperty("largeur", "LARGEUR :");
         proprietesSalle.addProperty("profondeur", "PROFONDEUR :");
         proprietesSalle.addProperty("hauteur", "HAUTEUR :");
@@ -860,7 +860,7 @@ public class MainWindow {
                 proprietesSeparateur.setError("posRel", true);
                 setWarningMsg("separateur en erreur");
 
-        });
+        });*/
 
         rightPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(rightPanel, BorderLayout.CENTER);
