@@ -81,10 +81,11 @@ public class Mur extends Element implements Serializable {
 
         ArrayList<Accessoire> listAccessoires = new ArrayList<>();
         this.genererPolygoneELV(false);
+        this.genererPolygoneRetourAirELV(false);
         Imperial xDebut= this.mPolygoneElevation.getPoints().get(0).mX;
-        Imperial xFin=this.mPolygoneElevation.getPoints().get(2).mX ;
-        Imperial yDebut=this.mPolygoneElevation.getPoints().get(0).mY ;
-        Imperial yFin=this.mPolygoneElevation.getPoints().get(2).mY ;
+        Imperial xFin=this.mPolygoneElevation.getPoints().get(2).mX;
+        Imperial yDebut=this.mPolygoneElevation.getPoints().get(0).mY;
+        Imperial yFin=this.mPolygoneElevation.getPoints().get(2).mY;
 
         for (Accessoire accessoire : mCote.accessoires)
         {

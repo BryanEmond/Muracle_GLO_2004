@@ -19,8 +19,6 @@ public class AfficheurElevationCote extends Afficheur{
         this.exterieur = exterieur;
     }
 
-
-
     @Override
     public void affiche(Graphics g) {
         Cote cote = salle.getCote(direction);
