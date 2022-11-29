@@ -506,7 +506,7 @@ public class GestionnaireSalle {
                 porteAccessoire.setmX(accessoireDTO.getX());
                 porteAccessoire.setCote(salleActive.getCote(mCoteCourant));
                 porteAccessoire.genererPolygoneELV(false);
-
+                mur.genererPolygoneELV(false);
                 for (PointImperial pointImperial:accessoireClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
                         accessoireCote.genererPolygoneELV(false);
@@ -517,6 +517,16 @@ public class GestionnaireSalle {
 
                     if(!mur.polygonesElevation(false).PointEstDansPolygone(pointImperial)){
                         return -1;
+                    }
+                }
+
+                for (Accessoire accessoireCote: listAccessoire) {
+                    accessoireCote.genererPolygoneELV(false);
+                    for (PointImperial pointAccessoire: accessoireCote.getmPolygoneElevation(false).getPoints()) {
+                        accessoireCote.genererPolygoneELV(false);
+                        if(porteAccessoire.getmPolygoneElevation(false).PointEstDansPolygone(pointAccessoire)){
+                            return -1;
+                        }
                     }
                 }
 
@@ -547,6 +557,18 @@ public class GestionnaireSalle {
                     if(!mur.polygonesElevation(false).PointEstDansPolygone(pointImperial)){
                         return -1;
                     }
+
+
+                }
+
+                for (Accessoire accessoireCote: listAccessoire) {
+                    accessoireCote.genererPolygoneELV(false);
+                    for (PointImperial pointAccessoire: accessoireCote.getmPolygoneElevation(false).getPoints()) {
+                        accessoireCote.genererPolygoneELV(false);
+                        if(bordurePoints.PointEstDansPolygone(pointAccessoire)){
+                            return -1;
+                        }
+                    }
                 }
 
                 accessoire.setmHauteur(accessoireDTO.getHauteur());
@@ -556,7 +578,7 @@ public class GestionnaireSalle {
                 accessoire.setmY(accessoireDTO.getY());
 
                 break;
-            case PrisesElectrique:
+            case PriseElectrique:
                 PrisesElectrique priseElectriqueClone = (PrisesElectrique) accessoire.clonePriseElectrique();
                 priseElectriqueClone.setmX(accessoireDTO.getX());
                 ((PrisesElectrique)priseElectriqueClone).setmY(accessoireDTO.getY());
@@ -564,6 +586,7 @@ public class GestionnaireSalle {
                 priseElectriqueClone.setmLargeur(accessoireDTO.getLargeur());
                 priseElectriqueClone.setCote(salleActive.getCote(mCoteCourant));
                 priseElectriqueClone.genererPolygoneELV(false);
+                mur.genererPolygoneELV(false);
 
                 for (PointImperial pointImperial:priseElectriqueClone.getmPolygoneElevation(false).getPoints()){
                     for (Accessoire accessoireCote: listAccessoire) {
@@ -577,6 +600,7 @@ public class GestionnaireSalle {
                         return -1;
                     }
                 }
+
 
                 accessoire.setmHauteur(accessoireDTO.getHauteur());
                 accessoire.setmLargeur(accessoireDTO.getLargeur());

@@ -342,7 +342,7 @@ public class Salle implements Serializable {
 
                 for (Accessoire accessoire: cote.accessoires)
                 {
-                    accessoire.genererPolygoneELV(interieur);
+                    accessoire.genererPolygoneELV(!interieur);
                     if(accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)){
                         return false;
                     }
