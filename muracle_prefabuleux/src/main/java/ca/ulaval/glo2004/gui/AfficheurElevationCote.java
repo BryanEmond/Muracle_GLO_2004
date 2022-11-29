@@ -8,17 +8,22 @@ import java.util.ArrayList;
 
 
 public class AfficheurElevationCote extends Afficheur{
-    private Cote cote;
-    private boolean exterieur;
-    public AfficheurElevationCote(Cote cote, boolean exterieur) {
 
+    private Salle salle;
+    private Utilitaire.Direction direction;
+    private boolean exterieur;
+
+    public AfficheurElevationCote(Salle salle, Utilitaire.Direction direction, boolean exterieur) {
+        this.salle = salle;
+        this.direction = direction;
         this.exterieur = exterieur;
-        this.cote = cote;}
+    }
 
 
 
     @Override
     public void affiche(Graphics g) {
+        Cote cote = salle.getCote(direction);
         ArrayList<Polygone> polygones = cote.getPolygoneElevation(exterieur);
         for (int i = 0; i < cote.getAccessoires().size(); i++){
             if (exterieur && cote.getAccessoires().get(i).ismPerceExtérieur())

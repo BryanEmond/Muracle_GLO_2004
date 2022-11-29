@@ -135,6 +135,7 @@ public class Salle implements Serializable {
         accessoire.genererPolygoneELV(!interieur);
         ArrayList<Double> coinsAccessoires = accessoire.getmPolygoneElevation(interieur).getCoinsDouble();
         for(Mur mur : cote.getMurs()){
+            mur.accessoires();
             if(mur.aRetourAir()){
                 ArrayList<Double> coinsRetourAir= mur.getPolygoneElvRetourAir().getCoinsDouble();
                 if(coinsRetourAir.get(0) <= coinsAccessoires.get(0) && coinsRetourAir.get(1) >= coinsAccessoires.get(1)){

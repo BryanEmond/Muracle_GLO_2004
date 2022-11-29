@@ -24,8 +24,8 @@ public class GestionnaireSalle implements Serializable{
     private Salle salleActive;
 
     private boolean vuePlan;
-
     private boolean vueCote;
+    private boolean vueInterieur;
     private boolean addToNextMur = false;
     private Imperial largeurRetourAir;
     public GestionnaireSalle()
@@ -241,6 +241,7 @@ public class GestionnaireSalle implements Serializable{
                     largeur = this.salleActive.getProfondeur().substract(listSep.get(i - 1).getDistanceBordDeReference()).substract(this.salleActive.getEpaisseurMurs());
                 Mur mur = new Mur(salle, cote, y, x, largeur);
                 mur.genererPolygonePlan();
+                mur.genererPolygoneELV(!vueInterieur);
                 murs.add(mur);
             }
             for(Mur oldMur : oldMurs) {
@@ -652,10 +653,11 @@ public class GestionnaireSalle implements Serializable{
         salleActive.deselectionnerElement();
     }
 
-    public void ChangementDeVueVersCote()
+    public void ChangementDeVueVersCote(boolean vueInterieur)
     {
         this.vuePlan = false;
         this.vueCote = true;
+        this.vueInterieur = vueInterieur;
         salleActive.deselectionnerElement();
     }
 
