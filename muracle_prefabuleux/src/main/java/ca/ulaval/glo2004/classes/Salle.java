@@ -297,7 +297,7 @@ public class Salle implements Serializable {
             for (Mur mur: cote.murs)
             {
                 mur.genererPolygoneRetourAirELV(!interieur);
-                if(mur.aRetourAir() && mur.mPolygoneElevationRetourAir.SeparateurEstDansPolygoneNordSud(point)){
+                if(mur.aRetourAir() && mur.mPolygoneElevationRetourAir.PointEstDansPolygone(point)){
                     mur.setRetourAir(false);
                 }
             }
