@@ -369,7 +369,8 @@ public class Salle implements Serializable {
         Cote cote = getCotePlan(point);
         mur.genererPolygoneRetourAirELV(false);
         if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue()
-                && !RetourAirEstSurAccessoire(mur.mPolygoneElevationRetourAir,false,cote.getAccessoires()))
+                && !RetourAirEstSurAccessoire(mur.mPolygoneElevationRetourAir,false,cote.getAccessoires())
+                && !RetourAirAuDessusAccessoire(mur.mPolygoneElevationRetourAir,false,cote.getAccessoires()))
         {
             mur.setRetourAir(!mur.aRetourAir());
 
@@ -688,6 +689,19 @@ public class Salle implements Serializable {
         }
         return false;
     }
+
+    public boolean RetourAirAuDessusAccessoire(Polygone polygone, boolean exterieur,ArrayList<Accessoire> accessoires) {
+        ArrayList<Double> listPoints = polygone.getCoinsDouble();
+
+        for (Accessoire accessoire: accessoires) {
+            accessoire.genererPolygoneELV(exterieur);
+            ArrayList<Double> coins = accessoire.mPolygoneElevation.getCoinsDouble();
+            if(listPoints.get(0) >= coins.get(0) && listPoints.get(0) <= coins.get(1)) return true;
+            if(listPoints.get(1) >= coins.get(0) && listPoints.get(1) <= coins.get(1)) return true;
+        }
+        return false;
+    }
+
 
     public Cote getCote(Utilitaire.Direction direction){
 
