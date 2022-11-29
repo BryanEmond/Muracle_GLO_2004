@@ -366,7 +366,10 @@ public class Salle implements Serializable {
     public boolean AjouterRetourAirPlan(PointImperial point)
     {
         Mur mur = getMurCliquePlan(point);
-        if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue())
+        Cote cote = getCotePlan(point);
+        mur.genererPolygoneRetourAirELV(false);
+        if(mur != null && mur.getmLargeur().getValue() >= mur.getLargeurRetourAir().getValue()
+                && !RetourAirEstSurAccessoire(mur.mPolygoneElevationRetourAir,false,cote.getAccessoires()))
         {
             mur.setRetourAir(!mur.aRetourAir());
 
@@ -453,6 +456,21 @@ public class Salle implements Serializable {
 
         return null;
     }
+    public Cote getCotePlan(PointImperial point)
+    {
+        for(Cote cote : getCotes())
+        {
+
+            for(Mur mur : cote.getMurs())
+            {
+                if(mur.PointEstDansMur(point))
+                    return cote;
+            }
+
+        }
+        return null;
+    }
+
     public void separateurElevation(PointImperial point,Utilitaire.Direction direction,boolean interieur){
         ArrayList<PointImperial> points = new ArrayList<>();
         Cote cote = getCote(direction);
@@ -657,6 +675,18 @@ public class Salle implements Serializable {
         }
 
         return polygones;
+    }
+
+    public boolean RetourAirEstSurAccessoire(Polygone polygone, boolean exterieur,ArrayList<Accessoire> accessoires) {
+        ArrayList<Double> listPoints = polygone.getCoinsDouble();
+
+        for (Accessoire accessoire: accessoires) {
+            accessoire.genererPolygoneELV(exterieur);
+            ArrayList<Double> coins = accessoire.mPolygoneElevation.getCoinsDouble();
+            if(listPoints.get(0) <= coins.get(0) && listPoints.get(1) >= coins.get(0)) return true;
+            if(listPoints.get(0) <= coins.get(1) && listPoints.get(1) >= coins.get(1)) return true;
+        }
+        return false;
     }
 
     public Cote getCote(Utilitaire.Direction direction){
