@@ -67,6 +67,13 @@ public class Cote extends Element implements Serializable {
         for(Mur mur : murs)
         {
             mur.genererPolygonePlan();
+
+            if(mur.aRetourAir())
+            {
+                mur.genererPolygoneRetourAirELV(false);
+                if(getmSalle().anyAccessoireInterfereAvecRetourAir(mur.getPolygoneElvRetourAir(), this, true))
+                    mur.setRetourAir(false);
+            }
         }
     }
 

@@ -307,6 +307,7 @@ public class GestionnaireSalle implements Serializable{
                 }
             }
         }
+
         return murs;
     }
     public void chargerSalle(String path)
