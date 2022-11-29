@@ -41,7 +41,7 @@ public class Salle implements Serializable {
         return new ArrayList<Polygone>();
     }
 
-    public boolean AjouterAccessoire(PointImperial point, Utilitaire.Direction direction, boolean interieur, Accessoire accessoire, Imperial marge)
+    public boolean VerifierPositionAccessoire(PointImperial point, Utilitaire.Direction direction, boolean interieur, Accessoire accessoire, Imperial marge)
     {
         //TODO NE PAS METTRE SUR UN SEPARATEUR OU UN RETOUR D'AIR ou autre accessoire
         Cote cote = getCote(direction);
@@ -89,22 +89,6 @@ public class Salle implements Serializable {
                 point.mY.getValue() < 1)
             return false;
 
-        if (!interieur)
-            accessoire.mX = accessoire.mX.add(accessoire.getmLargeur()).mirror(cote);
-
-        accessoire.setmPerceExtérieur(true);
-        ArrayList<Polygone> polygones = accessoire.genererPolygoneELV(!interieur);
-
-        for (PointImperial pointImperial : polygones.get(1).getPoints()) {
-            for (Accessoire a : cote.accessoires) {
-                if (a.mPolygoneElevation.PointEstDansPolygone(pointImperial)) {
-                    return false;
-                }
-            }
-        }
-
-        cote.accessoires.add(accessoire);
-        ElementSelectionne = accessoire;
         return true;
     }
 
@@ -116,7 +100,38 @@ public class Salle implements Serializable {
         fenetre.setmPerceExtérieur(true);
         fenetre.setmPerceInterieur(true);
 
-        return AjouterAccessoire(point, direction, interieur, fenetre, new Imperial(0, 1, 8));
+        if(!VerifierPositionAccessoire(point, direction, interieur, fenetre, new Imperial(0, 1, 8)))
+            return false;
+
+        if (!interieur)
+            fenetre.mX = fenetre.mX.add(fenetre.getmLargeur()).mirror(cote);
+        if (!interieur)
+            fenetre.mX = fenetre.mX.add(fenetre.getmLargeur()).mirror(cote);
+
+        Polygone fenetrePolygone = fenetre.genererPolygoneELV(interieur).get(1);
+        for (PointImperial pointImperial: fenetrePolygone.getPoints()) {
+
+            for (Accessoire accessoire: cote.accessoires) {
+                accessoire.genererPolygoneELV(interieur);
+                if (accessoire.mPolygoneElevation.PointEstDansPolygone(pointImperial)) {
+                    return false;
+                }
+
+                for(PointImperial pointDeAccessoire: accessoire.getmPolygoneElevation(interieur).getPoints()) {
+                    if(fenetrePolygone.PointEstDansPolygone(pointDeAccessoire)){
+                        return false;
+                    }
+                }
+            }
+
+            if (!fenetrePolygone.PointEstDansPolygone(pointImperial)) {
+                return false;
+            }
+        }
+
+        cote.accessoires.add(fenetre);
+        ElementSelectionne = fenetre;
+        return true;
     }
 
     public boolean AjouterPorte(PointImperial point, Utilitaire.Direction direction,boolean interieur){
@@ -124,16 +139,16 @@ public class Salle implements Serializable {
         Cote cote = getCote(direction);
 
         //if(!interieur)
-          //  point.mX = point.mX.add(new Imperial(38));
+        //  point.mX = point.mX.add(new Imperial(38));
 
-       if(cote.PointEstDansCoteElevation(point)){
+        if(cote.PointEstDansCoteElevation(point)){
             /*Polygone polygone = getPolygoneMurElevation(cote,point,interieur);
 
         if (polygone == null){
                 return false;
             }*/
-           Imperial debutX = point.getmX();
-           Imperial finX = point.getmX().add(new Imperial(32));
+            Imperial debutX = point.getmX();
+            Imperial finX = point.getmX().add(new Imperial(32));
 
             for (Separateur sep : cote.getSeparateurs()) {
                 Imperial posSep = sep.getDistanceBordDeReference();
@@ -183,7 +198,7 @@ public class Salle implements Serializable {
                 }
 
                 //if (!polygone.PointEstDansPolygone(pointImperial)) {
-                  //  return false;
+                //  return false;
                 //}
             }
             if (cote.mDirection.equals(Utilitaire.Direction.NORD) || cote.mDirection.equals(Utilitaire.Direction.SUD)) {
