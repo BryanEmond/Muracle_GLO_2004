@@ -154,6 +154,7 @@ public class Salle implements Serializable {
     }
 
     public boolean isAccessoirInterfereAvecRetourAir(Accessoire accessoire, Cote cote,boolean interieur){
+        
         accessoire.genererPolygoneELV(!interieur);
         ArrayList<Double> coinsAccessoires = accessoire.getmPolygoneElevation(interieur).getCoinsDouble();
         for(Mur mur : cote.getMurs()){
