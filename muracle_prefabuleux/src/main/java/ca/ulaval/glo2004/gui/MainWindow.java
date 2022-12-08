@@ -418,7 +418,7 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
 
-                if(e.getButton() == MouseEvent.BUTTON2){
+                if(e.getButton() == MouseEvent.BUTTON1){
                     lastPoint = e.getPoint();
                 }
             }
@@ -426,7 +426,7 @@ public class MainWindow {
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
 
-                if(e.getButton() == MouseEvent.BUTTON2){
+                if(e.getButton() == MouseEvent.BUTTON1){
                     lastPoint = null;
                 }
             }
