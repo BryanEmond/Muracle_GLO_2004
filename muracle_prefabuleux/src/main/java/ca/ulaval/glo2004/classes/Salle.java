@@ -680,4 +680,9 @@ public class Salle implements Serializable {
     {
         return ElementSelectionne;
     }
+
+    public void dragAndDrop(Imperial diffX, Imperial diffY){
+        //TODO prend imperial initial de l'objet et ajoute ou enlève la différence du drag.
+
+    }
 }

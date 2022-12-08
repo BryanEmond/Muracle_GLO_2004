@@ -1,9 +1,6 @@
 package ca.ulaval.glo2004.gui;
 
-import ca.ulaval.glo2004.classes.Imperial;
-import ca.ulaval.glo2004.classes.PointImperial;
-import ca.ulaval.glo2004.classes.Salle;
-import ca.ulaval.glo2004.classes.Utilitaire;
+import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.AccessoireDTO;
 import ca.ulaval.glo2004.classes.dto.MurDTO;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
@@ -39,6 +36,8 @@ public class MainWindow {
     private JButton btnSupprimer;
     private JButton btnSeparateur;
     private JButton btnSelection;
+
+    private JButton btnMove;
     private JPanel DimensionsPanel;
     private JButton btnDimensionsCollapse;
     private JPanel dimensionPanelContent;
@@ -77,6 +76,7 @@ public class MainWindow {
     GestionnaireSalle gestionnaireSalle;
     private String filePath;
     Utilitaire.AccessoireEnum AccessoireEnum = Utilitaire.AccessoireEnum.Selection;
+
     Utilitaire.Direction direction;
     private boolean interieur;
     private boolean plan;
@@ -321,6 +321,15 @@ public class MainWindow {
             }
         });
 
+         btnMove.addMouseListener(new MouseAdapter() {
+             @Override
+             public void mousePressed(MouseEvent e) {
+                 super.mousePressed(e);
+                 AccessoireEnum = Utilitaire.AccessoireEnum.Move;
+                 resetButtonAccessoires();
+             }
+         });
+
         btnFenetre.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -349,7 +358,6 @@ public class MainWindow {
 
                 if(e.getButton() != MouseEvent.BUTTON1)
                     return;
-
                 if(AccessoireEnum != null){
                     if (direction != null) {
                         switch (AccessoireEnum){
@@ -399,6 +407,68 @@ public class MainWindow {
                 updatePanels();
                 mainPanel.validate();
                 mainPanel.repaint();
+            }
+
+        });
+
+        this.mainPanel.addMouseListener(new MouseAdapter() {
+
+            Point lastPoint = null;
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+
+                if(e.getButton() == MouseEvent.BUTTON2){
+                    lastPoint = e.getPoint();
+                }
+            }
+
+            public void mouseReleased(MouseEvent e){
+                super.mouseReleased(e);
+
+                if(e.getButton() == MouseEvent.BUTTON2){
+                    lastPoint = null;
+                }
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
+
+                if (lastPoint != null){
+                    Point point = e.getPoint();
+                    int differenceX = lastPoint.x - point.x;
+                    int differenceY = lastPoint.y - point.y;
+                    lastPoint = point;
+
+                    //TODO modifier la position de l'objet selectionner
+                    MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
+                    if(murSelect != null){
+                        //TODO modifier position x du mur et redessiner tous les murs du coté en conséquence... à voir
+                    }
+                    SeparateurDTO separateurSelect = gestionnaireSalle.getSeparateurSelectionne();
+                    if (separateurSelect != null){
+                        //TODO modifier position x du separateur
+
+                    }
+
+                    AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
+                    if (accessoireSelect != null){
+                        //TODO modifier la position x et y de l'accessoire selectionner
+
+                        Imperial posXOriginel = accessoireSelect.getX();
+                        Imperial posYOriginel = accessoireSelect.getY();
+                        int newX = posXOriginel.getEntier() + differenceX;
+                        int newY = posYOriginel.getEntier() + differenceY;
+                        gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(new Imperial(newX), new Imperial(newY),accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
+
+
+                    }
+
+                    mainPanel.validate();
+                    mainPanel.repaint();
+
+                }
             }
         });
 
@@ -606,6 +676,10 @@ public class MainWindow {
                 proprietesAccessoire.setError("hauteur", result == -1);
                 proprietesAccessoire.setError("brodureFenetre", result == -1);
 
+                if(result == -1)
+                {
+                    setWarningMsg("Dimension de l'accessoire invalide.");
+                }
                 mainPanel.validate();
                 mainPanel.repaint();
             });
@@ -628,6 +702,7 @@ public class MainWindow {
     public void resetButtonAccessoires(){
         Border border = BorderFactory.createLineBorder(Color.red);
         btnSelection.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Selection ? border : null);
+        btnMove.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Move ? border:null);
         btnSupprimer.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer ? border : null);
         btnRetourAir.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.RetourAir ? border : null);
         btnPrise.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.PriseElectrique ? border : null);
@@ -641,6 +716,9 @@ public class MainWindow {
         btnPorte.setVisible(!estEnVuePlan);
         btnFenetre.setVisible(!estEnVuePlan);
     }
+
+
+
     {
         $$$setupUI$$$();
     }
@@ -729,6 +807,7 @@ public class MainWindow {
         btnSave = new JButton();
         btnSeparateur = new JButton();
         btnSelection = new JButton();
+        btnMove = new JButton();
         buttonsPanel = new JPanel();
         controlPanel = new JPanel();
         rightPanel = new JPanel();
@@ -940,6 +1019,20 @@ public class MainWindow {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnSelection, gbc);
+        btnMove.setBorder(BorderFactory.createLineBorder(Color.red));
+        btnMove.setBackground(new Color(-12829636));
+        btnMove.setIcon(new ImageIcon(getClass().getResource("/buttons/move.png")));
+        btnMove.setMargin(new Insets(0,0,0,0));
+        btnMove.setMaximumSize(new Dimension(50,50));
+        btnMove.setMinimumSize(new Dimension(50,50));
+        btnMove.setPreferredSize(new Dimension(50,50));
+        btnMove.setText("");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 5;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets (2,2,2,2);
+        buttonsPanel.add(btnMove, gbc);
         btnFenetre.setBackground(new Color(-12829636));
         btnFenetre.setVisible(false);
         btnFenetre.setIcon(new ImageIcon(getClass().getResource("/buttons/fenetre.png")));

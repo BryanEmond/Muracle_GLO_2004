@@ -125,4 +125,5 @@ public abstract class Accessoire extends Element implements Serializable {
     public int getId() {
         return Id;
     }
+
 }

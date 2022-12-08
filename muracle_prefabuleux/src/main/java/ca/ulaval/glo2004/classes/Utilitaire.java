@@ -11,7 +11,9 @@ public abstract class Utilitaire implements Serializable {
         Supprimer,
         Separateur,
 
-        Selection
+        Selection,
+
+        Move
     }
     public enum Direction {
         NORD("Nord", true),
