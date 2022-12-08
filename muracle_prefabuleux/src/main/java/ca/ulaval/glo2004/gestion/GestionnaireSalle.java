@@ -149,21 +149,25 @@ public class GestionnaireSalle implements Serializable{
         Cote oldOuest = salleActive.getCote(Utilitaire.Direction.OUEST);
 
         Cote nord = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.NORD);
+        nord.setmSalle(salleActive);
         nord.setMurs(oldNord.getMurs());
         nord.setAccessoires(oldNord.getAccessoires());
         nord.setSeparateurs(oldNord.getSeparateurs());
 
         Cote est = new Cote(new Imperial(0), xCoteEst, new Imperial(0), Utilitaire.Direction.EST);
+        est.setmSalle(salleActive);
         est.setMurs(oldEst.getMurs());
         est.setAccessoires(oldEst.getAccessoires());
         est.setSeparateurs(oldEst.getSeparateurs());
 
         Cote sud = new Cote(yCoteSud, new Imperial(0), new Imperial(0), Utilitaire.Direction.SUD);
+        sud.setmSalle(salleActive);
         sud.setMurs(oldSud.getMurs());
         sud.setAccessoires(oldSud.getAccessoires());
         sud.setSeparateurs(oldSud.getSeparateurs());
 
         Cote ouest = new Cote(new Imperial(0), new Imperial(0), new Imperial(0), Utilitaire.Direction.OUEST);
+        ouest.setmSalle(salleActive);
         ouest.setMurs(oldOuest.getMurs());
         ouest.setAccessoires(oldOuest.getAccessoires());
         ouest.setSeparateurs(oldOuest.getSeparateurs());
