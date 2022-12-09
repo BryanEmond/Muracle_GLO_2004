@@ -384,9 +384,7 @@ public class MainWindow {
                             case Selection:
                                 gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
                                 break;
-                            /*case Move:
-                                gestionnaireSalle.dragAndDropElement(e.getX(), e.getY());
-                                break;*/
+
                         }
                     }
                     else{
@@ -404,9 +402,7 @@ public class MainWindow {
                             case Selection:
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                                 break;
-                            /*case Move:
-                                gestionnaireSalle.dragAndDropElement();
-                                break;*/
+
                         }
                     }
                 }
@@ -464,6 +460,7 @@ public class MainWindow {
 
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
+                gestionnaireSalle.getSalleActive().setElementSelectionne();
                 if(e.getButton() == MouseEvent.BUTTON1){}
             }
             @Override
@@ -518,7 +515,6 @@ public class MainWindow {
                             mainPanel.repaint();}
                     }
                 }
-
                 m_pointDepart = e.getPoint();
             }
         };
@@ -526,99 +522,6 @@ public class MainWindow {
         this.mainPanel.addMouseMotionListener(DnD);
 
         updatePanels();
-
-           /* @Override
-             System.out.print(" differenceXX ");
-                            System.out.println(differenceXX);
-                            System.out.print(" differenceYY ");
-                            System.out.println(differenceYY);
-                            System.out.print("pointElementX ");
-                            System.out.println(pointElementX);
-                            System.out.print("pointElementY ");
-                            System.out.println(pointElementY);
-                            System.out.print("pointElementX ");
-            System.out.print("finPoint ");System.out.print("pointFIN ");
-                    System.out.println(point);
- // System.out.println(differenceX);
-                    //System.out.println(differenceY);
-                    System.out.print("pointDEPART ");
-                    System.out.println(m_pointDepart);
-                    System.out.println(finPoint);
-                    System.out.print("debutPoint ");
-                    System.out.println(debutPoint);
-                            System.out.println(pointElementX);
-                            System.out.print("pointElementY ");
-                            System.out.println(pointElementY);
-                            System.out.print(" differenceXX ");
-                            System.out.println(differenceXX);
-                            System.out.print(" differenceYY ");
-                            System.out.println(differenceYY);
-                            public void mouseDragged(MouseEvent e) {
-
-                super.mouseDragged(e);
-                System.out.print("  dans mouseDragged  ");
-                if (m_dragTarget != null){
-                    Point point = e.getPoint();
-                    int differenceX = m_pointDepart.x - point.x;
-                    int differenceY = m_pointDepart.y - point.y;
-                    m_pointDepart = point;
-
-                   //TODO modifier la position de l'objet selectionner
-                    /*MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
-                    if(murSelect != null){
-                        //TODO modifier position x du mur et redessiner tous les murs du coté en conséquence... à voir
-                    }
-                    SeparateurDTO separateurSelect = gestionnaireSalle.getSeparateurSelectionne();
-                    if (separateurSelect != null){
-                        //TODO modifier position x du separateur
-
-                    }
-
-                    AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
-                    if (accessoireSelect != null){
-                        //TODO modifier la position x et y de l'accessoire selectionner
-
-                        Imperial posXOriginel = accessoireSelect.getX();
-                        Imperial posYOriginel = accessoireSelect.getY();
-                        int newX = posXOriginel.getEntier() + differenceX;
-                        int newY = posYOriginel.getEntier() + differenceY;
-                        gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(new Imperial(newX), new Imperial(newY),accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
-
-
-                    }*/
-
-                    //mainPanel.validate();
-                    //mainPanel.repaint();
-
-/*
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                super.mouseMoved(e);
-                System.out.println(" dans mouseMove  ");
-                if (m_dragTarget != null){
-                    System.out.println(" dans if mouseMove ");
-                    int dragX = dragTargetElement.getmX().getEntier();
-                    int dragY = dragTargetElement.getmY().getEntier();
-                    int departX = m_pointDepart.x;
-                    int departY = m_pointDepart.y;
-                    int finX = e.getX();
-                    int finY = e.getY();
-                    System.out.println(dragY);
-                    System.out.println(dragX);
-
-                    dragX += finX - departX;
-                    dragY += finY - departY;
-                    dragTargetElement.setmX(new Imperial(dragX));
-                    dragTargetElement.setmY(new Imperial(dragY));
-                    System.out.println(dragX);
-                    System.out.println(dragY);
-                }
-
-            }*/
-
-
-
-
 
         MouseAdapter mouvementCameraAdapter = new MouseAdapter() {
 
@@ -647,8 +550,8 @@ public class MainWindow {
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
-
-                if (lastPoint != null) {
+                //if()
+                        if (lastPoint != null) {
                     Point point = e.getPoint();
                     int offsetX = point.x - lastPoint.x;
                     int offsetY = point.y - lastPoint.y;
@@ -660,7 +563,6 @@ public class MainWindow {
                 }
             }
         };
-
         this.mainPanel.addMouseListener(mouvementCameraAdapter);
         this.mainPanel.addMouseMotionListener(mouvementCameraAdapter);
         updatePanels();
