@@ -420,8 +420,6 @@ public class MainWindow {
 
         MouseAdapter DnD = new MouseAdapter() {
 
-        //this.mainPanel.addMouseListener(new MouseAdapter()
-
             Point m_pointDepart = null;
             Polygone m_dragTarget = null;
 
@@ -463,13 +461,6 @@ public class MainWindow {
                         else {m_dragTarget = ((Accessoire) element).getmPolygonePlan();}
                     }
                     m_pointDepart = e.getPoint();
-                    System.out.println("dans if mousePressed,");
-                    System.out.println(m_pointDepart);
-                    System.out.println(m_dragTarget);
-                    System.out.println(dragTargetElement);
-                    System.out.println(dragTargetElement.getmY());
-                    System.out.println(dragTargetElement.getmX());
-                    System.out.println(accessoireSelect);
 
                 }
             }
@@ -491,12 +482,7 @@ public class MainWindow {
                 System.out.print("  dans mouseDragged  ");
                 if (m_dragTarget != null){
                     Point point = e.getPoint();
-                    int differenceX = m_pointDepart.x - point.x;
-                    int differenceY = m_pointDepart.y - point.y;
 
-                    System.out.println(m_pointDepart);
-                   // System.out.println(differenceX);
-                    //System.out.println(differenceY);
                     AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
 
                     PointImperial finPoint = Conversion.getConversion().trouverCoordonneImperial(point.x, point.y);
@@ -504,45 +490,31 @@ public class MainWindow {
 
                     Imperial differenceXX = debutPoint.getmX().substract(finPoint.getmX());
                     Imperial differenceYY = debutPoint.getmY().substract(finPoint.getmY());
-/*
-                    PointImperial dragTargetPoint = m_dragTarget.getPoints().get(0);
-                    Imperial dragTargetmX = dragTargetPoint.getmX();
-                    Imperial dragTargetmY = dragTargetPoint.getmY();*/
 
-                    /*dragTargetmX = dragTargetmY.substract(differenceXX);
-                    dragTargetmY = dragTargetmY.substract(differenceYY);
-
-                    dragTargetPoint.setmX(dragTargetmX);
-                    dragTargetPoint.setmY(dragTargetmY);
-
-
-                    dragTargetElement.setmY(dragTargetmY);
-                    dragTargetElement.setmX(dragTargetmX);*/
+                    if (!interieur){
+                        differenceXX = differenceXX.negative();
+                        differenceYY = differenceYY.negative();
+                    }
                     if (accessoireSelect != null){
                         //TODO m_dragTarget deviens l'accessoire. Il faut obtenir le mX de l'accessoire...
                         if (direction != null){
 
+
                             System.out.println(" dans if accessoire non null ");
                             Imperial pointElementX = accessoireSelect.getX();
                             Imperial pointElementY = accessoireSelect.getY();
-                            System.out.println(differenceXX);
-                            System.out.println(differenceYY);
-                            System.out.println(pointElementX);
-                            System.out.println(pointElementY);
+
                             pointElementX = pointElementX.substract(differenceXX);
                             pointElementY = pointElementY.substract(differenceYY);
-                            System.out.println(pointElementX);
-                            System.out.println(pointElementY);
-                            System.out.println(differenceXX);
-                            System.out.println(differenceYY);
+
                            gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(pointElementX, pointElementY, accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
                             mainPanel.validate();
                             mainPanel.repaint();}
-                        else {}
+
                     }
                 }
+                m_pointDepart = e.getPoint();
             }
-
         };
         this.mainPanel.addMouseListener(DnD);
         this.mainPanel.addMouseMotionListener(DnD);
@@ -550,7 +522,33 @@ public class MainWindow {
         updatePanels();
 
            /* @Override
-            public void mouseDragged(MouseEvent e) {
+             System.out.print(" differenceXX ");
+                            System.out.println(differenceXX);
+                            System.out.print(" differenceYY ");
+                            System.out.println(differenceYY);
+                            System.out.print("pointElementX ");
+                            System.out.println(pointElementX);
+                            System.out.print("pointElementY ");
+                            System.out.println(pointElementY);
+                            System.out.print("pointElementX ");
+            System.out.print("finPoint ");System.out.print("pointFIN ");
+                    System.out.println(point);
+ // System.out.println(differenceX);
+                    //System.out.println(differenceY);
+                    System.out.print("pointDEPART ");
+                    System.out.println(m_pointDepart);
+                    System.out.println(finPoint);
+                    System.out.print("debutPoint ");
+                    System.out.println(debutPoint);
+                            System.out.println(pointElementX);
+                            System.out.print("pointElementY ");
+                            System.out.println(pointElementY);
+                            System.out.print(" differenceXX ");
+                            System.out.println(differenceXX);
+                            System.out.print(" differenceYY ");
+                            System.out.println(differenceYY);
+                            public void mouseDragged(MouseEvent e) {
+
                 super.mouseDragged(e);
                 System.out.print("  dans mouseDragged  ");
                 if (m_dragTarget != null){

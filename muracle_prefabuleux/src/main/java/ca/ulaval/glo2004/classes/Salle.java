@@ -512,6 +512,7 @@ public class Salle implements Serializable {
     {
         for(Mur mur : cote.getMurs())
         {
+            mur.genererPolygoneELV(!interieur);
             if(mur.polygonesElevation(interieur).PointEstDansPolygone(point))
             {
                 return mur;
