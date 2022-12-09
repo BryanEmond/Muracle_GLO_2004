@@ -703,4 +703,15 @@ public class GestionnaireSalle implements Serializable{
         this.mCoteCourant = mCoteCourant;
     }
 
+    public void dragAndDropElement(){
+        /*Imperial posXOriginel = accessoireSelect.getX();
+        Imperial posYOriginel = accessoireSelect.getY();
+        int newX = posXOriginel.getEntier() + differenceX;
+        int newY = posYOriginel.getEntier() + differenceY;
+        gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(new Imperial(newX), new Imperial(newY),accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
+        */
+
+
+    }
+
 }

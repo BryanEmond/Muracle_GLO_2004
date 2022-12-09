@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Polygone implements Serializable {
     Color mCouleur;
-    Element mElement;
+    Element mElementY;
     ArrayList<PointImperial> points;
 
     ArrayList<PointImperial> pointsTrier;
@@ -34,11 +34,11 @@ public class Polygone implements Serializable {
     }
 
     public Element getmY() {
-        return mElement;
+        return mElementY;
     }
 
     public void setmY(Element mY) {
-        this.mElement = mY;
+        this.mElementY = mY;
     }
 
     public ArrayList<PointImperial> getPoints() {

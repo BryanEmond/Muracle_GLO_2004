@@ -141,5 +141,8 @@ public class Separateur extends Element implements Serializable, Comparable<Sepa
         this.mPolygoneElevation = new Polygone(Color.BLACK, p1, p2, p3, p4);
     }
 
+    public Polygone getmPolygoneElevation(){
+        return this.mPolygoneElevation;
+    }
 
 }

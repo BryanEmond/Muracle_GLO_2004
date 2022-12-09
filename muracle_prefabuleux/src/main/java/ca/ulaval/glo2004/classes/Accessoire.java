@@ -19,6 +19,8 @@ public abstract class Accessoire extends Element implements Serializable {
     Polygone mPolygonePlan;
     Polygone mPolygoneElevation;
 
+
+
     private static AtomicInteger ID_GENERATOR = new AtomicInteger(1000);
 
     public Accessoire(Imperial mY, Imperial mX, boolean mPerceExtérieur, boolean mPerceInterieur,
