@@ -14,6 +14,8 @@ public class Polygone implements Serializable {
 
     ArrayList<PointImperial> pointsTrier;
 
+    ArrayList<Integer> lignesPointilles = new ArrayList<Integer>();
+
     public Polygone(Color couleur, ArrayList<PointImperial> points) {
         this.mCouleur = couleur;
         this.points = points;
@@ -137,6 +139,16 @@ public class Polygone implements Serializable {
 
 
         return false;
+    }
+
+    public void setLignePointille(int index)
+    {
+        lignesPointilles.add(index);
+    }
+
+    public boolean ligneEstPointille(int index)
+    {
+        return lignesPointilles.contains(index);
     }
 
 
