@@ -424,6 +424,7 @@ public class MainWindow {
             Polygone m_dragTarget = null;
 
             Element dragTargetElement = null;
+
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
@@ -433,18 +434,14 @@ public class MainWindow {
 
                 if(e.getButton() == MouseEvent.BUTTON1){
                     Element element = gestionnaireSalle.getSalleActive().getElementSelectionne();
-                    //MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
                     if(element instanceof Mur){
-                        //TODO m_dragTarget deviens le mur. il faut obtenir le polygone de ce mur..
                         if(direction != null){m_dragTarget = ((Mur) element).getPolygoneElvRetourAir();
                             dragTargetElement = element;}
                         else {m_dragTarget = ((Mur) element).getPolygonePlanRetourAir();}
                     }
 
                     if (element instanceof Separateur){
-                        //TODO m_dragTrget deviens le séparateur. Il faut obtenir le polygone de ce séparateur..
                         if (direction != null){
-                            //TODO OBTENIR POLYGONE ELV DE SEPARATEUR;
                             m_dragTarget = ((Separateur) element).getmPolygoneElevation();
                             dragTargetElement = element;
                         }
@@ -453,7 +450,7 @@ public class MainWindow {
 
                     AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
                     if (element instanceof Accessoire){
-                        //TODO m_dragTarget deviens l'accessoire. Il faut obtenir le polygone de cet accessoire...
+
                         if (direction != null){
                         m_dragTarget = ((Accessoire) element).getmPolygoneElevation(interieur);
                         dragTargetElement = element;
@@ -467,22 +464,16 @@ public class MainWindow {
 
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
-                System.out.println("   dans mouseRelease  ");
-
-                if(e.getButton() == MouseEvent.BUTTON1){
-                    System.out.println("  dans if mouseRelease  ");
-                    System.out.println (m_pointDepart);
-                    System.out.println();
-                    //dragTargetElement = null;
-                }
+                if(e.getButton() == MouseEvent.BUTTON1){}
             }
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
-                System.out.print("  dans mouseDragged  ");
+
                 if (m_dragTarget != null){
                     Point point = e.getPoint();
 
+                    SeparateurDTO separateurSelect = gestionnaireSalle.getSeparateurSelectionne();
                     AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
 
                     PointImperial finPoint = Conversion.getConversion().trouverCoordonneImperial(point.x, point.y);
@@ -495,24 +486,39 @@ public class MainWindow {
                         differenceXX = differenceXX.negative();
                         differenceYY = differenceYY.negative();
                     }
+
+                    if(separateurSelect != null){
+                        if(direction != null){
+
+                            Imperial pointElementX = separateurSelect.getPosition();
+                            Imperial pointRelatif = separateurSelect.getPositionRelative();
+
+                            pointElementX = pointElementX.substract(differenceXX);
+                            pointRelatif = pointRelatif.substract(differenceXX);
+
+                            gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
+                            mainPanel.validate();
+                            mainPanel.repaint();
+
+                        }
+                    }
+
                     if (accessoireSelect != null){
-                        //TODO m_dragTarget deviens l'accessoire. Il faut obtenir le mX de l'accessoire...
+                        //TODO quand on dragg avec la roulette il ne faut pas deplacer les objets
                         if (direction != null){
 
-
-                            System.out.println(" dans if accessoire non null ");
                             Imperial pointElementX = accessoireSelect.getX();
                             Imperial pointElementY = accessoireSelect.getY();
 
                             pointElementX = pointElementX.substract(differenceXX);
                             pointElementY = pointElementY.substract(differenceYY);
 
-                           gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(pointElementX, pointElementY, accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
+                            gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(pointElementX, pointElementY, accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
                             mainPanel.validate();
                             mainPanel.repaint();}
-
                     }
                 }
+
                 m_pointDepart = e.getPoint();
             }
         };
