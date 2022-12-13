@@ -27,7 +27,10 @@ public class GestionnaireSalle implements Serializable{
     private boolean vueCote;
     private boolean vueInterieur;
     private boolean addToNextMur = false;
+    private boolean isbtnDecoupageVisible = false;
     private Imperial largeurRetourAir;
+    private Mur murSelectionner;
+
     public GestionnaireSalle()
     {
     }
@@ -100,11 +103,32 @@ public class GestionnaireSalle implements Serializable{
 
     public void selectionnerElementPlan(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
         salleActive.selectionPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+        if(salleActive.getElementSelectionne() instanceof Mur){
+            setBtnDecoupageVisible(true);
+            setMurSelectionner(salleActive.getElementSelectionne());
+        }
+        else{
+            setBtnDecoupageVisible(false);
+        }
     }
 
     public void selectionnerElementElevantion(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
         DernierPointSelectionner = Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY);
         mMurCourant = salleActive.selectionElevantion(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+        if(salleActive.getElementSelectionne() instanceof Mur){
+            setBtnDecoupageVisible(true);
+            setMurSelectionner(salleActive.getElementSelectionne());
+            getMurSelectionnerNoneDto().genererPolygoneELV(interieur);
+        }
+        else{
+            setBtnDecoupageVisible(false);
+        }
+    }
+    public void setMurSelectionner(Element elementSelectionne) {
+        this.murSelectionner = (Mur)elementSelectionne;
+    }
+    public Mur getMurSelectionnerNoneDto(){
+        return this.murSelectionner;
     }
 
     public boolean AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
@@ -407,6 +431,7 @@ public class GestionnaireSalle implements Serializable{
         return new MurDTO(mur);
     }
 
+
     public boolean editMurSelectionne(Imperial largeurRetourAir)
     {
         Element element = salleActive.getElementSelectionne();
@@ -706,5 +731,19 @@ public class GestionnaireSalle implements Serializable{
     public void setmCoteCourant(Utilitaire.Direction mCoteCourant) {
         this.mCoteCourant = mCoteCourant;
     }
+
+    public void dragAndDropElement(){
+        /*Imperial posXOriginel = accessoireSelect.getX();
+        Imperial posYOriginel = accessoireSelect.getY();
+        int newX = posXOriginel.getEntier() + differenceX;
+        int newY = posYOriginel.getEntier() + differenceY;
+        gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(new Imperial(newX), new Imperial(newY),accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
+        */
+
+
+    }
+
+    public void setBtnDecoupageVisible(boolean bool){this.isbtnDecoupageVisible = bool;}
+    public boolean getBtnDecoupageVisible(){return this.isbtnDecoupageVisible;}
 
 }

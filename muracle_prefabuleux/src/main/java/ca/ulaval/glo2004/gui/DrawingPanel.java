@@ -29,13 +29,6 @@ public class DrawingPanel extends JPanel {
         g.clearRect(0, 0, this.getWidth(), this.getHeight());
         afficheur.affiche(g);
     }
-/*
-    protected void paintComponent(Graphics g, boolean exterieur){
-        super.paintComponent(g);
-        g.clearRect(0, 0, this.getWidth(), this.getHeight());
-        afficheurCote.affiche(g, exterieur);
-    }
-*/
 
 
     private Cote GetTestingCote() {
