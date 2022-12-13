@@ -344,9 +344,40 @@ public class Mur extends Element implements Serializable {
         return copieMur;
     }
 
+    public double calculerPoidsPanneauInterieur() {
+        Double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
+        air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
+        ArrayList<Accessoire> accessoireList = accessoires();
+        if(this.retourAir){
+            ArrayList<Double> points = this.mPolygonePlanRetourAir.getCoinsDouble();
+            double largeur = points.get(1) - points.get(0);
+            double hauteur = points.get(3) - points.get(2);
+            air -= largeur * hauteur;
+        }
+        for (Accessoire accessoire: accessoireList) {
+            air -= accessoire.getmHauteur().getFormeNormal() * accessoire.mLargeur.getFormeNormal();
+        }
+        return air;
+    }
+
+    public double calculerPoidsPanneauExterieur() {
+        Double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
+        air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
+        ArrayList<Accessoire> accessoireList = accessoires();
+        for (Accessoire accessoire: accessoireList) {
+            if(accessoire.mPerceExtérieur){
+                air -= accessoire.getmHauteur().getFormeNormal() * accessoire.mLargeur.getFormeNormal();
+            }
+        }
+        return air;
+    }
+
     public void setExterieur(boolean exterieur) {
         this.exterieur = exterieur;
     }
+
     public boolean aRetourAir() {
         return retourAir;
     }
