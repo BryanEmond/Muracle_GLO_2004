@@ -400,9 +400,7 @@ public class MainWindow {
                                 gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
                                 btnDecoupage.setVisible(gestionnaireSalle.getBtnDecoupageVisible());
                                 break;
-                            /*case Move:
-                                gestionnaireSalle.dragAndDropElement(e.getX(), e.getY());
-                                break;*/
+
                         }
                     }
                     else{
@@ -421,9 +419,7 @@ public class MainWindow {
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
                                 btnDecoupage.setVisible(gestionnaireSalle.getBtnDecoupageVisible());
                                 break;
-                            /*case Move:
-                                gestionnaireSalle.dragAndDropElement();
-                                break;*/
+
                         }
                     }
                 }
@@ -536,7 +532,6 @@ public class MainWindow {
                             mainPanel.repaint();}
                     }
                 }
-
                 m_pointDepart = e.getPoint();
             }
         };
@@ -582,7 +577,6 @@ public class MainWindow {
                 }
             }
         };
-
         this.mainPanel.addMouseListener(mouvementCameraAdapter);
         this.mainPanel.addMouseMotionListener(mouvementCameraAdapter);
         updatePanels();
@@ -773,6 +767,7 @@ public class MainWindow {
     public void resetButtonAccessoires(){
         Border border = BorderFactory.createLineBorder(Color.red);
         btnSelection.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Selection ? border : null);
+        btnMove.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Move ? border:null);
         btnSupprimer.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer ? border : null);
         btnRetourAir.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.RetourAir ? border : null);
         btnPrise.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.PriseElectrique ? border : null);
