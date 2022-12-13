@@ -1,5 +1,6 @@
 package ca.ulaval.glo2004.classes;
 
+import jdk.tools.jlink.internal.Platform;
 import sun.nio.ch.Util;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ public class Mur extends Element implements Serializable {
     Salle mSalle;
     Polygone mPolygoneElevation;
     Polygone mPolygonePlan;
-
+    ArrayList<ArrayList> polygoneElevationDecoupage;
     Imperial mLargeur;
 
     boolean retourAir;
@@ -71,10 +72,6 @@ public class Mur extends Element implements Serializable {
 
     public Polygone polygonesElevation(boolean interieur) {
         return mPolygoneElevation;
-    }
-
-    public void polygonesElevationDecoupage(boolean exterieur) {
-
     }
 
     public ArrayList<Accessoire> accessoires() {
@@ -222,6 +219,7 @@ public class Mur extends Element implements Serializable {
         this.mPolygonePlanRetourAir = new Polygone(selectionne ? Color.BLUE : Color.BLACK, p1, p2, p3, p4);
     }
 
+
     public void genererPolygoneELV(boolean exterieur) {
         Imperial x1;
         Imperial y1;
@@ -329,6 +327,109 @@ public class Mur extends Element implements Serializable {
         this.mPolygoneElevationRetourAir = new Polygone(selectionne ? Color.BLUE : Color.BLACK, p1, p2, p3, p4);
     }
 
+    private Polygone createPolygone(Imperial hauteur, Imperial largeur, Imperial distanceSeparationHauteur,Imperial distanceSeparationLargeur){
+        PointImperial mX1Debut= new PointImperial(distanceSeparationLargeur,distanceSeparationHauteur);
+        PointImperial mX1Fin= new PointImperial(distanceSeparationLargeur,hauteur);
+        PointImperial mX2Debut=new PointImperial(largeur,hauteur);
+        PointImperial mX2Fin=new PointImperial(largeur,distanceSeparationHauteur);
+        ArrayList<PointImperial> listPoint = new ArrayList<>();
+        listPoint.add(mX1Debut);
+        listPoint.add(mX1Fin);
+        listPoint.add(mX2Debut);
+        listPoint.add(mX2Fin);
+        return new Polygone(Color.black,listPoint);
+    }
+    public ArrayList genererpolygonesElevationDecoupage() {
+        polygoneElevationDecoupage = new ArrayList<>();
+        boolean exterieur = true;
+        ArrayList<Accessoire> accessoires = accessoires();
+        do{
+            ArrayList<Polygone> polygoneMurDecoupage = new ArrayList<>();
+            if(!exterieur){
+                Imperial defaultDistance = new Imperial(0);
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getLargeurPliSoudure(),
+                        this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                        defaultDistance,
+                        defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1))));
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()),
+                        this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                        this.mSalle.getLargeurPliSoudure(),
+                        defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1))));
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getLargeurPliSoudure()),
+                        this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                        this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()),
+                        defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1))));
+                for(Accessoire accessoire: accessoires) {
+                    if(accessoire instanceof Porte){
+                        polygoneMurDecoupage.add(createPolygone(
+                                this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()),
+                                accessoire.getmX().add(accessoire.getmLargeur()).add(new Imperial(1)),
+                                this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).substract(accessoire.getmHauteur()),
+                                accessoire.getmX().add(new Imperial(1))));
+                    }
+                    else{
+                        polygoneMurDecoupage.add(createPolygone(
+                                accessoire.getmY().add(accessoire.getmHauteur()).add(this.mSalle.getLargeurPliSoudure()),
+                                accessoire.getmX().add(accessoire.getmLargeur()).add(new Imperial(1)),
+                                accessoire.getmY().add(this.mSalle.getLargeurPliSoudure()),
+                                accessoire.getmX().add(new Imperial(1))));
+                    }
+                }
+                if(this.retourAir){
+                    Imperial y2 = mSalle.getHauteur().substract(mSalle.getPositionRetourAir());
+                    Imperial y1 = y2.substract(mSalle.getHauteurRetourAir());
+                    polygoneMurDecoupage.add(createPolygone(
+                            this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).substract(mSalle.getPositionRetourAir()).substract(mSalle.getPositionRetourAir()),
+                            this.getmLargeur().divide(2).add(largeurRetourAir.divide(2)),
+                            this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).substract(mSalle.getPositionRetourAir()),
+                            this.getmLargeur().divide(2).substract(largeurRetourAir.divide(2))));
+                }
+                exterieur = true;
+            }
+            else{
+                Imperial defaultDistance = new Imperial(0);
+                Imperial defaultDistanceLargeur = this.getmLargeur().add(new Imperial(6));
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getHauteur(),
+                        this.mSalle.getLargeurPliSoudure().add(defaultDistance).add(defaultDistanceLargeur),
+                        defaultDistance,
+                        defaultDistanceLargeur));
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getHauteur(),
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur),
+                        defaultDistance,
+                        this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)));
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getHauteur(),
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur).add(this.mSalle.getLargeurPliSoudure()),
+                        defaultDistance,
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur)));
+                for(Accessoire accessoire: accessoires) {
+                    if(accessoire instanceof Porte){
+                        polygoneMurDecoupage.add(createPolygone(
+                                this.mSalle.getHauteur(),
+                                accessoire.getmX().add(accessoire.getmLargeur()).add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)).add(new Imperial(1)),
+                                this.mSalle.getHauteur().substract(accessoire.getmHauteur()),
+                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur))));
+                    }
+                    else if(accessoire instanceof PrisesElectrique){}
+                    else{
+                        polygoneMurDecoupage.add(createPolygone(
+                                accessoire.getmY().add(accessoire.getmHauteur()),
+                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)).add(accessoire.getmLargeur()).add(new Imperial(1)),
+                                accessoire.getmY(),
+                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)).add(new Imperial(1))));
+                    }
+                }
+                exterieur =false;
+            }
+            polygoneElevationDecoupage.add(polygoneMurDecoupage);
+        }while(!exterieur);
+        return polygoneElevationDecoupage;
+    }
     public ArrayList<Polygone> getPolygoneAccessoires(boolean exterieur){
         ArrayList<Polygone> polygonesAccessoires = new ArrayList<>();
 

@@ -15,7 +15,6 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.lang.annotation.Target;
 import java.util.Locale;
 
 public class MainWindow {
@@ -36,6 +35,7 @@ public class MainWindow {
     private JButton btnRetourAir;
     private JButton btnSupprimer;
     private JButton btnSeparateur;
+    private JButton btnDecoupage;
     private JButton btnSelection;
 
     private JButton btnMove;
@@ -89,6 +89,7 @@ public class MainWindow {
         direction = null;
         interieur = false;
         panel = new DrawingPanel(this);
+
         creerUnNouveauProjetButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -273,6 +274,19 @@ public class MainWindow {
             }
         });
 
+        btnDecoupage.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                updatePanels();
+                AccessoireEnum = null;
+                resetButtonView();
+                resetButtonAccessoires();
+                btnDecoupage.setVisible(true);
+                btnDecoupage.setBorder(BorderFactory.createLineBorder(Color.blue));
+                panel.setAfficheur(new AfficheurVueDecoupage(mainWindow.gestionnaireSalle.getSalleActive(),gestionnaireSalle.getMurSelectionnerNoneDto()));
+            }
+        });
+
         btnPlan.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -359,6 +373,7 @@ public class MainWindow {
 
                 if(e.getButton() != MouseEvent.BUTTON1)
                     return;
+
                 if(AccessoireEnum != null){
                     if (direction != null) {
                         switch (AccessoireEnum){
@@ -383,6 +398,7 @@ public class MainWindow {
                                 break;
                             case Selection:
                                 gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
+                                btnDecoupage.setVisible(gestionnaireSalle.getBtnDecoupageVisible());
                                 break;
                             /*case Move:
                                 gestionnaireSalle.dragAndDropElement(e.getX(), e.getY());
@@ -403,6 +419,7 @@ public class MainWindow {
                                 break;
                             case Selection:
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
+                                btnDecoupage.setVisible(gestionnaireSalle.getBtnDecoupageVisible());
                                 break;
                             /*case Move:
                                 gestionnaireSalle.dragAndDropElement();
@@ -464,6 +481,7 @@ public class MainWindow {
 
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
+                gestionnaireSalle.getSalleActive().setElementSelectionne();
                 if(e.getButton() == MouseEvent.BUTTON1){}
             }
             @Override
@@ -527,101 +545,7 @@ public class MainWindow {
 
         updatePanels();
 
-           /* @Override
-             System.out.print(" differenceXX ");
-                            System.out.println(differenceXX);
-                            System.out.print(" differenceYY ");
-                            System.out.println(differenceYY);
-                            System.out.print("pointElementX ");
-                            System.out.println(pointElementX);
-                            System.out.print("pointElementY ");
-                            System.out.println(pointElementY);
-                            System.out.print("pointElementX ");
-            System.out.print("finPoint ");System.out.print("pointFIN ");
-                    System.out.println(point);
- // System.out.println(differenceX);
-                    //System.out.println(differenceY);
-                    System.out.print("pointDEPART ");
-                    System.out.println(m_pointDepart);
-                    System.out.println(finPoint);
-                    System.out.print("debutPoint ");
-                    System.out.println(debutPoint);
-                            System.out.println(pointElementX);
-                            System.out.print("pointElementY ");
-                            System.out.println(pointElementY);
-                            System.out.print(" differenceXX ");
-                            System.out.println(differenceXX);
-                            System.out.print(" differenceYY ");
-                            System.out.println(differenceYY);
-                            public void mouseDragged(MouseEvent e) {
-
-                super.mouseDragged(e);
-                System.out.print("  dans mouseDragged  ");
-                if (m_dragTarget != null){
-                    Point point = e.getPoint();
-                    int differenceX = m_pointDepart.x - point.x;
-                    int differenceY = m_pointDepart.y - point.y;
-                    m_pointDepart = point;
-
-                   //TODO modifier la position de l'objet selectionner
-                    /*MurDTO murSelect = gestionnaireSalle.getMurSelectionne();
-                    if(murSelect != null){
-                        //TODO modifier position x du mur et redessiner tous les murs du coté en conséquence... à voir
-                    }
-                    SeparateurDTO separateurSelect = gestionnaireSalle.getSeparateurSelectionne();
-                    if (separateurSelect != null){
-                        //TODO modifier position x du separateur
-
-                    }
-
-                    AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
-                    if (accessoireSelect != null){
-                        //TODO modifier la position x et y de l'accessoire selectionner
-
-                        Imperial posXOriginel = accessoireSelect.getX();
-                        Imperial posYOriginel = accessoireSelect.getY();
-                        int newX = posXOriginel.getEntier() + differenceX;
-                        int newY = posYOriginel.getEntier() + differenceY;
-                        gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(new Imperial(newX), new Imperial(newY),accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
-
-
-                    }*/
-
-                    //mainPanel.validate();
-                    //mainPanel.repaint();
-
-/*
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                super.mouseMoved(e);
-                System.out.println(" dans mouseMove  ");
-                if (m_dragTarget != null){
-                    System.out.println(" dans if mouseMove ");
-                    int dragX = dragTargetElement.getmX().getEntier();
-                    int dragY = dragTargetElement.getmY().getEntier();
-                    int departX = m_pointDepart.x;
-                    int departY = m_pointDepart.y;
-                    int finX = e.getX();
-                    int finY = e.getY();
-                    System.out.println(dragY);
-                    System.out.println(dragX);
-
-                    dragX += finX - departX;
-                    dragY += finY - departY;
-                    dragTargetElement.setmX(new Imperial(dragX));
-                    dragTargetElement.setmY(new Imperial(dragY));
-                    System.out.println(dragX);
-                    System.out.println(dragY);
-                }
-
-            }*/
-
-
-
-
-
         MouseAdapter mouvementCameraAdapter = new MouseAdapter() {
-
             Point lastPoint = null;
 
             @Override
@@ -647,13 +571,11 @@ public class MainWindow {
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
-
                 if (lastPoint != null) {
                     Point point = e.getPoint();
                     int offsetX = point.x - lastPoint.x;
                     int offsetY = point.y - lastPoint.y;
                     lastPoint = point;
-
                     Conversion.getConversion().pan(-offsetX, -offsetY);
                     mainPanel.validate();
                     mainPanel.repaint();
@@ -846,17 +768,18 @@ public class MainWindow {
         btnElvSudEXT.setBorder(null);
         btnELVSudINT.setBorder(null);
         btnPlan.setBorder(null);
+        btnDecoupage.setVisible(false);
     }
     public void resetButtonAccessoires(){
         Border border = BorderFactory.createLineBorder(Color.red);
         btnSelection.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Selection ? border : null);
-        btnMove.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Move ? border:null);
         btnSupprimer.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Supprimer ? border : null);
         btnRetourAir.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.RetourAir ? border : null);
         btnPrise.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.PriseElectrique ? border : null);
         btnPorte.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Porte ? border : null);
         btnFenetre.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Fenetre ? border : null);
         btnSeparateur.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Separateur ? border : null);
+        btnDecoupage.setVisible(false);
 
         boolean estEnVuePlan = gestionnaireSalle.GetvuePlan();
         btnRetourAir.setVisible(estEnVuePlan || interieur);
@@ -954,6 +877,7 @@ public class MainWindow {
         btnUndo = new JButton();
         btnSave = new JButton();
         btnSeparateur = new JButton();
+        btnDecoupage = new JButton();
         btnSelection = new JButton();
         btnMove = new JButton();
         buttonsPanel = new JPanel();
@@ -1268,6 +1192,20 @@ public class MainWindow {
         btnSeparateur.setBackground(Color.white);
         rightPanel.add(mainPanel, BorderLayout.CENTER);
 
+        gbc = new GridBagConstraints();
+        gbc.gridx = 7;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2, 2, 2, 2);
+        buttonsPanel.add(btnDecoupage, gbc);
+        btnDecoupage.setMargin(new Insets(0, 0, 0, 0));
+        btnDecoupage.setMaximumSize(new Dimension(70, 50));
+        btnDecoupage.setMinimumSize(new Dimension(70, 50));
+        btnDecoupage.setPreferredSize(new Dimension(70, 50));
+        btnDecoupage.setText("Decoupage");
+        btnDecoupage.setVisible(false);
+        btnDecoupage.setBackground(Color.white);
+        rightPanel.add(mainPanel, BorderLayout.CENTER);
 
         btnElvOuestEXT = new JButton();
         btnElvOuestEXT.setBackground(new Color(-12829636));
