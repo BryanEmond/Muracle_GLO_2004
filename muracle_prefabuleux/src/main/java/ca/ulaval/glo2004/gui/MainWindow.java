@@ -513,7 +513,6 @@ public class MainWindow {
                             gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
                             mainPanel.validate();
                             mainPanel.repaint();
-
                         }
                     }
 
