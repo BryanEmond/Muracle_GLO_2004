@@ -415,6 +415,7 @@ public class GestionnaireSalle implements Serializable{
         this.salleActive.setHauteurRetourAir(salle.getHauteurRetourAir());
         this.salleActive.setPositionRetourAir(salle.getPositionRetourAir());
         this.salleActive.setHauteurTrouRetourAir(salle.getHauteurTrouRetourAir());
+        this.salleActive.setEpaisseurMateriaux(salle.getEpaisseurMateriaux());
 
         updateSalle();
         return 0;

@@ -327,7 +327,7 @@ public class Mur extends Element implements Serializable {
         this.mPolygoneElevationRetourAir = new Polygone(selectionne ? Color.BLUE : Color.BLACK, p1, p2, p3, p4);
     }
 
-    private Polygone createPolygone(Imperial hauteur, Imperial largeur, Imperial distanceSeparationHauteur,Imperial distanceSeparationLargeur){
+    private Polygone createPolygone(Imperial hauteur, Imperial largeur, Imperial distanceSeparationHauteur,Imperial distanceSeparationLargeur,Color color,int pointiller){
         PointImperial mX1Debut= new PointImperial(distanceSeparationLargeur,distanceSeparationHauteur);
         PointImperial mX1Fin= new PointImperial(distanceSeparationLargeur,hauteur);
         PointImperial mX2Debut=new PointImperial(largeur,hauteur);
@@ -337,7 +337,12 @@ public class Mur extends Element implements Serializable {
         listPoint.add(mX1Fin);
         listPoint.add(mX2Debut);
         listPoint.add(mX2Fin);
-        return new Polygone(Color.black,listPoint);
+        if(pointiller != -1) {
+            Polygone polygone = new Polygone(color,listPoint);
+            polygone.setLignePointille(pointiller);
+            return polygone;
+        }
+        else return new Polygone(color,listPoint);
     }
     public ArrayList genererpolygonesElevationDecoupage() {
         polygoneElevationDecoupage = new ArrayList<>();
@@ -347,45 +352,237 @@ public class Mur extends Element implements Serializable {
             ArrayList<Polygone> polygoneMurDecoupage = new ArrayList<>();
             if(!exterieur){
                 Imperial defaultDistance = new Imperial(0);
-                polygoneMurDecoupage.add(createPolygone(
-                        this.mSalle.getLargeurPliSoudure(),
-                        this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
-                        defaultDistance,
-                        defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1))));
-                polygoneMurDecoupage.add(createPolygone(
-                        this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()),
-                        this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
-                        this.mSalle.getLargeurPliSoudure(),
-                        defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1))));
-                polygoneMurDecoupage.add(createPolygone(
-                        this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getLargeurPliSoudure()),
-                        this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
-                        this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()),
-                        defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1))));
+                Imperial pliSoudureAvant = this.mSalle.getLargeurPliSoudure();
+                Imperial pliSoudureApres = this.mSalle.getLargeurPliSoudure();
+                if(this == this.getCote().getPremierMur() && this == this.getCote().getDernierMur()){
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            defaultDistance,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getHauteur());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.BLACK,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getLargeurPliSoudure());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                }
+                else if(this == this.getCote().getPremierMur()){
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            defaultDistance,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getHauteur());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.BLACK,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getLargeurPliSoudure());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                }
+                else if(this == this.getCote().getDernierMur()){
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            defaultDistance,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getHauteur());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.BLACK,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getLargeurPliSoudure());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                }
+                else{
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            defaultDistance,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getHauteur());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.BLACK,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getEpaisseurMurs());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.blue,
+                            1
+                    ));
+                    pliSoudureAvant = pliSoudureApres;
+                    pliSoudureApres = pliSoudureApres.add(this.mSalle.getLargeurPliSoudure());
+                    polygoneMurDecoupage.add(createPolygone(
+                            pliSoudureApres,
+                            this.getmLargeur().add(new Imperial(1)),
+                            pliSoudureAvant,
+                            defaultDistance.add(new Imperial(1)),
+                            Color.GREEN,
+                            1
+                    ));
+                }
                 for(Accessoire accessoire: accessoires) {
                     if(accessoire instanceof Porte){
                         polygoneMurDecoupage.add(createPolygone(
-                                this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()),
+                                this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getEpaisseurMurs()),
                                 accessoire.getmX().add(accessoire.getmLargeur()).add(new Imperial(1)),
-                                this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).substract(accessoire.getmHauteur()),
-                                accessoire.getmX().add(new Imperial(1))));
+                                this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getEpaisseurMurs()).substract(accessoire.getmHauteur()),
+                                accessoire.getmX().add(new Imperial(1)),
+                                Color.BLACK,
+                                -1
+                        ));
                     }
                     else{
                         polygoneMurDecoupage.add(createPolygone(
                                 accessoire.getmY().add(accessoire.getmHauteur()).add(this.mSalle.getLargeurPliSoudure()),
                                 accessoire.getmX().add(accessoire.getmLargeur()).add(new Imperial(1)),
                                 accessoire.getmY().add(this.mSalle.getLargeurPliSoudure()),
-                                accessoire.getmX().add(new Imperial(1))));
+                                accessoire.getmX().add(new Imperial(1)),
+                                Color.black,
+                                -1
+                        ));
                     }
                 }
                 if(this.retourAir){
                     Imperial y2 = mSalle.getHauteur().substract(mSalle.getPositionRetourAir());
                     Imperial y1 = y2.substract(mSalle.getHauteurRetourAir());
                     polygoneMurDecoupage.add(createPolygone(
-                            this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).substract(mSalle.getPositionRetourAir()).substract(mSalle.getPositionRetourAir()),
+                            this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getEpaisseurMurs()).substract(mSalle.getPositionRetourAir()).substract(mSalle.getPositionRetourAir()),
                             this.getmLargeur().divide(2).add(largeurRetourAir.divide(2)),
-                            this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).substract(mSalle.getPositionRetourAir()),
-                            this.getmLargeur().divide(2).substract(largeurRetourAir.divide(2))));
+                            this.mSalle.getHauteur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getEpaisseurMurs()).substract(mSalle.getPositionRetourAir()),
+                            this.getmLargeur().divide(2).substract(largeurRetourAir.divide(2)),
+                            Color.black,
+                            -1
+                    ));
                 }
                 exterieur = true;
             }
@@ -394,34 +591,65 @@ public class Mur extends Element implements Serializable {
                 Imperial defaultDistanceLargeur = this.getmLargeur().add(new Imperial(6));
                 polygoneMurDecoupage.add(createPolygone(
                         this.mSalle.getHauteur(),
-                        this.mSalle.getLargeurPliSoudure().add(defaultDistance).add(defaultDistanceLargeur),
+                        this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur),
                         defaultDistance,
-                        defaultDistanceLargeur));
+                        defaultDistanceLargeur,
+                        Color.GREEN,
+                        1
+                ));
                 polygoneMurDecoupage.add(createPolygone(
                         this.mSalle.getHauteur(),
-                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur),
+                        this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur).add(this.mSalle.getEpaisseurMurs()),
                         defaultDistance,
-                        this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)));
+                        this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur),
+                        Color.BLUE,
+                        1
+                ));
                 polygoneMurDecoupage.add(createPolygone(
                         this.mSalle.getHauteur(),
-                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur).add(this.mSalle.getLargeurPliSoudure()),
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getEpaisseurMurs()).add(defaultDistanceLargeur),
                         defaultDistance,
-                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur)));
+                        this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur).add(this.mSalle.getEpaisseurMurs()),
+                        Color.black,
+                        1
+                ));
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getHauteur(),
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur).add(this.mSalle.getEpaisseurMurs()).add(this.mSalle.getEpaisseurMurs()),
+                        defaultDistance,
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getEpaisseurMurs()).add(defaultDistanceLargeur),
+                        Color.BLUE,
+                        1
+                ));
+                polygoneMurDecoupage.add(createPolygone(
+                        this.mSalle.getHauteur(),
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur).add(this.mSalle.getLargeurPliSoudure()).add(this.mSalle.getEpaisseurMurs()).add(this.mSalle.getEpaisseurMurs()),
+                        defaultDistance,
+                        this.getmLargeur().add(this.mSalle.getLargeurPliSoudure()).add(defaultDistanceLargeur).add(this.mSalle.getEpaisseurMurs()).add(this.mSalle.getEpaisseurMurs()),
+                        Color.GREEN,
+                        1
+                ));
                 for(Accessoire accessoire: accessoires) {
                     if(accessoire instanceof Porte){
                         polygoneMurDecoupage.add(createPolygone(
                                 this.mSalle.getHauteur(),
-                                accessoire.getmX().add(accessoire.getmLargeur()).add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)).add(new Imperial(1)),
+                                accessoire.getmX().add(accessoire.getmLargeur()).add(this.mSalle.getEpaisseurMurs()).add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)).add(new Imperial(1)),
                                 this.mSalle.getHauteur().substract(accessoire.getmHauteur()),
-                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur))));
+                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(this.mSalle.getEpaisseurMurs()).add(defaultDistanceLargeur)),
+                                Color.black,
+                                -1
+                        ));
                     }
                     else if(accessoire instanceof PrisesElectrique){}
                     else{
                         polygoneMurDecoupage.add(createPolygone(
                                 accessoire.getmY().add(accessoire.getmHauteur()),
-                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)).add(accessoire.getmLargeur()).add(new Imperial(1)),
+                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(this.mSalle.getEpaisseurMurs()).add(defaultDistanceLargeur)).add(accessoire.getmLargeur()).add(new Imperial(1)),
                                 accessoire.getmY(),
-                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(defaultDistanceLargeur)).add(new Imperial(1))));
+                                accessoire.getmX().add(this.mSalle.getLargeurPliSoudure().add(this.mSalle.getEpaisseurMurs()).add(defaultDistanceLargeur)).add(new Imperial(1)),
+                                Color.black,
+                                -1
+                        ));
                     }
                 }
                 exterieur =false;
