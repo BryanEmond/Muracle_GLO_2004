@@ -15,6 +15,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainWindow {
@@ -436,59 +437,81 @@ public class MainWindow {
             Point m_pointDepart = null;
             Polygone m_dragTarget = null;
 
+            Mur mur1 = null;
+
             Element dragTargetElement = null;
+
+            boolean onDrag = false;
 
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                System.out.println("dans mousePressed");
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    super.mousePressed(e);
+                    System.out.println("dans mousePressed "+ e.getButton());
 
-                m_pointDepart = e.getPoint();
+                    if (e.getButton() == MouseEvent.BUTTON1) {
 
-                if(e.getButton() == MouseEvent.BUTTON1){
-                    Element element = gestionnaireSalle.getSalleActive().getElementSelectionne();
-                    if(element instanceof Mur){
-                        if(direction != null){m_dragTarget = ((Mur) element).getPolygoneElvRetourAir();
-                            dragTargetElement = element;}
-                        else {m_dragTarget = ((Mur) element).getPolygonePlanRetourAir();}
-                    }
-
-                    if (element instanceof Separateur){
-                        if (direction != null){
-                            m_dragTarget = ((Separateur) element).getmPolygoneElevation();
+                        onDrag = true;
+                        m_pointDepart = e.getPoint();
+                        Element element = gestionnaireSalle.getSalleActive().getElementSelectionne();
+                        if (element instanceof Mur) {
+                            mur1 = gestionnaireSalle.getMurSelectionnerNoneDto();
+                            m_dragTarget = ((Mur) element).getPolygoneElvRetourAir();
                             dragTargetElement = element;
+
+                            if (direction != null) {
+
+                            } else {
+                                m_dragTarget = ((Mur) element).getPolygonePlanRetourAir();
+
+                            }
                         }
-                        else {m_dragTarget = ((Separateur) element).getmPolygonePlan();}
-                    }
 
-                    AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
-                    if (element instanceof Accessoire){
-
-                        if (direction != null){
-                        m_dragTarget = ((Accessoire) element).getmPolygoneElevation(interieur);
-                        dragTargetElement = element;
+                        if (element instanceof Separateur) {
+                            if (direction != null) {
+                                m_dragTarget = ((Separateur) element).getmPolygoneElevation();
+                                dragTargetElement = element;
+                            } else {
+                                m_dragTarget = ((Separateur) element).getmPolygonePlan();
+                            }
                         }
-                        else {m_dragTarget = ((Accessoire) element).getmPolygonePlan();}
-                    }
-                    m_pointDepart = e.getPoint();
 
+                        AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
+                        if (element instanceof Accessoire) {
+
+                            if (direction != null) {
+                                m_dragTarget = ((Accessoire) element).getmPolygoneElevation(interieur);
+                                dragTargetElement = element;
+                            } else {
+                                m_dragTarget = ((Accessoire) element).getmPolygonePlan();
+                            }
+                        }
+                        m_pointDepart = e.getPoint();
+
+                    }
                 }
             }
 
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
-                gestionnaireSalle.getSalleActive().setElementSelectionne();
-                if(e.getButton() == MouseEvent.BUTTON1){}
+               // gestionnaireSalle.getSalleActive().setElementSelectionne();
+                System.out.println(e.getButton()+" released");
+                if(e.getButton() == MouseEvent.BUTTON1){
+                onDrag = false;
+                }
             }
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
 
+                if (onDrag) {
                 if (m_dragTarget != null){
                     Point point = e.getPoint();
 
                     SeparateurDTO separateurSelect = gestionnaireSalle.getSeparateurSelectionne();
                     AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
+                    MurDTO retourAirSelect = gestionnaireSalle.getMurSelectionne();
+
 
                     PointImperial finPoint = Conversion.getConversion().trouverCoordonneImperial(point.x, point.y);
                     PointImperial debutPoint = Conversion.getConversion().trouverCoordonneImperial(m_pointDepart.x, m_pointDepart.y);
@@ -498,17 +521,68 @@ public class MainWindow {
 
                     if (!interieur){
                         differenceXX = differenceXX.negative();
-                        differenceYY = differenceYY.negative();
+                       // differenceYY = differenceYY.negative();
                     }
+
+                 if(retourAirSelect.aRetourAir())
+                    {
+                        System.out.println("dans if retour Air drag");
+
+                        if(mur1!=null){
+                            //System.out.println("dans if mur1 != null");
+                            if(!m_dragTarget.PointEstDansPolygone(finPoint)){
+                                //System.out.println("dans if polygone dans point");
+
+                                ArrayList<Mur> murs = mur1.getCote().getMurs();
+                                Mur mur2 = null;
+                                for(int i = 0 ; i < murs.size() ; i++){
+                                    ;
+                                    //System.out.println("est dans boucle for murs i:" + i + " finPoint est dans mur : " + murs.get(i).polygonesElevation(interieur).PointEstDansPolygone(finPoint));
+                                    if(direction == null){
+                                        if(murs.get(i).PointEstDansMur(finPoint))
+                                        {
+                                            mur2 = murs.get(i);
+                                            //System.out.println("Est dans if get mur " + mur2);
+                                        }}
+                                    else{
+                                        if(murs.get(i).polygonesElevation(interieur).PointEstDansPolygone(finPoint))
+                                        {
+                                            mur2 = murs.get(i);
+                                        }}
+
+
+                                }
+
+                                System.out.println("GRANDEUR LISTE ACCESSOIRE ; " + mur2.accessoires().size());
+                                if(mur2.accessoires().size() == 0){
+                                mur1.setRetourAir(false);
+                                mur2.setRetourAir(true);
+                                mainPanel.validate();
+                                mainPanel.repaint();
+                                }
+
+                        }}
+                    }
+
 
                     if(separateurSelect != null){
                         if(direction != null){
 
                             Imperial pointElementX = separateurSelect.getPosition();
                             Imperial pointRelatif = separateurSelect.getPositionRelative();
-
+                            System.out.println("pointRelatif 1 : " + pointRelatif);
                             pointElementX = pointElementX.substract(differenceXX);
                             pointRelatif = pointRelatif.substract(differenceXX);
+                            System.out.println("pointRelatif 2 : " + pointRelatif);
+                            if(direction.equals(Utilitaire.Direction.EST)){
+                                //pointRelatif = pointRelatif.substract(gestionnaireSalle.getSalleActive().getEpaisseurMurs());
+
+                            }
+
+                            if(direction.equals(Utilitaire.Direction.OUEST)){
+                                //pointRelatif = pointRelatif.add(gestionnaireSalle.getSalleActive().getEpaisseurMurs());
+
+                            }
 
                             gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
                             mainPanel.validate();
@@ -517,9 +591,9 @@ public class MainWindow {
                     }
 
                     if (accessoireSelect != null){
-                        //TODO quand on dragg avec la roulette il ne faut pas deplacer les objets
+                        //TODO deplacement des retours d'airs,
+                        //TODO deplacement des separateurs en plan
                         if (direction != null){
-
                             Imperial pointElementX = accessoireSelect.getX();
                             Imperial pointElementY = accessoireSelect.getY();
 
@@ -532,7 +606,7 @@ public class MainWindow {
                     }
                 }
                 m_pointDepart = e.getPoint();
-            }
+            }}
         };
         this.mainPanel.addMouseListener(DnD);
         this.mainPanel.addMouseMotionListener(DnD);
