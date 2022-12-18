@@ -74,7 +74,7 @@ public class MainWindow {
     private PanelProprietes proprietesSeparateur;
 
     private MainWindow mainWindow;
-    private DrawingPanel panel;
+    public DrawingPanel panel;
     GestionnaireSalle gestionnaireSalle;
     private String filePath;
     Utilitaire.AccessoireEnum AccessoireEnum = Utilitaire.AccessoireEnum.Selection;
@@ -96,7 +96,7 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.creerSalleDefaut();
                 mainWindow = new MainWindow(gestionnaireSalle);
-                JFileChooser fc = new JFileChooser();
+                JFileChooser fc = new JFileChooser("c:/Documents/");
                 fc.setSelectedFile(new File("sale.ser"));
                 int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
                 if (returnFcVal == JFileChooser.APPROVE_OPTION) {
@@ -115,13 +115,17 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 mainWindow = new MainWindow(gestionnaireSalle);
-                JFileChooser fc = new JFileChooser("d:");
+                JFileChooser fc = new JFileChooser("c:/Documents/");
                 int returnFcVal = fc.showOpenDialog(rootPanel.getParent());
                 if (returnFcVal == JFileChooser.APPROVE_OPTION) {
                     try {
                         File file = fc.getSelectedFile();
                         setHomePage(e);
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
+                        Salle salle = gestionnaireSalle.getSalleActive();
+                        mainWindow.panel.setAfficheur(new AfficheurVueDessus(salle));
+                        mainWindow.updatePanels();
+                        setHomePage(e);
                     } catch (Exception error) {
                         System.out.println(error);
                     }
@@ -153,6 +157,7 @@ public class MainWindow {
                interieur = true;
                updatePanels();
                 resetButtonView();
+                ButtonDecoupage(true);
                 AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnElvEstINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -170,6 +175,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 resetButtonView();
+                ButtonDecoupage(true);
                 AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnElvEstEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -186,6 +192,7 @@ public class MainWindow {
                 interieur = true;
                 updatePanels();
                 resetButtonView();
+                ButtonDecoupage(true);
                 AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnELVSudINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -202,6 +209,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvSudEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -218,6 +226,7 @@ public class MainWindow {
                 interieur = true;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -235,6 +244,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -251,6 +261,7 @@ public class MainWindow {
                 interieur = true;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -268,6 +279,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -282,6 +294,7 @@ public class MainWindow {
                 AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
+                ButtonDecoupage(false);
                 btnDecoupage.setVisible(true);
                 btnDecoupage.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurVueDecoupage(mainWindow.gestionnaireSalle.getSalleActive(),gestionnaireSalle.getMurSelectionnerNoneDto()));
@@ -299,6 +312,7 @@ public class MainWindow {
                 AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
+                ButtonDecoupage(true);
                 btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
 
@@ -672,6 +686,7 @@ public class MainWindow {
             proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :", salleSelect.getHauteurRetourAir().toString(), false);
             proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :", salleSelect.getPositionRetourAir().toString(), false);
             proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :", salleSelect.getHauteurTrouRetourAir().toString(), false);
+            proprietesSalle.addProperty("epaisseurMateriaux", "ÉPASSEUR MATERIAUX :", salleSelect.getEpaisseurMateriaux().toString(), false);
             proprietesSalle.generateLayout();
             propertiesPanel.add(proprietesSalle);
 
@@ -685,12 +700,13 @@ public class MainWindow {
                 Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
                 Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
                 Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
+                Imperial epaisseurMateriaux = proprietesSalle.getImperial("epaisseurMateriaux");
 
                 if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
                         pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
                     return;
 
-                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
+                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir, epaisseurMateriaux));
 
                 if(result == 0)
                 {
@@ -836,6 +852,16 @@ public class MainWindow {
         btnELVSudINT.setBorder(null);
         btnPlan.setBorder(null);
         btnDecoupage.setVisible(false);
+    }
+    public void ButtonDecoupage(boolean bool){
+        btnSeparateur.setVisible(bool);
+        btnFenetre.setVisible(bool);
+        btnPorte.setVisible(bool);
+        btnSupprimer.setVisible(bool);
+        btnPrise.setVisible(bool);
+        btnSelection.setVisible(bool);
+        btnRetourAir.setVisible(bool);
+        btnDecoupage.setVisible(!bool);
     }
     public void resetButtonAccessoires(){
         Border border = BorderFactory.createLineBorder(Color.red);
