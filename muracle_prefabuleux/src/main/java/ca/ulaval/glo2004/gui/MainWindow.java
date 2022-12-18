@@ -454,6 +454,7 @@ public class MainWindow {
             Mur mur1 = null;
 
             Element dragTargetElement = null;
+            Utilitaire.Direction m_directionSeparateur = null;
 
             boolean onDrag = false;
 
@@ -487,6 +488,7 @@ public class MainWindow {
                                 dragTargetElement = element;
                             } else {
                                 m_dragTarget = ((Separateur) element).getmPolygonePlan();
+                                m_directionSeparateur = ((Separateur) element).getmCote().getDirection();
                             }
                         }
 
@@ -538,6 +540,7 @@ public class MainWindow {
                        // differenceYY = differenceYY.negative();
                     }
 
+                    if (retourAirSelect != null){
                  if(retourAirSelect.aRetourAir())
                     {
                         System.out.println("dans if retour Air drag");
@@ -576,37 +579,28 @@ public class MainWindow {
                                 }
 
                         }}
-                    }
+                    }}
 
 
                     if(separateurSelect != null){
+                        Imperial pointRelatif = separateurSelect.getPositionRelative();
                         if(direction != null){
-
                             Imperial pointElementX = separateurSelect.getPosition();
-                            Imperial pointRelatif = separateurSelect.getPositionRelative();
-                            System.out.println("pointRelatif 1 : " + pointRelatif);
                             pointElementX = pointElementX.substract(differenceXX);
                             pointRelatif = pointRelatif.substract(differenceXX);
-                            System.out.println("pointRelatif 2 : " + pointRelatif);
-                            if(direction.equals(Utilitaire.Direction.EST)){
-                                //pointRelatif = pointRelatif.substract(gestionnaireSalle.getSalleActive().getEpaisseurMurs());
-
-                            }
-
-                            if(direction.equals(Utilitaire.Direction.OUEST)){
-                                //pointRelatif = pointRelatif.add(gestionnaireSalle.getSalleActive().getEpaisseurMurs());
-
-                            }
-
-                            gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
-                            mainPanel.validate();
-                            mainPanel.repaint();
                         }
+                        else{
+                            if (m_directionSeparateur.equals(Utilitaire.Direction.NORD) || m_directionSeparateur.equals(Utilitaire.Direction.SUD))
+                            {pointRelatif = pointRelatif.add(differenceXX);}
+                            else {pointRelatif = pointRelatif.substract(differenceYY);}
+                        }
+
+                        gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
+                        mainPanel.validate();
+                        mainPanel.repaint();
                     }
 
                     if (accessoireSelect != null){
-                        //TODO deplacement des retours d'airs,
-                        //TODO deplacement des separateurs en plan
                         if (direction != null){
                             Imperial pointElementX = accessoireSelect.getX();
                             Imperial pointElementY = accessoireSelect.getY();
