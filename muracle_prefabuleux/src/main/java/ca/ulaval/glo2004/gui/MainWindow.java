@@ -598,6 +598,7 @@ public class MainWindow {
             proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :", salleSelect.getHauteurRetourAir().toString(), false);
             proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :", salleSelect.getPositionRetourAir().toString(), false);
             proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :", salleSelect.getHauteurTrouRetourAir().toString(), false);
+            proprietesSalle.addProperty("epaisseurMateriaux", "ÉPASSEUR MATERIAUX :", salleSelect.getEpaisseurMateriaux().toString(), false);
             proprietesSalle.generateLayout();
             propertiesPanel.add(proprietesSalle);
 
@@ -611,12 +612,13 @@ public class MainWindow {
                 Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
                 Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
                 Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
+                Imperial epaisseurMateriaux = proprietesSalle.getImperial("epaisseurMateriaux");
 
                 if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
                         pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
                     return;
 
-                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
+                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir, epaisseurMateriaux));
 
                 if(result == 0)
                 {
