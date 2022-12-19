@@ -15,6 +15,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainWindow {
@@ -76,7 +77,7 @@ public class MainWindow {
     private PanelProprietes proprietesSeparateur;
 
     private MainWindow mainWindow;
-    private DrawingPanel panel;
+    public DrawingPanel panel;
     GestionnaireSalle gestionnaireSalle;
     private String filePath;
     Utilitaire.AccessoireEnum AccessoireEnum = Utilitaire.AccessoireEnum.Selection;
@@ -99,7 +100,7 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 gestionnaireSalle.creerSalleDefaut();
                 mainWindow = new MainWindow(gestionnaireSalle);
-                JFileChooser fc = new JFileChooser();
+                JFileChooser fc = new JFileChooser("c:/Documents/");
                 fc.setSelectedFile(new File("sale.ser"));
                 int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
                 if (returnFcVal == JFileChooser.APPROVE_OPTION) {
@@ -118,13 +119,17 @@ public class MainWindow {
             @Override
             public void mousePressed(MouseEvent e) {
                 mainWindow = new MainWindow(gestionnaireSalle);
-                JFileChooser fc = new JFileChooser("d:");
+                JFileChooser fc = new JFileChooser("c:/Documents/");
                 int returnFcVal = fc.showOpenDialog(rootPanel.getParent());
                 if (returnFcVal == JFileChooser.APPROVE_OPTION) {
                     try {
                         File file = fc.getSelectedFile();
                         setHomePage(e);
                         mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
+                        Salle salle = gestionnaireSalle.getSalleActive();
+                        mainWindow.panel.setAfficheur(new AfficheurVueDessus(salle));
+                        mainWindow.updatePanels();
+                        setHomePage(e);
                     } catch (Exception error) {
                         System.out.println(error);
                     }
@@ -156,6 +161,7 @@ public class MainWindow {
                interieur = true;
                updatePanels();
                 resetButtonView();
+                ButtonDecoupage(true);
                 AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnElvEstINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -173,6 +179,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 resetButtonView();
+                ButtonDecoupage(true);
                 AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnElvEstEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -189,6 +196,7 @@ public class MainWindow {
                 interieur = true;
                 updatePanels();
                 resetButtonView();
+                ButtonDecoupage(true);
                 AccessoireEnum = null;
                 resetButtonAccessoires();
                 btnELVSudINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -205,6 +213,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvSudEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -221,6 +230,7 @@ public class MainWindow {
                 interieur = true;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -238,6 +248,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvOuestEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -254,6 +265,7 @@ public class MainWindow {
                 interieur = true;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordINT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -271,6 +283,7 @@ public class MainWindow {
                 interieur = false;
                 updatePanels();
                 AccessoireEnum = null;
+                ButtonDecoupage(true);
                 resetButtonView();
                 resetButtonAccessoires();
                 btnElvNordEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
@@ -285,6 +298,7 @@ public class MainWindow {
                 AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
+                ButtonDecoupage(false);
                 btnDecoupage.setVisible(true);
                 btnDecoupage.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur(new AfficheurVueDecoupage(mainWindow.gestionnaireSalle.getSalleActive(),gestionnaireSalle.getMurSelectionnerNoneDto()));
@@ -302,6 +316,7 @@ public class MainWindow {
                 AccessoireEnum = null;
                 resetButtonView();
                 resetButtonAccessoires();
+                ButtonDecoupage(true);
                 btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));
                 panel.setAfficheur( new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
 
@@ -440,59 +455,83 @@ public class MainWindow {
             Point m_pointDepart = null;
             Polygone m_dragTarget = null;
 
+            Mur mur1 = null;
+
             Element dragTargetElement = null;
+            Utilitaire.Direction m_directionSeparateur = null;
+
+            boolean onDrag = false;
 
             @Override
             public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                System.out.println("dans mousePressed");
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    super.mousePressed(e);
+                    System.out.println("dans mousePressed "+ e.getButton());
 
-                m_pointDepart = e.getPoint();
+                    if (e.getButton() == MouseEvent.BUTTON1) {
 
-                if(e.getButton() == MouseEvent.BUTTON1){
-                    Element element = gestionnaireSalle.getSalleActive().getElementSelectionne();
-                    if(element instanceof Mur){
-                        if(direction != null){m_dragTarget = ((Mur) element).getPolygoneElvRetourAir();
-                            dragTargetElement = element;}
-                        else {m_dragTarget = ((Mur) element).getPolygonePlanRetourAir();}
-                    }
-
-                    if (element instanceof Separateur){
-                        if (direction != null){
-                            m_dragTarget = ((Separateur) element).getmPolygoneElevation();
+                        onDrag = true;
+                        m_pointDepart = e.getPoint();
+                        Element element = gestionnaireSalle.getSalleActive().getElementSelectionne();
+                        if (element instanceof Mur) {
+                            mur1 = gestionnaireSalle.getMurSelectionnerNoneDto();
+                            m_dragTarget = ((Mur) element).getPolygoneElvRetourAir();
                             dragTargetElement = element;
+
+                            if (direction != null) {
+
+                            } else {
+                                m_dragTarget = ((Mur) element).getPolygonePlanRetourAir();
+
+                            }
                         }
-                        else {m_dragTarget = ((Separateur) element).getmPolygonePlan();}
-                    }
 
-                    AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
-                    if (element instanceof Accessoire){
-
-                        if (direction != null){
-                        m_dragTarget = ((Accessoire) element).getmPolygoneElevation(interieur);
-                        dragTargetElement = element;
+                        if (element instanceof Separateur) {
+                            if (direction != null) {
+                                m_dragTarget = ((Separateur) element).getmPolygoneElevation();
+                                dragTargetElement = element;
+                            } else {
+                                m_dragTarget = ((Separateur) element).getmPolygonePlan();
+                                m_directionSeparateur = ((Separateur) element).getmCote().getDirection();
+                            }
                         }
-                        else {m_dragTarget = ((Accessoire) element).getmPolygonePlan();}
-                    }
-                    m_pointDepart = e.getPoint();
 
+                        AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
+                        if (element instanceof Accessoire) {
+
+                            if (direction != null) {
+                                m_dragTarget = ((Accessoire) element).getmPolygoneElevation(interieur);
+                                dragTargetElement = element;
+                            } else {
+                                m_dragTarget = ((Accessoire) element).getmPolygonePlan();
+                            }
+                        }
+                        m_pointDepart = e.getPoint();
+
+                    }
                 }
             }
 
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
-                gestionnaireSalle.getSalleActive().setElementSelectionne();
-                if(e.getButton() == MouseEvent.BUTTON1){}
+               // gestionnaireSalle.getSalleActive().setElementSelectionne();
+                System.out.println(e.getButton()+" released");
+                if(e.getButton() == MouseEvent.BUTTON1){
+                onDrag = false;
+                }
             }
             @Override
             public void mouseDragged(MouseEvent e) {
                 super.mouseDragged(e);
 
+                if (onDrag) {
                 if (m_dragTarget != null){
                     Point point = e.getPoint();
 
                     SeparateurDTO separateurSelect = gestionnaireSalle.getSeparateurSelectionne();
                     AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
+                    MurDTO retourAirSelect = gestionnaireSalle.getMurSelectionne();
+
 
                     PointImperial finPoint = Conversion.getConversion().trouverCoordonneImperial(point.x, point.y);
                     PointImperial debutPoint = Conversion.getConversion().trouverCoordonneImperial(m_pointDepart.x, m_pointDepart.y);
@@ -502,28 +541,96 @@ public class MainWindow {
 
                     if (!interieur){
                         differenceXX = differenceXX.negative();
-                        differenceYY = differenceYY.negative();
+                       // differenceYY = differenceYY.negative();
                     }
 
+                    if (retourAirSelect != null){
+                 if(retourAirSelect.aRetourAir())
+                    {
+                        System.out.println("dans if retour Air drag");
+
+                        if(mur1!=null){
+                            //System.out.println("dans if mur1 != null");
+                            if(!m_dragTarget.PointEstDansPolygone(finPoint)){
+                                //System.out.println("dans if polygone dans point");
+
+                                ArrayList<Mur> murs = mur1.getCote().getMurs();
+                                Mur mur2 = null;
+                                for(int i = 0 ; i < murs.size() ; i++){
+                                    ;
+                                    //System.out.println("est dans boucle for murs i:" + i + " finPoint est dans mur : " + murs.get(i).polygonesElevation(interieur).PointEstDansPolygone(finPoint));
+                                    if(direction == null){
+                                        if(murs.get(i).PointEstDansMur(finPoint))
+                                        {
+                                            mur2 = murs.get(i);
+                                            //System.out.println("Est dans if get mur " + mur2);
+                                        }}
+                                    else{
+                                        if(murs.get(i).polygonesElevation(interieur).PointEstDansPolygone(finPoint))
+                                        {
+                                            mur2 = murs.get(i);
+                                        }}
+
+
+                                }
+
+                                System.out.println("GRANDEUR LISTE ACCESSOIRE ; " + mur2.accessoires().size());
+                                if(mur2.accessoires().size() == 0){
+                                mur1.setRetourAir(false);
+                                mur2.setRetourAir(true);
+                                mainPanel.validate();
+                                mainPanel.repaint();
+                                }
+
+                        }}
+                    }}
+
+
                     if(separateurSelect != null){
+                        Imperial pointRelatif = separateurSelect.getPositionRelative();
                         if(direction != null){
 
-                            Imperial pointElementX = separateurSelect.getPosition();
-                            Imperial pointRelatif = separateurSelect.getPositionRelative();
+                            Imperial largeurSalle = gestionnaireSalle.getSalleActive().getLargeur();
+                            Imperial hauteurSalle = gestionnaireSalle.getSalleActive().getProfondeur();
+                            Imperial epaisseurMur = gestionnaireSalle.getSalleActive().getEpaisseurMurs();
+                            Imperial pointMx = finPoint.getmX();
+                            Imperial pointMy = finPoint.getmY();
 
+
+
+
+
+
+                            Imperial pointElementX = separateurSelect.getPosition();
                             pointElementX = pointElementX.substract(differenceXX);
                             pointRelatif = pointRelatif.substract(differenceXX);
 
-                            gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
-                            mainPanel.validate();
-                            mainPanel.repaint();
+                            System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
+                            Imperial reste = new Imperial(0);
+                            if(direction.equals(Utilitaire.Direction.NORD)||direction.equals(Utilitaire.Direction.SUD)){
+                                reste = pointRelatif.substract(epaisseurMur);
+                                System.out.println("reste: " +reste);
+                            }
+                            else{epaisseurMur = epaisseurMur.add(epaisseurMur);
+                            reste = pointRelatif.substract(epaisseurMur);}
+
+                            if(reste.getEntier() > 0)
+                            {gestionnaireSalle.editSeparateurSelectionne(pointRelatif);}
                         }
+                        else{
+                            if (m_directionSeparateur.equals(Utilitaire.Direction.NORD) || m_directionSeparateur.equals(Utilitaire.Direction.SUD))
+                            {pointRelatif = pointRelatif.add(differenceXX);}
+                            else {pointRelatif = pointRelatif.substract(differenceYY);}
+                            gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
+                        }
+
+
+                        mainPanel.validate();
+                        mainPanel.repaint();
                     }
 
                     if (accessoireSelect != null){
-                        //TODO quand on dragg avec la roulette il ne faut pas deplacer les objets
                         if (direction != null){
-
                             Imperial pointElementX = accessoireSelect.getX();
                             Imperial pointElementY = accessoireSelect.getY();
 
@@ -536,7 +643,7 @@ public class MainWindow {
                     }
                 }
                 m_pointDepart = e.getPoint();
-            }
+            }}
         };
         this.mainPanel.addMouseListener(DnD);
         this.mainPanel.addMouseMotionListener(DnD);
@@ -821,6 +928,16 @@ public class MainWindow {
         btnELVSudINT.setBorder(null);
         btnPlan.setBorder(null);
         btnDecoupage.setVisible(false);
+    }
+    public void ButtonDecoupage(boolean bool){
+        btnSeparateur.setVisible(bool);
+        btnFenetre.setVisible(bool);
+        btnPorte.setVisible(bool);
+        btnSupprimer.setVisible(bool);
+        btnPrise.setVisible(bool);
+        btnSelection.setVisible(bool);
+        btnRetourAir.setVisible(bool);
+        btnDecoupage.setVisible(!bool);
     }
     public void resetButtonAccessoires(){
         Border border = BorderFactory.createLineBorder(Color.red);
