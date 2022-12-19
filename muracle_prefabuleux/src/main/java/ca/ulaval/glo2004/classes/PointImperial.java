@@ -36,6 +36,11 @@ public class PointImperial implements Serializable {
         return new PointImperial(mX.mirror(cote), mY);
     }
 
+    public PointImperial substract(PointImperial other)
+    {
+        return new PointImperial(getmX().substract(other.getmX()), getmY().substract(other.getmY()));
+    }
+
     @Override
     public String toString() {
         return "(" + mX.toString() + ", " + mY.toString() + ")";

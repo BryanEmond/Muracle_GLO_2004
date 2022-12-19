@@ -3,6 +3,7 @@ package ca.ulaval.glo2004.gestion;
 import ca.ulaval.glo2004.classes.PointImperial;
 import ca.ulaval.glo2004.classes.Polygone;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class ExporteurSVG {
 
-    public static void EnregistrerSVG(String cheminFichier, List<Polygone> polygones) throws IOException {
+    public static void EnregistrerSVG(String cheminFichier, List<Polygone> polygones, PointImperial offset) throws IOException {
         FileWriter fichier = new FileWriter(cheminFichier);
 
         double maxX = Integer.MIN_VALUE;
@@ -31,7 +32,7 @@ public class ExporteurSVG {
         EcrireEntete(fichier, maxY, maxX);
         for(Polygone polygone : polygones)
         {
-            EcrirePolygone(fichier, polygone);
+            EcrirePolygone(fichier, polygone, offset);
         }
         EcrireEnqueue(fichier);
 
@@ -47,7 +48,7 @@ public class ExporteurSVG {
         writer.append("</svg>");
     }
 
-    private static void EcrirePolygone(FileWriter writer, Polygone polygone) throws IOException {
+    private static void EcrirePolygone(FileWriter writer, Polygone polygone, PointImperial offset) throws IOException {
         ArrayList<PointImperial> points = polygone.getPoints();
 
         if(points.size() < 2)
@@ -60,7 +61,7 @@ public class ExporteurSVG {
         {
             if(pointPrecedent != null)
             {
-                EcrireLigne(writer, pointPrecedent, point, polygone.ligneEstPointille(indexLigne));
+                EcrireLigne(writer, pointPrecedent, point.substract(offset), polygone.ligneEstPointille(indexLigne));
             }
 
             pointPrecedent = point;
@@ -80,7 +81,7 @@ public class ExporteurSVG {
 
         String strPointille = pointille ? " stroke-dasharray=\"2,2\"": "";
 
-        writer.append( String.format("<path stroke=\"red\"%5$s d=\"m%1$s %2$s l%3$s %4$s\" />\n", x1 + "", y1 + "", diffX + "", diffY + "", strPointille) );
+        writer.append( String.format("<path stroke=\"red\"%5$s stroke-width=\"0.1\" d=\"m%1$s %2$s l%3$s %4$s\" />\n", x1 + "", y1 + "", diffX + "", diffY + "", strPointille) );
     }
 
 }
