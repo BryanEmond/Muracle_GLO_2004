@@ -6,6 +6,7 @@ import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ public class GestionnaireSalle implements Serializable{
     private boolean addToNextMur = false;
     private boolean isbtnDecoupageVisible = false;
     private Imperial largeurRetourAir;
+    private Imperial spaceBetween;
     private Mur murSelectionner;
 
     public GestionnaireSalle()
@@ -74,6 +76,7 @@ public class GestionnaireSalle implements Serializable{
         mn2.setRetourAir(true);
         this.mMurCourant = mn2;
         this.mSeparateur = sn2;
+        setSpaceBetween(new Imperial(5));
     }
 
     public void enregistrerSalle(String path)
@@ -766,4 +769,39 @@ public class GestionnaireSalle implements Serializable{
     public void setBtnDecoupageVisible(boolean bool){this.isbtnDecoupageVisible = bool;}
     public boolean getBtnDecoupageVisible(){return this.isbtnDecoupageVisible;}
 
+    public static ArrayList<Polygone> genererGridPlacement(int x, int y, int lenght, int width, Imperial spaceBetween){
+        PointImperial pointImperialPanelDepart = Conversion.getConversion().trouverCoordonneImperial(x,y);
+        PointImperial pointImperialPanelFin = Conversion.getConversion().trouverCoordonneImperial(lenght,width);
+        PointImperial pointImperialFin;
+        Imperial space = spaceBetween;
+        ArrayList<Polygone> polygones = new ArrayList<Polygone>();
+        do{
+            ArrayList<PointImperial> pointImperials = new ArrayList<>();
+            PointImperial pointImperialDebut = new PointImperial(pointImperialPanelDepart.getmX().add(space),pointImperialPanelDepart.getmY());
+            pointImperialFin = new PointImperial(pointImperialPanelDepart.getmX().add(space),pointImperialPanelFin.getmY());
+            pointImperials.add(pointImperialDebut);
+            pointImperials.add(pointImperialFin);
+            polygones.add(new Polygone(Color.LIGHT_GRAY,pointImperials));
+            space = space.add(spaceBetween);
+        }while(pointImperialFin.getmX().compareTo(pointImperialPanelFin.getmX()) == -1);
+        space = spaceBetween;
+        do{
+            ArrayList<PointImperial> pointImperials = new ArrayList<>();
+            PointImperial pointImperialDebut = new PointImperial(pointImperialPanelDepart.getmX(),pointImperialPanelDepart.getmY().add(space));
+            pointImperialFin = new PointImperial(pointImperialPanelFin.getmX(),pointImperialPanelDepart.getmY().add(space));
+            pointImperials.add(pointImperialDebut);
+            pointImperials.add(pointImperialFin);
+            polygones.add(new Polygone(Color.LIGHT_GRAY,pointImperials));
+            space = space.add(spaceBetween);
+        }while(pointImperialFin.getmY().compareTo(pointImperialPanelFin.getmY()) == -1);
+        return polygones;
+    }
+
+    public Imperial getSpaceBetween() {
+        return spaceBetween;
+    }
+
+    public void setSpaceBetween(Imperial spaceBetween) {
+        this.spaceBetween = spaceBetween;
+    }
 }

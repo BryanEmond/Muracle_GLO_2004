@@ -82,8 +82,10 @@ public class MainWindow {
     private String filePath;
     Utilitaire.AccessoireEnum AccessoireEnum = Utilitaire.AccessoireEnum.Selection;
 
+    private boolean activeGridPlacement;
     Utilitaire.Direction direction;
     private boolean interieur;
+
     private boolean plan;
 
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
@@ -134,6 +136,13 @@ public class MainWindow {
                         System.out.println(error);
                     }
                 }
+            }
+        });
+        btnGrille.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                activeGridPlacement = !activeGridPlacement;
+                panel.setAfficheurGridPlacement(new AfficheurGridPlacement(activeGridPlacement,mainWindow));
             }
         });
         btnSave.addMouseListener(new MouseAdapter() {
@@ -779,6 +788,7 @@ public class MainWindow {
             proprietesSalle.addProperty("epaisseurMateriaux", "ÉPASSEUR MATERIAUX :", salleSelect.getEpaisseurMateriaux().toString(), false);
             proprietesSalle.addProperty("poidsMateriaux", "POIDS MATERIAUX :", salleSelect.getPoidsMateriaux() + "", false);
             proprietesSalle.addProperty("poidsMax", "POIDS PANNEAU MAX :", salleSelect.getPoidsMaxPanneau() + "", false);
+            proprietesSalle.addProperty("GridPlacement", "GRILLE ESPACEMENT:", gestionnaireSalle.getSpaceBetween() + "", false);
             proprietesSalle.generateLayout();
             propertiesPanel.add(proprietesSalle);
 
@@ -795,6 +805,7 @@ public class MainWindow {
                 Imperial epaisseurMateriaux = proprietesSalle.getImperial("epaisseurMateriaux");
                 double poidsMateriaux = proprietesSalle.getDouble("poidsMateriaux");
                 double poidsMaxPanneau = proprietesSalle.getDouble("poidsMax");
+                gestionnaireSalle.setSpaceBetween(proprietesSalle.getImperial("GridPlacement"));
 
                 if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
                         pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
