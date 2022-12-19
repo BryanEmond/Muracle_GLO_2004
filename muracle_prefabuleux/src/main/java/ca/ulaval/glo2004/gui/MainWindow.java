@@ -586,8 +586,8 @@ public class MainWindow {
                         Imperial pointRelatif = separateurSelect.getPositionRelative();
                         if(direction != null){
 
-                            Imperial largeurSalle = gestionnaireSalle.getSalleActive().getLargeur();
-                            Imperial hauteurSalle = gestionnaireSalle.getSalleActive().getProfondeur();
+                            Imperial largeurSalle = null;
+                            Imperial hauteurSalle = null;
                             Imperial epaisseurMur = gestionnaireSalle.getSalleActive().getEpaisseurMurs();
                             Imperial pointMx = finPoint.getmX();
                             Imperial pointMy = finPoint.getmY();
@@ -601,17 +601,48 @@ public class MainWindow {
                             pointElementX = pointElementX.substract(differenceXX);
                             pointRelatif = pointRelatif.substract(differenceXX);
 
-                            System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
-                            Imperial reste = new Imperial(0);
+                            Imperial reste;
+                            gestionnaireSalle.getSalleActive().getCote(direction).getAccessoires();
+
+
                             if(direction.equals(Utilitaire.Direction.NORD)||direction.equals(Utilitaire.Direction.SUD)){
                                 reste = pointRelatif.substract(epaisseurMur);
+                                largeurSalle = gestionnaireSalle.getSalleActive().getLargeur();
+
                                 System.out.println("reste: " +reste);
+
                             }
                             else{epaisseurMur = epaisseurMur.add(epaisseurMur);
-                            reste = pointRelatif.substract(epaisseurMur);}
+                                reste = pointRelatif.substract(epaisseurMur);
+                                hauteurSalle = gestionnaireSalle.getSalleActive().getProfondeur();
 
-                            if(reste.getEntier() > 0)
+                            }
+
+                            ArrayList<Mur> murs = gestionnaireSalle.getSalleActive().getCote(direction).getMurs();
+                            int erreur = 1;
+                            for( int j = 0; j < murs.size(); j++){
+                                Mur mur = murs.get(j);
+                                ArrayList<Accessoire> accessoires = mur.accessoires();
+
+                                for( int i =0; i < accessoires.size(); i++){
+                                    Accessoire accessoire = accessoires.get(i);
+                                    Imperial mXaccessoire = accessoire.getmX();
+                                    Imperial largeurAccessoire = accessoire.getmLargeur();
+                                    Imperial mXaccessoireFin = mXaccessoire.add(largeurAccessoire);
+                                    Imperial reste3;
+                                    Imperial reste2;
+                                    reste3 = pointMx.substract(mXaccessoire);
+                                    reste2 = pointMx.substract(mXaccessoireFin);
+                                    System.out.println("mx Accessoire: " + mXaccessoire + " MxAccessoireFIn: " + mXaccessoireFin);
+                                    if(reste3.getEntier() > 0 || reste2.getEntier() < 0){
+                                        System.out.println("dans if qui doit break");
+                                        erreur = 0;
+                                    }
+                                }
+                            }
+                            if(reste.getEntier() > 0 && erreur == 0 )
                             {gestionnaireSalle.editSeparateurSelectionne(pointRelatif);}
+                            System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
                         }
                         else{
                             if (m_directionSeparateur.equals(Utilitaire.Direction.NORD) || m_directionSeparateur.equals(Utilitaire.Direction.SUD))
@@ -632,6 +663,7 @@ public class MainWindow {
 
                             pointElementX = pointElementX.substract(differenceXX);
                             pointElementY = pointElementY.substract(differenceYY);
+
 
                             gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(pointElementX, pointElementY, accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
                             mainPanel.validate();
