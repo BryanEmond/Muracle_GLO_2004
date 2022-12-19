@@ -585,17 +585,42 @@ public class MainWindow {
                     if(separateurSelect != null){
                         Imperial pointRelatif = separateurSelect.getPositionRelative();
                         if(direction != null){
+
+                            Imperial largeurSalle = gestionnaireSalle.getSalleActive().getLargeur();
+                            Imperial hauteurSalle = gestionnaireSalle.getSalleActive().getProfondeur();
+                            Imperial epaisseurMur = gestionnaireSalle.getSalleActive().getEpaisseurMurs();
+                            Imperial pointMx = finPoint.getmX();
+                            Imperial pointMy = finPoint.getmY();
+
+
+
+
+
+
                             Imperial pointElementX = separateurSelect.getPosition();
                             pointElementX = pointElementX.substract(differenceXX);
                             pointRelatif = pointRelatif.substract(differenceXX);
+
+                            System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
+                            Imperial reste = new Imperial(0);
+                            if(direction.equals(Utilitaire.Direction.NORD)||direction.equals(Utilitaire.Direction.SUD)){
+                                reste = pointRelatif.substract(epaisseurMur);
+                                System.out.println("reste: " +reste);
+                            }
+                            else{epaisseurMur = epaisseurMur.add(epaisseurMur);
+                            reste = pointRelatif.substract(epaisseurMur);}
+
+                            if(reste.getEntier() > 0)
+                            {gestionnaireSalle.editSeparateurSelectionne(pointRelatif);}
                         }
                         else{
                             if (m_directionSeparateur.equals(Utilitaire.Direction.NORD) || m_directionSeparateur.equals(Utilitaire.Direction.SUD))
                             {pointRelatif = pointRelatif.add(differenceXX);}
                             else {pointRelatif = pointRelatif.substract(differenceYY);}
+                            gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
                         }
 
-                        gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
+
                         mainPanel.validate();
                         mainPanel.repaint();
                     }
