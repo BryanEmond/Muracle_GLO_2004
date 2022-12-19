@@ -1012,6 +1012,11 @@ public class Mur extends Element implements Serializable {
                 }
                 exterieur =false;
             }
+            if(!estAssezLeger(!exterieur)){
+                for(Polygone polygone: polygoneMurDecoupage){
+                    polygone.setCouleur(Color.red);
+                }
+            }
             polygoneElevationDecoupage.add(polygoneMurDecoupage);
         }while(!exterieur);
         return polygoneElevationDecoupage;
