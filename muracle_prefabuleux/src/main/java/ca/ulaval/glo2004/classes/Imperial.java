@@ -197,8 +197,7 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return imp;
     }
 
-    public Imperial clone()
-    {
+    public Imperial clone() {
         return new Imperial(entier, numerateur, denominateur);
     }
 

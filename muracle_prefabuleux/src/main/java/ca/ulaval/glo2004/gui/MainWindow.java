@@ -417,7 +417,10 @@ public class MainWindow {
                                 break;
                             case Selection:
                                 gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
-                                btnDecoupage.setVisible(gestionnaireSalle.getBtnDecoupageVisible());
+                                boolean visible = gestionnaireSalle.getBtnDecoupageVisible();
+                                btnDecoupage.setVisible(visible);
+                                btnExporterExterieur.setVisible(visible);
+                                btnExporterInterieur.setVisible(visible);
                                 break;
 
                         }
@@ -436,7 +439,10 @@ public class MainWindow {
                                 break;
                             case Selection:
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);
-                                btnDecoupage.setVisible(gestionnaireSalle.getBtnDecoupageVisible());
+                                boolean visible = gestionnaireSalle.getBtnDecoupageVisible();
+                                btnDecoupage.setVisible(visible);
+                                btnExporterExterieur.setVisible(visible);
+                                btnExporterInterieur.setVisible(visible);
                                 break;
 
                         }
@@ -965,6 +971,8 @@ public class MainWindow {
         btnELVSudINT.setBorder(null);
         btnPlan.setBorder(null);
         btnDecoupage.setVisible(false);
+        btnExporterInterieur.setVisible(false);
+        btnExporterExterieur.setVisible(false);
     }
     public void ButtonDecoupage(boolean bool){
         btnSeparateur.setVisible(bool);
@@ -975,6 +983,8 @@ public class MainWindow {
         btnSelection.setVisible(bool);
         btnRetourAir.setVisible(bool);
         btnDecoupage.setVisible(!bool);
+        btnExporterExterieur.setVisible(!bool);
+        btnExporterInterieur.setVisible(!bool);
     }
     public void resetButtonAccessoires(){
         Border border = BorderFactory.createLineBorder(Color.red);
@@ -987,6 +997,8 @@ public class MainWindow {
         btnFenetre.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Fenetre ? border : null);
         btnSeparateur.setBorder(AccessoireEnum == Utilitaire.AccessoireEnum.Separateur ? border : null);
         btnDecoupage.setVisible(false);
+        btnExporterExterieur.setVisible(false);
+        btnExporterInterieur.setVisible(false);
 
         boolean estEnVuePlan = gestionnaireSalle.GetvuePlan();
         btnRetourAir.setVisible(estEnVuePlan || interieur);
@@ -1322,6 +1334,7 @@ public class MainWindow {
         btnExporterExterieur.setMinimumSize(new Dimension(70,60));
         btnExporterExterieur.setPreferredSize(new Dimension(70,60));
         btnExporterExterieur.setText("<html>Exporter<br/>Extérieur</html>");
+        btnExporterExterieur.setVisible(false);
         buttonsPanel.add(btnExporterExterieur, gbc);
 
         gbc = new GridBagConstraints();
@@ -1336,6 +1349,7 @@ public class MainWindow {
         btnExporterInterieur.setMinimumSize(new Dimension(70,60));
         btnExporterInterieur.setPreferredSize(new Dimension(70,60));
         btnExporterInterieur.setText("<html>Exporter<br/>Intérieur</html>");
+        btnExporterInterieur.setVisible(false);
         buttonsPanel.add(btnExporterInterieur, gbc);
         rightPanel.add(mainPanel, BorderLayout.CENTER);
 

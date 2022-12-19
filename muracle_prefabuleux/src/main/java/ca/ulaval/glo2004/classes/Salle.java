@@ -715,7 +715,7 @@ public class Salle implements Serializable {
 
     public double getPoidsParPouce()
     {
-        return poidsMateriaux / 12;
+        return poidsMateriaux / 144;
     }
 
     public void setPoidsMateriaux(double poidsMateriaux) {

@@ -674,7 +674,7 @@ public class Mur extends Element implements Serializable {
     }
 
     public double calculerPoidsPanneauInterieur() {
-        Double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        Double air = this.mLargeur.getFormeNormal() * this.mSalle.getHauteur().getValue();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         ArrayList<Accessoire> accessoireList = accessoires();
@@ -687,11 +687,12 @@ public class Mur extends Element implements Serializable {
         for (Accessoire accessoire: accessoireList) {
             air -= accessoire.getmHauteur().getFormeNormal() * accessoire.mLargeur.getFormeNormal();
         }
+        System.out.println(air);
         return air;
     }
 
     public double calculerPoidsPanneauInterieurExtremite() {
-        Double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        Double air = this.mLargeur.getFormeNormal() * this.mSalle.getHauteur().getValue();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         ArrayList<Accessoire> accessoireList = accessoires();
@@ -708,11 +709,13 @@ public class Mur extends Element implements Serializable {
         }
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * 2;
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mCote.mSalle.epaisseurMurs.getFormeNormal();
+        System.out.println(air);
         return air;
     }
 
     public double calculerPoidsPanneauExterieur() {
-        Double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        System.out.println(mLargeur.getFormeNormal());
+        Double air = this.mLargeur.getFormeNormal() * this.mSalle.getHauteur().getValue();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         ArrayList<Accessoire> accessoireList = accessoires();
@@ -721,11 +724,12 @@ public class Mur extends Element implements Serializable {
                 air -= accessoire.getmHauteur().getFormeNormal() * accessoire.mLargeur.getFormeNormal();
             }
         }
+        System.out.println(air);
         return air;
     }
 
     public double calculerPoidsPanneauExterieurExtremite() {
-        Double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        Double air = this.mLargeur.getFormeNormal() * this.mSalle.getHauteur().getValue();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         Double hypothenuse = Math.sqrt(((Math.pow(this.mCote.mSalle.epaisseurMurs.getFormeNormal(),2))*2));
@@ -736,6 +740,7 @@ public class Mur extends Element implements Serializable {
                 air -= accessoire.getmHauteur().getFormeNormal() * accessoire.mLargeur.getFormeNormal();
             }
         }
+        System.out.println(air);
         return air;
     }
 
@@ -792,10 +797,12 @@ public class Mur extends Element implements Serializable {
     {
         double air;
 
+        boolean estExtremite = getCote().getPremierMur() == this || getCote().getDernierMur() == this;
+
         if(panneauInterieur)
-            air = calculerPoidsPanneauInterieur() + calculerPoidsPanneauInterieurExtremite();
+            air = estExtremite ? calculerPoidsPanneauInterieurExtremite() : calculerPoidsPanneauInterieur();
         else
-            air = calculerPoidsPanneauExterieur() + calculerPoidsPanneauExterieurExtremite();
+            air = estExtremite ? calculerPoidsPanneauExterieurExtremite() : calculerPoidsPanneauExterieur();
 
         return air * mCote.getmSalle().getPoidsParPouce();
     }
