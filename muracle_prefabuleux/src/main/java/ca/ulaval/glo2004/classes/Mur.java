@@ -23,7 +23,7 @@ public class Mur extends Element implements Serializable {
     Salle mSalle;
     Polygone mPolygoneElevation;
     Polygone mPolygonePlan;
-    ArrayList<ArrayList> polygoneElevationDecoupage;
+    ArrayList<ArrayList<Polygone>> polygoneElevationDecoupage;
     Imperial mLargeur;
 
     boolean retourAir;
@@ -344,7 +344,7 @@ public class Mur extends Element implements Serializable {
         }
         else return new Polygone(color,listPoint);
     }
-    public ArrayList genererpolygonesElevationDecoupage() {
+    public ArrayList<ArrayList<Polygone>> genererpolygonesElevationDecoupage() {
         polygoneElevationDecoupage = new ArrayList<>();
         boolean exterieur = true;
         ArrayList<Accessoire> accessoires = accessoires();
@@ -781,6 +781,23 @@ public class Mur extends Element implements Serializable {
 
     public Cote getCote() {
         return mCote;
+    }
+
+    public boolean estAssezLeger(boolean panneauInterieur)
+    {
+        return calculerPoids(panneauInterieur) <= mCote.getmSalle().getPoidsMaxPanneau();
+    }
+
+    public double calculerPoids(boolean panneauInterieur)
+    {
+        double air;
+
+        if(panneauInterieur)
+            air = calculerPoidsPanneauInterieur() + calculerPoidsPanneauInterieurExtremite();
+        else
+            air = calculerPoidsPanneauExterieur() + calculerPoidsPanneauExterieurExtremite();
+
+        return air * mCote.getmSalle().getPoidsParPouce();
     }
 }
 

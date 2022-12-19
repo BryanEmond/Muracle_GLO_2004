@@ -25,6 +25,10 @@ public class Salle implements Serializable {
 
     Imperial epaisseurMateriaux;
 
+    double poidsMateriaux;
+
+    double poidsMaxPanneau;
+
     ArrayList<Cote> cotes;
 
     public Salle(ArrayList<Cote> cotes) {
@@ -38,6 +42,8 @@ public class Salle implements Serializable {
         this.hauteurTrouRetourAir = new Imperial(4);
         this.positionRetourAir = new Imperial(5);
         this.epaisseurMateriaux = new Imperial(0 , 1, 8);
+        poidsMateriaux = 6.3;
+        poidsMaxPanneau = 250;
         setCotes(cotes);
     }
     public ArrayList<Polygone> polygonePlan(){
@@ -701,5 +707,26 @@ public class Salle implements Serializable {
 
     public void setEpaisseurMateriaux(Imperial epaisseurMateriaux) {
         this.epaisseurMateriaux = epaisseurMateriaux;
+    }
+
+    public double getPoidsMateriaux() {
+        return poidsMateriaux;
+    }
+
+    public double getPoidsParPouce()
+    {
+        return poidsMateriaux / 12;
+    }
+
+    public void setPoidsMateriaux(double poidsMateriaux) {
+        this.poidsMateriaux = poidsMateriaux;
+    }
+
+    public double getPoidsMaxPanneau() {
+        return poidsMaxPanneau;
+    }
+
+    public void setPoidsMaxPanneau(double poidsMaxPanneau) {
+        this.poidsMaxPanneau = poidsMaxPanneau;
     }
 }

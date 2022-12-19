@@ -406,6 +406,12 @@ public class GestionnaireSalle implements Serializable{
         if(salle.getPositionRetourAir().getValue() + salle.getHauteurRetourAir().getValue() > salle.getHauteur().getValue() - 1)
             return 4;
 
+        if(salle.getPoidsMateriaux() < 0)
+            return 5;
+
+        if(salle.getPoidsMaxPanneau() < 0)
+            return 6;
+
         this.salleActive.setHauteur(salle.getHauteur());
         this.salleActive.setLargeur(salle.getLargeur());
         this.salleActive.setProfondeur(salle.getProfondeur());
@@ -416,6 +422,8 @@ public class GestionnaireSalle implements Serializable{
         this.salleActive.setPositionRetourAir(salle.getPositionRetourAir());
         this.salleActive.setHauteurTrouRetourAir(salle.getHauteurTrouRetourAir());
         this.salleActive.setEpaisseurMateriaux(salle.getEpaisseurMateriaux());
+        this.salleActive.setPoidsMateriaux(salle.getPoidsMateriaux());
+        this.salleActive.setPoidsMaxPanneau(salle.getPoidsMaxPanneau());
 
         updateSalle();
         return 0;
@@ -742,6 +750,17 @@ public class GestionnaireSalle implements Serializable{
         */
 
 
+    }
+
+    public boolean exporterPanneau(String cheminFichier, Mur mur, boolean panneauInterieur) throws IOException {
+        if(!mur.estAssezLeger(panneauInterieur))
+            return false;
+
+        int indexPolygones = panneauInterieur ? 0 : 1;
+        ArrayList<Polygone> polygones = mur.genererpolygonesElevationDecoupage().get(indexPolygones);
+
+        ExporteurSVG.EnregistrerSVG(cheminFichier, polygones, new PointImperial(new Imperial(0), new Imperial(0)));
+        return true;
     }
 
     public void setBtnDecoupageVisible(boolean bool){this.isbtnDecoupageVisible = bool;}

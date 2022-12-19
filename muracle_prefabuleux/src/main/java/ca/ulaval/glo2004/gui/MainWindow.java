@@ -61,6 +61,9 @@ public class MainWindow {
     private JButton btnElvOuestINT;
     private JButton btnPlan;
 
+    private JButton btnExporterInterieur;
+    private JButton btnExporterExterieur;
+
     private JOptionPane alertTextBox;
     public JPanel starterPanel;
     private JButton creerUnNouveauProjetButton;
@@ -82,6 +85,7 @@ public class MainWindow {
     Utilitaire.Direction direction;
     private boolean interieur;
     private boolean plan;
+
     public MainWindow(GestionnaireSalle gestionnaireSalle) {
         this.interieur = false;
         this.plan = true;
@@ -676,8 +680,6 @@ public class MainWindow {
         this.mainPanel.addMouseListener(DnD);
         this.mainPanel.addMouseMotionListener(DnD);
 
-        updatePanels();
-
         MouseAdapter mouvementCameraAdapter = new MouseAdapter() {
             Point lastPoint = null;
 
@@ -718,6 +720,55 @@ public class MainWindow {
         this.mainPanel.addMouseListener(mouvementCameraAdapter);
         this.mainPanel.addMouseMotionListener(mouvementCameraAdapter);
         updatePanels();
+
+        btnExporterInterieur.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JFileChooser fc = new JFileChooser();
+                fc.setSelectedFile(new File("panneau-interieur.svg"));
+                int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
+                if (returnFcVal == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        File file = fc.getSelectedFile();
+                        boolean res = mainWindow.gestionnaireSalle.exporterPanneau(file.getPath(), gestionnaireSalle.getMurSelectionnerNoneDto(), true);
+
+                        if(!res)
+                        {
+                            double poids = gestionnaireSalle.getMurSelectionnerNoneDto().calculerPoids(true);
+                            double poidsMax = gestionnaireSalle.getSalleActive().getPoidsMaxPanneau();
+                            setWarningMsg("La panneau intérieur est trop lourd ! (" + poids + "/" + poidsMax + ")");
+                        }
+                    } catch (Exception error) {
+                        System.out.println(error);
+                    }
+                }
+            }
+        });
+
+        btnExporterExterieur.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed(MouseEvent e) {
+                JFileChooser fc = new JFileChooser();
+                fc.setSelectedFile(new File("panneau-exterieur.svg"));
+                int returnFcVal = fc.showSaveDialog(rootPanel.getParent());
+                if (returnFcVal == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        File file = fc.getSelectedFile();
+                        boolean res = mainWindow.gestionnaireSalle.exporterPanneau(file.getPath(), gestionnaireSalle.getMurSelectionnerNoneDto(), false);
+
+                        if(!res)
+                        {
+                            double poids = gestionnaireSalle.getMurSelectionnerNoneDto().calculerPoids(false);
+                            double poidsMax = gestionnaireSalle.getSalleActive().getPoidsMaxPanneau();
+                            setWarningMsg("La panneau extérieur est trop lourd ! (" + poids + "/" + poidsMax + ")");
+                        }
+                    } catch (Exception error) {
+                        System.out.println(error);
+                    }
+                }
+            }
+        });
+
     }
 
     private void updatePanels()
@@ -738,6 +789,8 @@ public class MainWindow {
             proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :", salleSelect.getPositionRetourAir().toString(), false);
             proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :", salleSelect.getHauteurTrouRetourAir().toString(), false);
             proprietesSalle.addProperty("epaisseurMateriaux", "ÉPASSEUR MATERIAUX :", salleSelect.getEpaisseurMateriaux().toString(), false);
+            proprietesSalle.addProperty("poidsMateriaux", "POIDS MATERIAUX :", salleSelect.getPoidsMateriaux() + "", false);
+            proprietesSalle.addProperty("poidsMax", "POIDS PANNEAU MAX :", salleSelect.getPoidsMaxPanneau() + "", false);
             proprietesSalle.generateLayout();
             propertiesPanel.add(proprietesSalle);
 
@@ -752,16 +805,17 @@ public class MainWindow {
                 Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
                 Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
                 Imperial epaisseurMateriaux = proprietesSalle.getImperial("epaisseurMateriaux");
+                double poidsMateriaux = proprietesSalle.getDouble("poidsMateriaux");
+                double poidsMaxPanneau = proprietesSalle.getDouble("poidsMax");
 
                 if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
                         pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
                     return;
 
-                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir, epaisseurMateriaux));
+                int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir, epaisseurMateriaux, poidsMateriaux, poidsMaxPanneau));
 
                 if(result == 0)
                 {
-
                     mainPanel.validate();
                     mainPanel.repaint();
                 }
@@ -771,6 +825,9 @@ public class MainWindow {
                 proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
                 proprietesSalle.setError("positionRetourAir", result == 4);
                 proprietesSalle.setError("hauteurRetourAir", result == 4);
+                proprietesSalle.setError("poidsMateriaux", result == 5);
+                proprietesSalle.setError("poidsMax", result == 6);
+
 
                 if(result == 1){
                     setWarningMsg("La largeur du retour d'air est invalide");
@@ -1056,108 +1113,6 @@ public class MainWindow {
         propertiesScroll.setPreferredSize(new Dimension(235, 0));
         rootPanel.add(propertiesScroll, BorderLayout.WEST);
 
-        /*proprietesSalle = new PanelProprietes("DIMENSIONS DE LA SALLE", 150);
-        proprietesSalle.addProperty("largeur", "LARGEUR :");
-        proprietesSalle.addProperty("profondeur", "PROFONDEUR :");
-        proprietesSalle.addProperty("hauteur", "HAUTEUR :");
-        proprietesSalle.addProperty("epaisseurMur", "ÉPAISSEUR MURS :");
-        proprietesSalle.addProperty("largeurPli", "LARGEUR DE PLI :");
-        proprietesSalle.addProperty("pliSoudure", "PLI DE SOUDURE :");
-        proprietesSalle.addProperty("hauteurRetourAir", "RETOUR AIR :");
-        proprietesSalle.addProperty("positionRetourAir", "POS RETOUR AIR :");
-        proprietesSalle.addProperty("hauteurTrouRetourAir", "TROU RETOUR AIR :");
-        proprietesSalle.generateLayout();
-        propertiesPanel.add(proprietesSalle);
-
-        proprietesSalle.setOnChangeListener(values -> {
-            Imperial largeur = proprietesSalle.getImperial("largeur");
-            Imperial profondeur = proprietesSalle.getImperial("profondeur");
-            Imperial hauteur = proprietesSalle.getImperial("hauteur");
-            Imperial epaisseurMur = proprietesSalle.getImperial("epaisseurMur");
-            Imperial largeurPli = proprietesSalle.getImperial("largeurPli");
-            int pliSoudure = proprietesSalle.getInt("pliSoudure");
-            Imperial hauteurRetourAir = proprietesSalle.getImperial("hauteurRetourAir");
-            Imperial positionRetourAir = proprietesSalle.getImperial("positionRetourAir");
-            Imperial hauteurTrouRetourAir = proprietesSalle.getImperial("hauteurTrouRetourAir");
-
-            if(largeur == null || profondeur == null || hauteur == null || epaisseurMur == null || largeurPli == null ||
-                    pliSoudure == -1 || hauteurRetourAir == null || positionRetourAir == null || hauteurTrouRetourAir == null)
-                return;
-
-            int result = gestionnaireSalle.editSalleSelectionne(new SalleDTO(largeur, profondeur, hauteur, epaisseurMur, largeurPli, pliSoudure, hauteurRetourAir, positionRetourAir, hauteurTrouRetourAir));
-
-            if(result == 0)
-            {
-                mainPanel.validate();
-                mainPanel.repaint();
-            }
-
-            proprietesSalle.setError("largeur", result == 1);
-            proprietesSalle.setError("profondeur", result == 2);
-            proprietesSalle.setError("hauteurTrouRetourAir", result == 3);
-            proprietesSalle.setError("positionRetourAir", result == 4);
-            proprietesSalle.setError("hauteurRetourAir", result == 4);
-
-            if(result ==1){
-                setWarningMsg("largeur invalide");
-            }
-            if(result == 2){
-                setWarningMsg("profondeur invalide");
-            }
-            if(result == 3 ){
-                setWarningMsg("L'hauteur du trou de 'Retour d'air' est invalide");
-            }
-            if (result == 4){
-                setWarningMsg("position ou hauteur du retour d'air invalide");
-            }
-
-        });
-
-        proprietesMur = new PanelProprietes("DIMENSIONS DU MUR", 0);
-        proprietesMur.addProperty("x", "POSITION X :", "", true);
-        proprietesMur.addProperty("y", "POSITION Y :", "", true);
-        proprietesMur.addProperty("largeur", "LARGEUR :", "", true);
-        proprietesMur.generateLayout();
-        propertiesPanel.add(proprietesMur);
-
-        proprietesMur.setOnChangeListener(values -> {
-            Imperial largeurRetourAir = proprietesMur.getImperial("largeurRetourAir");
-
-            if(largeurRetourAir != null)
-            {
-                boolean result = gestionnaireSalle.editMurSelectionne(largeurRetourAir);
-
-                proprietesMur.setError("largeurRetourAir", !result);
-                mainPanel.validate();
-                mainPanel.repaint();
-            }
-        });
-
-        proprietesSeparateur = new PanelProprietes("SÉPARATEUR", 100);
-        proprietesSeparateur.addProperty("pos", "POSITION :", "", true);
-        proprietesSeparateur.addProperty("posRel", "SEP. PRÉCÉDENT :");
-        proprietesSeparateur.generateLayout();
-        propertiesPanel.add(proprietesSeparateur);
-
-        proprietesSeparateur.setOnChangeListener(values -> {
-
-            Imperial posRel = proprietesSeparateur.getImperial("posRel");
-
-            if(posRel != null && gestionnaireSalle.editSeparateurSelectionne(posRel))
-            {
-                proprietesSeparateur.setError("posRel", false);
-                SeparateurDTO newValue = gestionnaireSalle.getSeparateurSelectionne();
-                proprietesSeparateur.setValue("pos", newValue.getPosition().toString());
-
-                mainPanel.validate();
-                mainPanel.repaint();
-            }
-            else
-                proprietesSeparateur.setError("posRel", true);
-                setWarningMsg("separateur en erreur");
-
-        });*/
-
         rightPanel.setLayout(new BorderLayout(0, 0));
         rootPanel.add(rightPanel, BorderLayout.CENTER);
         controlPanel.setLayout(new BorderLayout(0, 0));
@@ -1335,7 +1290,6 @@ public class MainWindow {
         btnSeparateur.setPreferredSize(new Dimension(70, 50));
         btnSeparateur.setText("Separateur");
         btnSeparateur.setBackground(Color.white);
-        rightPanel.add(mainPanel, BorderLayout.CENTER);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 7;
@@ -1350,6 +1304,34 @@ public class MainWindow {
         btnDecoupage.setText("Decoupage");
         btnDecoupage.setVisible(false);
         btnDecoupage.setBackground(Color.white);
+
+        gbc = new GridBagConstraints();
+        gbc.gridx = 6;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2, 2, 2, 2);
+        btnExporterExterieur = new JButton();
+        btnExporterExterieur.setBackground(new Color(-1));
+        btnExporterExterieur.setMargin(new Insets(0,0,0,0));
+        btnExporterExterieur.setMaximumSize(new Dimension(70,60));
+        btnExporterExterieur.setMinimumSize(new Dimension(70,60));
+        btnExporterExterieur.setPreferredSize(new Dimension(70,60));
+        btnExporterExterieur.setText("<html>Exporter<br/>Extérieur</html>");
+        buttonsPanel.add(btnExporterExterieur, gbc);
+
+        gbc = new GridBagConstraints();
+        gbc.gridx = 7;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(2, 2, 2, 2);
+        btnExporterInterieur = new JButton();
+        btnExporterInterieur.setBackground(new Color(-1));
+        btnExporterInterieur.setMargin(new Insets(0,0,0,0));
+        btnExporterInterieur.setMaximumSize(new Dimension(70,60));
+        btnExporterInterieur.setMinimumSize(new Dimension(70,60));
+        btnExporterInterieur.setPreferredSize(new Dimension(70,60));
+        btnExporterInterieur.setText("<html>Exporter<br/>Intérieur</html>");
+        buttonsPanel.add(btnExporterInterieur, gbc);
         rightPanel.add(mainPanel, BorderLayout.CENTER);
 
         btnElvOuestEXT = new JButton();
@@ -1487,7 +1469,6 @@ public class MainWindow {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(2,2,2,2);
         buttonsPanel.add(btnPlan, gbc);
-
     }
 
     /**
