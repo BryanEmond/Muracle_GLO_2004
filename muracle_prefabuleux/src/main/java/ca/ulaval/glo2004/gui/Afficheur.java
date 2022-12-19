@@ -36,25 +36,37 @@ public abstract class Afficheur {
 
         PointImperial pointPrecedent = null;
 
+        int index = 0;
         for (PointImperial point : points)
         {
             if(pointPrecedent != null)
             {
-                dessinerLigne(g, pointPrecedent, point);
+                dessinerLigne(g, pointPrecedent, point, polygone.ligneEstPointille(index));
+                index++;
             }
 
             pointPrecedent = point;
         }
 
-        dessinerLigne(g, pointPrecedent, points.get(0));
+        dessinerLigne(g, pointPrecedent, points.get(0), polygone.ligneEstPointille(index));
     }
 
-    public void dessinerLigne(Graphics g, PointImperial pointDebut, PointImperial pointFin)
+    public void dessinerLigne(Graphics g, PointImperial pointDebut, PointImperial pointFin, boolean pointille)
     {
         Point point1Pixel = trouverPixel(pointDebut);
         Point point2Pixel = trouverPixel(pointFin);
 
-        g.drawLine(point1Pixel.x, point1Pixel.y, point2Pixel.x, point2Pixel.y);
+        Graphics2D g2d = (Graphics2D) g.create();
+
+        if(pointille)
+        {
+            Stroke dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                    0, new float[]{9}, 0);
+            g2d.setStroke(dashed);
+        }
+
+        g2d.drawLine(point1Pixel.x, point1Pixel.y, point2Pixel.x, point2Pixel.y);
+        g2d.dispose();
     }
 
     protected Point trouverPixel(PointImperial pointImperial)

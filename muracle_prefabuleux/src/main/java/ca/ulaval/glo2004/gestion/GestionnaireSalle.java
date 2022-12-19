@@ -756,10 +756,10 @@ public class GestionnaireSalle implements Serializable{
         if(!mur.estAssezLeger(panneauInterieur))
             return false;
 
-        int indexPolygones = panneauInterieur ? 0 : 1;
+        int indexPolygones = panneauInterieur ? 1 : 0;
         ArrayList<Polygone> polygones = mur.genererpolygonesElevationDecoupage().get(indexPolygones);
 
-        ExporteurSVG.EnregistrerSVG(cheminFichier, polygones, new PointImperial(new Imperial(0), new Imperial(0)));
+        ExporteurSVG.EnregistrerSVG(cheminFichier, polygones);
         return true;
     }
 

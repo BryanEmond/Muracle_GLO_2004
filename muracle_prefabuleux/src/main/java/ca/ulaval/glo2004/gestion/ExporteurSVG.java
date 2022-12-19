@@ -1,21 +1,30 @@
 package ca.ulaval.glo2004.gestion;
 
+import ca.ulaval.glo2004.classes.Imperial;
 import ca.ulaval.glo2004.classes.PointImperial;
 import ca.ulaval.glo2004.classes.Polygone;
 
 import java.awt.*;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ExporteurSVG {
 
-    public static void EnregistrerSVG(String cheminFichier, List<Polygone> polygones, PointImperial offset) throws IOException {
+    private static ArrayList<Double> writtenY;
+    private static ArrayList<Double> writtenX;
+
+    public static void EnregistrerSVG(String cheminFichier, List<Polygone> polygones) throws IOException {
         FileWriter fichier = new FileWriter(cheminFichier);
 
         double maxX = Integer.MIN_VALUE;
         double maxY = Integer.MIN_VALUE;
+        Imperial minX = new Imperial(Integer.MAX_VALUE);
+        Imperial minY = new Imperial(Integer.MAX_VALUE);
+        writtenY = new ArrayList<Double>();
+        writtenX = new ArrayList<Double>();
 
         for (Polygone poly : polygones)
         {
@@ -26,8 +35,17 @@ public class ExporteurSVG {
 
                 if(p.getmY().getValue() > maxY)
                     maxY = p.getmY().getValue();
+
+                if(p.getmX().getValue() < minX.getValue())
+                    minX = p.getmX();
+
+                if(p.getmY().getValue() < minY.getValue())
+                    minY = p.getmY();
             }
         }
+
+        PointImperial offset = new PointImperial(minX, minY);
+        System.out.println("Offset : " + offset);
 
         EcrireEntete(fichier, maxY, maxX);
         for(Polygone polygone : polygones)
@@ -61,11 +79,11 @@ public class ExporteurSVG {
         {
             if(pointPrecedent != null)
             {
-                EcrireLigne(writer, pointPrecedent, point.substract(offset), polygone.ligneEstPointille(indexLigne));
+                EcrireLigne(writer, pointPrecedent, point, polygone.ligneEstPointille(indexLigne));
+                indexLigne++;
             }
 
             pointPrecedent = point;
-            indexLigne++;
         }
 
         EcrireLigne(writer, pointPrecedent, points.get(0), polygone.ligneEstPointille(indexLigne));
@@ -78,6 +96,29 @@ public class ExporteurSVG {
 
         double diffX = p2.getmX().getValue() - x1;
         double diffY = p2.getmY().getValue() - y1;
+
+        if(pointille)
+        {
+            if(diffX == 0)
+            {
+                if(writtenX.contains(x1))
+                    return;
+
+                writtenX.add(x1);
+                y1 += 1;
+                diffY -= 2;
+            }
+
+            if(diffY == 0)
+            {
+                if(writtenY.contains(y1))
+                    return;
+
+                writtenY.add(y1);
+                x1 += 1;
+                diffX -= 2;
+            }
+        }
 
         String strPointille = pointille ? " stroke-dasharray=\"2,2\"": "";
 
