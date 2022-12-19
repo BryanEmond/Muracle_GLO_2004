@@ -493,7 +493,9 @@ public class MainWindow {
                             } else {
                                 m_dragTarget = ((Separateur) element).getmPolygonePlan();
                                 m_directionSeparateur = ((Separateur) element).getmCote().getDirection();
+
                             }
+                        
                         }
 
                         AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
@@ -506,7 +508,7 @@ public class MainWindow {
                                 m_dragTarget = ((Accessoire) element).getmPolygonePlan();
                             }
                         }
-                        m_pointDepart = e.getPoint();
+
 
                     }
                 }
@@ -621,7 +623,7 @@ public class MainWindow {
                                 hauteurSalle = gestionnaireSalle.getSalleActive().getProfondeur();
 
                             }
-
+/*
                             ArrayList<Mur> murs = gestionnaireSalle.getSalleActive().getCote(direction).getMurs();
                             int erreur = 1;
                             for( int j = 0; j < murs.size(); j++){
@@ -643,8 +645,8 @@ public class MainWindow {
                                         erreur = 0;
                                     }
                                 }
-                            }
-                            if(reste.getEntier() > 0 && erreur == 0 )
+                            }*/
+                            if(reste.getEntier() > 0)
                             {gestionnaireSalle.editSeparateurSelectionne(pointRelatif);}
                             System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
                         }
@@ -717,6 +719,9 @@ public class MainWindow {
                 }
             }
         };
+
+
+
         this.mainPanel.addMouseListener(mouvementCameraAdapter);
         this.mainPanel.addMouseMotionListener(mouvementCameraAdapter);
         updatePanels();
