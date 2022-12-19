@@ -31,6 +31,9 @@ public class Mur extends Element implements Serializable {
     Polygone mPolygoneElevationRetourAir;
     Polygone mPolygonePlanRetourAir;
 
+    boolean interieurTropLourd = false;
+    boolean exterieurTropLourd = false;
+
     public Mur(Salle mSalle, Cote mCote, Imperial y, Imperial x, Imperial largeur) {
         super(y, x);
         this.mLargeur = largeur;
@@ -41,6 +44,8 @@ public class Mur extends Element implements Serializable {
         this.retourAir = false;
         this.largeurRetourAir = new Imperial(15);
 
+        interieurTropLourd = !estAssezLeger(true);
+        exterieurTropLourd = !estAssezLeger(false);
         //genererPolygonePlan();
         //genererPolygoneELV(this.getExterieur());
     }
@@ -1163,7 +1168,7 @@ public class Mur extends Element implements Serializable {
     public Color getCouleurPolygone()
     {
         boolean selectionne = this.mSalle.ElementSelectionne == this;
-        boolean estTropLourd = !estAssezLeger(true) || !estAssezLeger(false);
+        boolean estTropLourd = interieurTropLourd || exterieurTropLourd;
 
         if(selectionne)
             return Color.BLUE;
