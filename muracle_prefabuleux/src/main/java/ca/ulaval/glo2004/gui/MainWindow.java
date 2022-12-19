@@ -495,7 +495,7 @@ public class MainWindow {
                                 m_directionSeparateur = ((Separateur) element).getmCote().getDirection();
 
                             }
-                        
+
                         }
 
                         AccessoireDTO accessoireSelect = gestionnaireSalle.getAccessoireSelectionne();
@@ -543,7 +543,6 @@ public class MainWindow {
 
                     if (!interieur){
                         differenceXX = differenceXX.negative();
-                       // differenceYY = differenceYY.negative();
                     }
 
                     if (retourAirSelect != null){
@@ -552,28 +551,23 @@ public class MainWindow {
                         System.out.println("dans if retour Air drag");
 
                         if(mur1!=null){
-                            //System.out.println("dans if mur1 != null");
                             if(!m_dragTarget.PointEstDansPolygone(finPoint)){
-                                //System.out.println("dans if polygone dans point");
 
                                 ArrayList<Mur> murs = mur1.getCote().getMurs();
                                 Mur mur2 = null;
                                 for(int i = 0 ; i < murs.size() ; i++){
-                                    ;
-                                    //System.out.println("est dans boucle for murs i:" + i + " finPoint est dans mur : " + murs.get(i).polygonesElevation(interieur).PointEstDansPolygone(finPoint));
+
                                     if(direction == null){
                                         if(murs.get(i).PointEstDansMur(finPoint))
                                         {
                                             mur2 = murs.get(i);
-                                            //System.out.println("Est dans if get mur " + mur2);
+
                                         }}
                                     else{
                                         if(murs.get(i).polygonesElevation(interieur).PointEstDansPolygone(finPoint))
                                         {
                                             mur2 = murs.get(i);
                                         }}
-
-
                                 }
 
                                 System.out.println("GRANDEUR LISTE ACCESSOIRE ; " + mur2.accessoires().size());
@@ -592,63 +586,46 @@ public class MainWindow {
                         Imperial pointRelatif = separateurSelect.getPositionRelative();
                         if(direction != null){
 
-                            Imperial largeurSalle = null;
-                            Imperial hauteurSalle = null;
+                            Imperial largeurSalle;
+                            Imperial hauteurSalle;
                             Imperial epaisseurMur = gestionnaireSalle.getSalleActive().getEpaisseurMurs();
                             Imperial pointMx = finPoint.getmX();
                             Imperial pointMy = finPoint.getmY();
 
-
-
-
-
-
                             Imperial pointElementX = separateurSelect.getPosition();
-                            pointElementX = pointElementX.substract(differenceXX);
                             pointRelatif = pointRelatif.substract(differenceXX);
 
                             Imperial reste;
+                            Imperial reste2;
                             gestionnaireSalle.getSalleActive().getCote(direction).getAccessoires();
 
 
                             if(direction.equals(Utilitaire.Direction.NORD)||direction.equals(Utilitaire.Direction.SUD)){
                                 reste = pointRelatif.substract(epaisseurMur);
                                 largeurSalle = gestionnaireSalle.getSalleActive().getLargeur();
+                                //largeurSalle.add(new Imperial(1));
+                                reste2 = pointRelatif.substract(largeurSalle);
 
-                                System.out.println("reste: " +reste);
+
+                                //System.out.println("reste: " +reste2.getEntier() + " pointrelatif: " + pointRelatif + " largeurSalle:: " + largeurSalle + " epaisseurMur: " + epaisseurMur);
 
                             }
                             else{epaisseurMur = epaisseurMur.add(epaisseurMur);
                                 reste = pointRelatif.substract(epaisseurMur);
                                 hauteurSalle = gestionnaireSalle.getSalleActive().getProfondeur();
-
+                                System.out.println(hauteurSalle);
+                                Imperial profondeurSalle = hauteurSalle.substract(epaisseurMur);
+                                System.out.println(profondeurSalle);
+                                reste2 = pointRelatif.substract(profondeurSalle);
+                                System.out.println(reste2);
+                                System.out.println("reste: " +reste2.getEntier() + " pointrelatif: " + pointRelatif + " largeurSalle:: " + hauteurSalle);
                             }
-/*
-                            ArrayList<Mur> murs = gestionnaireSalle.getSalleActive().getCote(direction).getMurs();
-                            int erreur = 1;
-                            for( int j = 0; j < murs.size(); j++){
-                                Mur mur = murs.get(j);
-                                ArrayList<Accessoire> accessoires = mur.accessoires();
 
-                                for( int i =0; i < accessoires.size(); i++){
-                                    Accessoire accessoire = accessoires.get(i);
-                                    Imperial mXaccessoire = accessoire.getmX();
-                                    Imperial largeurAccessoire = accessoire.getmLargeur();
-                                    Imperial mXaccessoireFin = mXaccessoire.add(largeurAccessoire);
-                                    Imperial reste3;
-                                    Imperial reste2;
-                                    reste3 = pointMx.substract(mXaccessoire);
-                                    reste2 = pointMx.substract(mXaccessoireFin);
-                                    System.out.println("mx Accessoire: " + mXaccessoire + " MxAccessoireFIn: " + mXaccessoireFin);
-                                    if(reste3.getEntier() > 0 || reste2.getEntier() < 0){
-                                        System.out.println("dans if qui doit break");
-                                        erreur = 0;
-                                    }
-                                }
-                            }*/
-                            if(reste.getEntier() > 0)
+
+
+                            if(reste.getEntier() > 0 && reste2.getEntier() < 0)
                             {gestionnaireSalle.editSeparateurSelectionne(pointRelatif);}
-                            System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
+                            //System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
                         }
                         else{
                             if (m_directionSeparateur.equals(Utilitaire.Direction.NORD) || m_directionSeparateur.equals(Utilitaire.Direction.SUD))
