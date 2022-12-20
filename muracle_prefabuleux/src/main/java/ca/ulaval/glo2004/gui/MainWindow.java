@@ -576,7 +576,7 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     super.mousePressed(e);
-                    System.out.println("dans mousePressed "+ e.getButton());
+                    //System.out.println("dans mousePressed "+ e.getButton());
 
                     if (e.getButton() == MouseEvent.BUTTON1) {
 
@@ -626,7 +626,7 @@ public class MainWindow {
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
                // gestionnaireSalle.getSalleActive().setElementSelectionne();
-                System.out.println(e.getButton()+" released");
+                //System.out.println(e.getButton()+" released");
                 if(e.getButton() == MouseEvent.BUTTON1){
                 onDrag = false;
                 }
@@ -657,7 +657,7 @@ public class MainWindow {
                     if (retourAirSelect != null){
                  if(retourAirSelect.aRetourAir())
                     {
-                        System.out.println("dans if retour Air drag");
+                       // System.out.println("dans if retour Air drag");
 
                         if(mur1!=null){
                             if(!m_dragTarget.PointEstDansPolygone(finPoint)){
@@ -679,7 +679,7 @@ public class MainWindow {
                                         }}
                                 }
 
-                                System.out.println("GRANDEUR LISTE ACCESSOIRE ; " + mur2.accessoires().size());
+                            //    System.out.println("GRANDEUR LISTE ACCESSOIRE ; " + mur2.accessoires().size());
                                 if(mur2.accessoires().size() == 0){
                                 mur1.setRetourAir(false);
                                 mur2.setRetourAir(true);
@@ -722,12 +722,12 @@ public class MainWindow {
                             else{epaisseurMur = epaisseurMur.add(epaisseurMur);
                                 reste = pointRelatif.substract(epaisseurMur);
                                 hauteurSalle = gestionnaireSalle.getSalleActive().getProfondeur();
-                                System.out.println(hauteurSalle);
+                                //System.out.println(hauteurSalle);
                                 Imperial profondeurSalle = hauteurSalle.substract(epaisseurMur);
-                                System.out.println(profondeurSalle);
+                                //System.out.println(profondeurSalle);
                                 reste2 = pointRelatif.substract(profondeurSalle);
-                                System.out.println(reste2);
-                                System.out.println("reste: " +reste2.getEntier() + " pointrelatif: " + pointRelatif + " largeurSalle:: " + hauteurSalle);
+                                //System.out.println(reste2);
+                                //System.out.println("reste: " +reste2.getEntier() + " pointrelatif: " + pointRelatif + " largeurSalle:: " + hauteurSalle);
                             }
 
 
