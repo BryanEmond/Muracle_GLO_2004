@@ -397,8 +397,66 @@ public class MainWindow {
                 }
                 if(direction != null){
                     panel.setAfficheur(new AfficheurElevationCote(gestionnaireSalle.getSalleActive(),direction,!interieur));
+                    switch(direction){
+                        case NORD:
+                            if(interieur){
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnElvNordINT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }else{
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnElvNordEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }
+                            break;
+                        case SUD:
+                            if(interieur){
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnELVSudINT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }else{
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnElvSudEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }
+                            break;
+                        case EST:
+                            if(interieur){
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnElvEstINT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }else{
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnElvEstEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }
+                            break;
+                        case OUEST:
+                            if(interieur){
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnElvOuestINT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }else{
+                                resetButtonView();
+                                resetButtonAccessoires();
+                                ButtonDecoupage(true);
+                                btnElvOuestEXT.setBorder(BorderFactory.createLineBorder(Color.blue));
+                            }
+                            break;
+                    }
                 }else{
                     mainWindow.panel.setAfficheur(new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
+                    resetButtonView();
+                    resetButtonAccessoires();
+                    ButtonDecoupage(true);
+                    btnPlan.setBorder(BorderFactory.createLineBorder(Color.blue));
                 }
             }
         });
