@@ -523,11 +523,10 @@ public class MainWindow {
                                 m_dragTarget = ((Accessoire) element).getmPolygonePlan();
                             }
                         }
-
-
                     }
                 }
             }
+
 
             public void mouseReleased(MouseEvent e){
                 super.mouseReleased(e);
