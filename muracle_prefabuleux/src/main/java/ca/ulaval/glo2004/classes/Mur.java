@@ -350,7 +350,7 @@ public class Mur extends Element implements Serializable {
 
         return polygone;
     }
-    private Polygone createPolygoneTriagualaire(Imperial hauteur, Imperial largeur, Imperial distanceSeparationHauteur,Imperial distanceSeparationLargeur,Color color,int pointiller, String direction){
+    private Polygone createPolygoneTriagualaire(Imperial hauteur, Imperial largeur, Imperial distanceSeparationHauteur,Imperial distanceSeparationLargeur,Color color, String direction,int... pointiller){
         ArrayList<PointImperial> listPoint = new ArrayList<>();
         PointImperial mX1Debut;
         PointImperial mX1Fin;
@@ -390,8 +390,10 @@ public class Mur extends Element implements Serializable {
                 listPoint.add(mX2Debut);
                 break;
         }
-
-        return new Polygone(color,listPoint);
+        Polygone polygone = new Polygone(color,listPoint);
+        for(int i : pointiller)
+            polygone.setLignePointille(i);
+        return polygone;
     }
     public ArrayList<ArrayList<Polygone>> genererpolygonesElevationDecoupage() {
         polygoneElevationDecoupage = new ArrayList<>();
@@ -422,8 +424,9 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "NW"
+                            "NW",
+                            1
+
                     ));
                     polygoneMurDecoupage.add(createPolygone(
                             pliSoudureApres,
@@ -431,7 +434,7 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.blue,
-                            1, 3
+                            0, 1, 2, 3
                     ));
                     polygoneMurDecoupage.add(createPolygoneTriagualaire(
                             pliSoudureApres,
@@ -439,8 +442,8 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "NE"
+                            "NE",
+                            0
                     ));
                     pliSoudureAvant = pliSoudureApres;
                     pliSoudureApres = pliSoudureApres.add(this.mSalle.getHauteur());
@@ -460,8 +463,8 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "SW"
+                            "SW",
+                            1
                     ));
                     polygoneMurDecoupage.add(createPolygone(
                             pliSoudureApres,
@@ -469,7 +472,7 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.blue,
-                            1, 3
+                            0, 1, 2, 3
                     ));
                     polygoneMurDecoupage.add(createPolygoneTriagualaire(
                             pliSoudureApres,
@@ -477,8 +480,8 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "SE"
+                            "SE",
+                            0
                     ));
                     pliSoudureAvant = pliSoudureApres;
                     pliSoudureApres = pliSoudureApres.add(this.mSalle.getLargeurPliSoudure());
@@ -520,8 +523,8 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "NW"
+                            "NW",
+                            1
                     ));
                     polygoneMurDecoupage.add(createPolygone(
                             pliSoudureApres,
@@ -529,7 +532,7 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.blue,
-                            1, 3
+                            0,1, 3
                     ));
                     pliSoudureAvant = pliSoudureApres;
                     pliSoudureApres = pliSoudureApres.add(this.mSalle.getHauteur());
@@ -549,8 +552,8 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "SW"
+                            "SW",
+                            1
                     ));
                     polygoneMurDecoupage.add(createPolygone(
                             pliSoudureApres,
@@ -558,7 +561,7 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.blue,
-                            1, 3
+                            0,1, 3
                     ));
                     pliSoudureAvant = pliSoudureApres;
                     pliSoudureApres = pliSoudureApres.add(this.mSalle.getLargeurPliSoudure());
@@ -600,7 +603,7 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(new Imperial(1)),
                             Color.blue,
-                            1, 3
+                            1,2, 3
                     ));
                     polygoneMurDecoupage.add(createPolygoneTriagualaire(
                             pliSoudureApres,
@@ -608,8 +611,8 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "NE"
+                            "NE",
+                            0
                     ));
                     pliSoudureAvant = pliSoudureApres;
                     pliSoudureApres = pliSoudureApres.add(this.mSalle.getHauteur());
@@ -629,7 +632,7 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             defaultDistance.add(new Imperial(1)),
                             Color.blue,
-                            1, 3
+                            1,2, 3
                     ));
                     polygoneMurDecoupage.add(createPolygoneTriagualaire(
                             pliSoudureApres,
@@ -637,8 +640,8 @@ public class Mur extends Element implements Serializable {
                             pliSoudureAvant,
                             this.getmLargeur().substract(this.mSalle.epaisseurMurs).add(new Imperial(1)),
                             Color.pink,
-                            1,
-                            "NE"
+                            "NE",
+                            0
                     ));
                     pliSoudureAvant = pliSoudureApres;
                     pliSoudureApres = pliSoudureApres.add(this.mSalle.getLargeurPliSoudure());
