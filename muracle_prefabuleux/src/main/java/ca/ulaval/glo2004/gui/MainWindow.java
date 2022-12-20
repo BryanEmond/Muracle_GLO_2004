@@ -118,6 +118,27 @@ public class MainWindow {
             }
         });
 
+        btnMove.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mainWindow = new MainWindow(gestionnaireSalle);
+                JFileChooser fc = new JFileChooser("c:/Documents/");
+                int returnFcVal = fc.showOpenDialog(rootPanel.getParent());
+                if (returnFcVal == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        File file = fc.getSelectedFile();
+                        setHomePage(e);
+                        mainWindow.gestionnaireSalle.chargerSalle(file.getPath());
+                        Salle salle = gestionnaireSalle.getSalleActive();
+                        mainWindow.panel.setAfficheur(new AfficheurVueDessus(salle));
+                        mainWindow.updatePanels();
+                    } catch (Exception error) {
+                        System.out.println(error);
+                    }
+                }
+            }
+        });
+
         ouvrirUnProjectExistantButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -142,8 +163,7 @@ public class MainWindow {
         btnGrille.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                activeGridPlacement = !activeGridPlacement;
-                panel.setAfficheurGridPlacement(new AfficheurGridPlacement(activeGridPlacement,mainWindow));
+                activateGridPlacement();
             }
         });
         btnSave.addMouseListener(new MouseAdapter() {
@@ -890,7 +910,7 @@ public class MainWindow {
 
     }
 
-    private void updatePanels()
+    public void updatePanels()
     {
         propertiesPanel.removeAll();
 
@@ -1117,6 +1137,10 @@ public class MainWindow {
         btnFenetre.setVisible(!estEnVuePlan);
     }
 
+    public void activateGridPlacement(){
+        activeGridPlacement = !activeGridPlacement;
+        panel.setAfficheurGridPlacement(new AfficheurGridPlacement(activeGridPlacement,mainWindow));
+    }
 
 
     {
@@ -1319,13 +1343,12 @@ public class MainWindow {
         gbc.insets = new Insets(2, 2, 2, 2);
         buttonsPanel.add(btnSelection, gbc);
         btnMove.setBorder(BorderFactory.createLineBorder(Color.red));
-        btnMove.setBackground(new Color(-12829636));
-        btnMove.setIcon(new ImageIcon(getClass().getResource("/buttons/move.png")));
+        btnMove.setBackground(new Color(0xFFFFFF));
         btnMove.setMargin(new Insets(0,0,0,0));
         btnMove.setMaximumSize(new Dimension(50,50));
         btnMove.setMinimumSize(new Dimension(50,50));
         btnMove.setPreferredSize(new Dimension(50,50));
-        btnMove.setText("");
+        btnMove.setText("Ouvrir");
         gbc = new GridBagConstraints();
         gbc.gridx = 5;
         gbc.gridy = 1;
