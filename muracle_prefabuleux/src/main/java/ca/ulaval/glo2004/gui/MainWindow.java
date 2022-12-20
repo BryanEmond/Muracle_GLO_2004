@@ -15,6 +15,7 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
 public class MainWindow {
@@ -336,6 +337,46 @@ public class MainWindow {
             }
         });
 
+        btnUndo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    gestionnaireSalle.undo();
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.NORD));
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.SUD));
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.EST));
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.OUEST));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                updatePanels();
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+        });
+
+        btnRedo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                try {
+                    gestionnaireSalle.redo();
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.NORD));
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.SUD));
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.EST));
+                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.OUEST));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                updatePanels();
+                mainPanel.validate();
+                mainPanel.repaint();
+            }
+        });
+
          btnMove.addMouseListener(new MouseAdapter() {
              @Override
              public void mousePressed(MouseEvent e) {
@@ -378,23 +419,62 @@ public class MainWindow {
                     if (direction != null) {
                         switch (AccessoireEnum){
                             case Fenetre:
-                                if(!gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur)){setWarningMsg("impossible d'ajouter une fenetre");}
+                                try {
+                                    if(!gestionnaireSalle.AjouterFenetre(e.getX(), e.getY(),direction,interieur)){setWarningMsg("impossible d'ajouter une fenetre");}
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                                 break;
                             case RetourAir:
-                                if(!gestionnaireSalle.AjouterRetourAirElevation(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter un retour d'air");};
+                                try {
+                                    if(!gestionnaireSalle.AjouterRetourAirElevation(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter un retour d'air");}
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                ;
                                 break;
                             case Supprimer:
-                                gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
+                                try {
+                                    gestionnaireSalle.SupprimerElevation(e.getX(), e.getY(),direction,interieur);
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                                 break;
                             case Porte:
-                                if(!gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter une porte");};
+                                try {
+                                    if(!gestionnaireSalle.AjouterPorte(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter une porte");}
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                ;
                                 break;
                             case PriseElectrique:
-                                if(!gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter une prise électrique");};
+                                try {
+                                    if(!gestionnaireSalle.AjouterPriseElectrique(e.getX(), e.getY(),direction,interieur)){setWarningMsg("Impossible d'ajouter une prise électrique");}
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                ;
                                 break;
                             case Separateur:
                                 //TODO BOOLEAN QUAND AJOUTER UN SEPARATEUR MARCHE PAS
-                                gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
+                                try {
+                                    gestionnaireSalle.AjouterSeparateurVueElevation(e.getX(), e.getY(),interieur,direction);
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                                 break;
                             case Selection:
                                 gestionnaireSalle.selectionnerElementElevantion(e.getX(), e.getY(),direction,interieur);
@@ -407,13 +487,32 @@ public class MainWindow {
 
                         switch (AccessoireEnum){
                             case RetourAir:
-                                if(!gestionnaireSalle.AjouterRetourAirPlan(e.getX(), e.getY())){setWarningMsg("Impossible d'ajouter un retour d'air");};
+                                try {
+                                    if(!gestionnaireSalle.AjouterRetourAirPlan(e.getX(), e.getY())){setWarningMsg("Impossible d'ajouter un retour d'air");}
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                                ;
                                 break;
                             case Supprimer:
-                                gestionnaireSalle.SupprimerPlan(e.getX(), e.getY());
+                                try {
+                                    gestionnaireSalle.SupprimerPlan(e.getX(), e.getY());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                                 break;
                             case Separateur:
-                                gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
+                                try {
+                                    gestionnaireSalle.AjouterSeparateurVuePlan(e.getX(), e.getY());
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
                                 break;
                             case Selection:
                                 gestionnaireSalle.selectionnerElementPlan(e.getX(), e.getY(),direction,interieur);

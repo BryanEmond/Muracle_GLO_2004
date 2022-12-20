@@ -217,7 +217,7 @@ public class Salle implements Serializable {
         return null;
     }
 
-    public void SupprimerElevation(PointImperial point, Utilitaire.Direction direction,boolean interieur){
+    public boolean SupprimerElevation(PointImperial point, Utilitaire.Direction direction,boolean interieur){
         Cote cote = getCote(direction);
         if(cote.PointEstDansCoteElevation(point)){
             for (Accessoire accessoire: cote.accessoires) {
@@ -225,7 +225,8 @@ public class Salle implements Serializable {
                 if(accessoire.mPolygoneElevation.PointEstDansPolygone(point)){
                     cote.accessoires.remove(accessoire);
                     deselectionnerElement();
-                    break;
+                    //break;
+                    return true;
                 }
             }
 
@@ -250,7 +251,8 @@ public class Salle implements Serializable {
                         distSep.getFormeNormal() - 0.5 <= distanceBord.getFormeNormal()){
                     cote.separateurs.remove(separateur);
                     deselectionnerElement();
-                    break;
+                    //break;
+                    return true;
                 }
             }
 
@@ -259,9 +261,12 @@ public class Salle implements Serializable {
                 mur.genererPolygoneRetourAirELV(!interieur);
                 if(mur.aRetourAir() && mur.mPolygoneElevationRetourAir.PointEstDansPolygone(point)){
                     mur.setRetourAir(false);
+                    return true;
                 }
             }
+
         }
+        return false;
     }
 
     public boolean AjouterPriseElectrique(PointImperial point, Utilitaire.Direction direction,boolean interieur){
@@ -389,7 +394,7 @@ public class Salle implements Serializable {
         return null;
     }
 
-    public void separateurElevation(PointImperial point,Utilitaire.Direction direction,boolean interieur){
+    public boolean separateurElevation(PointImperial point,Utilitaire.Direction direction,boolean interieur){
         ArrayList<PointImperial> points = new ArrayList<>();
         Cote cote = getCote(direction);
         if(cote.PointEstDansCoteElevation(point)){
@@ -399,7 +404,7 @@ public class Salle implements Serializable {
                     Mur mur = getMurCliqueElevation(cote, point, interieur);
 
                     if (mur.retourAir && mur.mPolygoneElevationRetourAir.SeparateurEstDansPolygoneNordSud(point)) {
-                        return;
+                        return false;
                     }
 
                     points.add(new PointImperial(point.mX, polygone.points.get(0).mY));
@@ -423,9 +428,11 @@ public class Salle implements Serializable {
                     Separateur separateur = new Separateur(point.mY,point.mX,distanceBord,cote,new Polygone(Color.BLACK,points));
                     cote.AjouterSeparateur(separateur);
                     ElementSelectionne = separateur;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     public Utilitaire.Direction separateur(PointImperial point) {

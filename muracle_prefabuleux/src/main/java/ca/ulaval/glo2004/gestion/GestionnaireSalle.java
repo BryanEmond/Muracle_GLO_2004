@@ -9,6 +9,7 @@ import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
 public class GestionnaireSalle implements Serializable{
 
@@ -21,7 +22,7 @@ public class GestionnaireSalle implements Serializable{
 
     private boolean mDecoupage;
     private String filePath;
-    private Salle salleActive;
+    public Salle salleActive;
 
     private boolean vuePlan;
     private boolean vueCote;
@@ -30,6 +31,11 @@ public class GestionnaireSalle implements Serializable{
     private boolean isbtnDecoupageVisible = false;
     private Imperial largeurRetourAir;
     private Mur murSelectionner;
+
+    Stack<Salle> undoList = new Stack<>();
+    Stack<Salle> redoList = new Stack<>();
+
+
 
     public GestionnaireSalle()
     {
@@ -92,12 +98,21 @@ public class GestionnaireSalle implements Serializable{
             throw new RuntimeException(e);
         }
     }
-    public void AjouterSeparateurVuePlan(int pixelX, int pixelY){
+    public void AjouterSeparateurVuePlan(int pixelX, int pixelY) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
         Utilitaire.Direction direction = salleActive.separateur(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
-        if(direction != null)this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+        if(direction != null){
+            changement(ancienneSalle);
+            this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+        };
     }
-    public void AjouterSeparateurVueElevation(int pixelX, int pixelY, boolean interieur, Utilitaire.Direction directionParams){
-        salleActive.separateurElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams,interieur);
+    public void AjouterSeparateurVueElevation(int pixelX, int pixelY, boolean interieur, Utilitaire.Direction directionParams) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+
+        boolean modification = salleActive.separateurElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY), directionParams,interieur);
+        if(modification){
+            changement(ancienneSalle);
+        }
         this.salleActive.getCote(directionParams).setMurs(updateMurs(directionParams));
     }
 
@@ -131,35 +146,78 @@ public class GestionnaireSalle implements Serializable{
         return this.murSelectionner;
     }
 
-    public boolean AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        return salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterPorte(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+
+        boolean modification = salleActive.AjouterPorte(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+
+        if(modification){
+            changement(ancienneSalle);
+        }
+
+        return modification;
     }
 
-    public void SupprimerPlan(int pixelX, int pixelY){
+    public void SupprimerPlan(int pixelX, int pixelY) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+
         Utilitaire.Direction direction = salleActive.SupprimerPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
-        if(direction != null)this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+        if(direction != null){
+            changement(ancienneSalle);
+            this.salleActive.getCote(direction).setMurs(updateMurs(direction));
+        }
     }
 
-    public void SupprimerElevation(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        salleActive.SupprimerElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public void SupprimerElevation(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+
+        boolean modification = salleActive.SupprimerElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+
+        if(modification){
+            changement(ancienneSalle);
+        }
+
         this.salleActive.getCote(direction).setMurs(updateMurs(direction));
     }
 
-    public boolean AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        return salleActive.AjouterPriseElectrique(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterPriseElectrique(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+
+        boolean modification = salleActive.AjouterPriseElectrique(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+
+        if(modification){
+            changement(ancienneSalle);
+        }
+        return modification;
     }
 
-    public boolean AjouterRetourAirPlan(int pixelX, int pixelY)
-    {
-        return salleActive.AjouterRetourAirPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+    public boolean AjouterRetourAirPlan(int pixelX, int pixelY) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+        boolean modification =  salleActive.AjouterRetourAirPlan(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY));
+        if(modification){
+            changement(ancienneSalle);
+        }
+        return modification;
     }
 
-    public boolean AjouterRetourAirElevation(int pixelX, int pixelY, Utilitaire.Direction direction, boolean interieur ){
-        return salleActive.AjouterRetourAirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterRetourAirElevation(int pixelX, int pixelY, Utilitaire.Direction direction, boolean interieur ) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+        boolean modification = salleActive.AjouterRetourAirElevation(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+
+        if(modification){
+            changement(ancienneSalle);
+        }
+        return modification;
     }
 
-    public boolean AjouterFenetre(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ){
-        return salleActive.AjouterFenetre(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+    public boolean AjouterFenetre(int pixelX, int pixelY,Utilitaire.Direction direction, boolean interieur ) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+        boolean modification =  salleActive.AjouterFenetre(Conversion.getConversion().trouverCoordonneImperial(pixelX, pixelY),direction,interieur);
+
+        if(modification){
+            changement(ancienneSalle);
+        }
+        return modification;
     }
 
     public void updateSalle()
@@ -351,6 +409,26 @@ public class GestionnaireSalle implements Serializable{
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void undo() throws IOException, ClassNotFoundException {
+        Salle salle = Utilitaire.CopySalle(this.salleActive);
+        redoList.add(salle);
+        if(undoList.size() > 0) {
+            salleActive = undoList.pop();
+        }
+    }
+
+    public void changement(Salle salle) {
+        undoList.add(salle);
+    }
+
+    public void redo() throws IOException, ClassNotFoundException {
+        Salle salle = Utilitaire.CopySalle(this.salleActive);
+        undoList.add(salle);
+        if(redoList.size() > 0) {
+            salleActive = redoList.pop();
         }
     }
 

@@ -1,6 +1,6 @@
 package ca.ulaval.glo2004.classes;
 
-import java.io.Serializable;
+import java.io.*;
 
 public abstract class Utilitaire implements Serializable {
     public enum AccessoireEnum{
@@ -42,5 +42,17 @@ public abstract class Utilitaire implements Serializable {
         public String toString() {
             return "{ Direction : " + getName() + " }";
         }
+    }
+
+    public static Salle CopySalle(Salle salle) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(salle);
+        oos.flush();
+        oos.close();
+        bos.close();
+        byte[] byteData = bos.toByteArray();
+        ByteArrayInputStream bais = new ByteArrayInputStream(byteData);
+        return (Salle)new ObjectInputStream(bais).readObject();
     }
 }
