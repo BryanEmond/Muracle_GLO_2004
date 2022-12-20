@@ -1021,7 +1021,7 @@ public class Mur extends Element implements Serializable {
     }
 
     public double calculerPoidsPanneauInterieur() {
-        double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        double air = this.mLargeur.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         ArrayList<Accessoire> accessoireList = accessoires();
@@ -1039,7 +1039,7 @@ public class Mur extends Element implements Serializable {
     }
 
     public double calculerPoidsPanneauInterieurExtremite() {
-        double air = (this.mLargeur.getFormeNormal()-this.mCote.mSalle.epaisseurMurs.getFormeNormal())  * this.mCote.hauteur();
+        double air = (this.mLargeur.getFormeNormal()-this.mCote.mSalle.epaisseurMurs.getFormeNormal())  * this.mCote.mSalle.hauteur.getFormeNormal();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mLargeur.getFormeNormal() * 2;
         ArrayList<Accessoire> accessoireList = accessoires();
@@ -1058,7 +1058,7 @@ public class Mur extends Element implements Serializable {
     }
 
     public double calculerPoidsPanneauExterieur() {
-        double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        double air = this.mLargeur.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         ArrayList<Accessoire> accessoireList = accessoires();
@@ -1072,7 +1072,7 @@ public class Mur extends Element implements Serializable {
     }
 
     public double calculerPoidsPanneauExterieurExtremite() {
-        double air = this.mLargeur.getFormeNormal() * this.mCote.hauteur();
+        double air = this.mLargeur.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal();
         air += this.mCote.mSalle.epaisseurMurs.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         air += this.mCote.mSalle.largeurPliSoudure.getFormeNormal() * this.mCote.mSalle.hauteur.getFormeNormal() * 2;
         double hypothenuse = Math.sqrt(((Math.pow(this.mCote.mSalle.epaisseurMurs.getFormeNormal(),2))*2));
