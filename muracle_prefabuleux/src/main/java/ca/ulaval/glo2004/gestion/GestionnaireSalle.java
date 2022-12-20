@@ -179,7 +179,6 @@ public class GestionnaireSalle implements Serializable{
         if(modification){
             changement(ancienneSalle);
         }
-
         this.salleActive.getCote(direction).setMurs(updateMurs(direction));
     }
 
@@ -416,9 +415,9 @@ public class GestionnaireSalle implements Serializable{
     }
 
     public void undo() throws IOException, ClassNotFoundException {
-        Salle salle = Utilitaire.CopySalle(this.salleActive);
-        redoList.add(salle);
-        if(undoList.size() > 0) {
+        if(undoList.size() != 0) {
+            Salle salle = Utilitaire.CopySalle(this.salleActive);
+            redoList.add(salle);
             salleActive = undoList.pop();
         }
     }
@@ -428,9 +427,9 @@ public class GestionnaireSalle implements Serializable{
     }
 
     public void redo() throws IOException, ClassNotFoundException {
-        Salle salle = Utilitaire.CopySalle(this.salleActive);
-        undoList.add(salle);
-        if(redoList.size() > 0) {
+        if(redoList.size() != 0) {
+            Salle salle = Utilitaire.CopySalle(this.salleActive);
+            undoList.add(salle);
             salleActive = redoList.pop();
         }
     }
@@ -453,8 +452,10 @@ public class GestionnaireSalle implements Serializable{
         return new SalleDTO(salleActive);
     }
 
-    public int editSalleSelectionne(SalleDTO salle)
-    {
+    public int editSalleSelectionne(SalleDTO salle) throws IOException, ClassNotFoundException {
+
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+
         double largeurMin = 0;
         double profondeurMin = 0;
 
@@ -506,6 +507,8 @@ public class GestionnaireSalle implements Serializable{
         this.salleActive.setPoidsMateriaux(salle.getPoidsMateriaux());
         this.salleActive.setPoidsMaxPanneau(salle.getPoidsMaxPanneau());
 
+        changement(ancienneSalle);
+
         updateSalle();
         return 0;
     }
@@ -522,8 +525,9 @@ public class GestionnaireSalle implements Serializable{
     }
 
 
-    public boolean editMurSelectionne(Imperial largeurRetourAir)
-    {
+    public boolean editMurSelectionne(Imperial largeurRetourAir) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
+
         Element element = salleActive.getElementSelectionne();
         if(!(element instanceof Mur))
             return false;
@@ -542,6 +546,7 @@ public class GestionnaireSalle implements Serializable{
 
         mur.setLargeurRetourAir(largeurRetourAir);
         mur.genererPolygonePlanRetourAir();
+        changement(ancienneSalle);
         return true;
     }
 
@@ -564,8 +569,8 @@ public class GestionnaireSalle implements Serializable{
         return new SeparateurDTO(position, positionRelative);
     }
 
-    public boolean editSeparateurSelectionne(Imperial posRelative)
-    {
+    public boolean editSeparateurSelectionne(Imperial posRelative) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
         Element element = salleActive.getElementSelectionne();
         if(!(element instanceof Separateur))
             return false;
@@ -609,6 +614,7 @@ public class GestionnaireSalle implements Serializable{
 
         separateur.setDistanceBordDeReference(nouvellePosition);
         separateur.getmCote().setMurs(updateMurs(direction));
+        changement(ancienneSalle);
         return true;
     }
 
@@ -622,8 +628,8 @@ public class GestionnaireSalle implements Serializable{
         return new AccessoireDTO(accessoire);
     }
 
-    public int editAccessoireSelectionne(AccessoireDTO accessoireDTO)
-    {
+    public int editAccessoireSelectionne(AccessoireDTO accessoireDTO) throws IOException, ClassNotFoundException {
+        Salle ancienneSalle = Utilitaire.CopySalle(salleActive);
         ArrayList<Accessoire> listAccessoire = new ArrayList<>(salleActive.getCote(mCoteCourant).getAccessoires());
 
         Element element = salleActive.getElementSelectionne();
@@ -761,6 +767,7 @@ public class GestionnaireSalle implements Serializable{
                 accessoire.setmY(accessoireDTO.getY());
                 break;
         }
+        changement(ancienneSalle);
         return 0;
     }
 

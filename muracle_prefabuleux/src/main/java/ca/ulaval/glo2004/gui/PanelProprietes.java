@@ -4,6 +4,7 @@ import ca.ulaval.glo2004.classes.Imperial;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,15 +78,20 @@ public class PanelProprietes extends JPanel
             textField.setText(property.getDefaultValue());
             textField.setEditable(!property.readOnly);
             textField.addActionListener(e -> {
-                _onValueChange(property, textField.getText());
+                try {
+                    _onValueChange(property, textField.getText());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
             });
             property.setTextField(textField);
             container.add(textField, BorderLayout.EAST);
         }
     }
 
-    private void _onValueChange(Property property, String value)
-    {
+    private void _onValueChange(Property property, String value) throws IOException, ClassNotFoundException {
         values.put(property.name, value);
         listener.OnValueChange(getValues());
         updateValues();
@@ -273,7 +279,7 @@ public class PanelProprietes extends JPanel
 
     public interface PropertyChangeListener
     {
-        public abstract void OnValueChange(HashMap<String, String> values);
+        public abstract void OnValueChange(HashMap<String, String> values) throws IOException, ClassNotFoundException;
     }
 
 }

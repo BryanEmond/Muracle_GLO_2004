@@ -370,18 +370,16 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 try {
                     gestionnaireSalle.undo();
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.NORD));
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.SUD));
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.EST));
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.OUEST));
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
-                updatePanels();
-                mainPanel.validate();
-                mainPanel.repaint();
+                if(direction != null){
+                    panel.setAfficheur(new AfficheurElevationCote(gestionnaireSalle.getSalleActive(),direction,!interieur));
+                }else{
+                    mainWindow.panel.setAfficheur(new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
+                }
             }
         });
 
@@ -390,18 +388,16 @@ public class MainWindow {
             public void mousePressed(MouseEvent e) {
                 try {
                     gestionnaireSalle.redo();
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.NORD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.NORD));
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.SUD).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.SUD));
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.EST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.EST));
-                    gestionnaireSalle.getSalleActive().getCote(Utilitaire.Direction.OUEST).setMurs(gestionnaireSalle.updateMurs(Utilitaire.Direction.OUEST));
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (ClassNotFoundException ex) {
                     throw new RuntimeException(ex);
                 }
-                updatePanels();
-                mainPanel.validate();
-                mainPanel.repaint();
+                if(direction != null){
+                    panel.setAfficheur(new AfficheurElevationCote(gestionnaireSalle.getSalleActive(),direction,!interieur));
+                }else{
+                    mainWindow.panel.setAfficheur(new AfficheurVueDessus(gestionnaireSalle.getSalleActive()));
+                }
             }
         });
 
@@ -737,14 +733,28 @@ public class MainWindow {
 
 
                             if(reste.getEntier() > 0 && reste2.getEntier() < 0)
-                            {gestionnaireSalle.editSeparateurSelectionne(pointRelatif);}
+                            {
+                                try {
+                                    gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                } catch (ClassNotFoundException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            }
                             //System.out.println("la grandeur du mur: " + largeurSalle + " |profondeur de salle: " + hauteurSalle + " |epaisseurMur: " + epaisseurMur + " |pointMX: " + pointMx + " |pointMy: " + pointMy + " |pointRelatif: " + pointRelatif );
                         }
                         else{
                             if (m_directionSeparateur.equals(Utilitaire.Direction.NORD) || m_directionSeparateur.equals(Utilitaire.Direction.SUD))
                             {pointRelatif = pointRelatif.add(differenceXX);}
                             else {pointRelatif = pointRelatif.substract(differenceYY);}
-                            gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
+                            try {
+                                gestionnaireSalle.editSeparateurSelectionne(pointRelatif);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (ClassNotFoundException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
 
 
@@ -761,7 +771,13 @@ public class MainWindow {
                             pointElementY = pointElementY.substract(differenceYY);
 
 
-                            gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(pointElementX, pointElementY, accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
+                            try {
+                                gestionnaireSalle.editAccessoireSelectionne(new AccessoireDTO(pointElementX, pointElementY, accessoireSelect.getHauteur(), accessoireSelect.getLargeur(), accessoireSelect.getBordureFenetre(), accessoireSelect.getTypeAccessoire()));
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (ClassNotFoundException ex) {
+                                throw new RuntimeException(ex);
+                            }
                             mainPanel.validate();
                             mainPanel.repaint();}
                     }
