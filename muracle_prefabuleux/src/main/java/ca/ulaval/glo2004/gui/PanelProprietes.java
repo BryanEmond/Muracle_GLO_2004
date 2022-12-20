@@ -146,13 +146,33 @@ public class PanelProprietes extends JPanel
 
     public int getInt(String propertyName)
     {
+        setError(propertyName, true);
         if(!values.containsKey(propertyName))
             return -1;
 
         String value = values.get(propertyName);
         try
         {
+            setError(propertyName, false);
             return Integer.parseInt(value);
+        }
+        catch (NumberFormatException err)
+        {
+            return -1;
+        }
+    }
+
+    public double getDouble(String propertyName)
+    {
+        setError(propertyName, true);
+        if(!values.containsKey(propertyName))
+            return -1;
+
+        String value = values.get(propertyName);
+        try
+        {
+            setError(propertyName, false);
+            return Double.parseDouble(value);
         }
         catch (NumberFormatException err)
         {

@@ -23,6 +23,12 @@ public class Salle implements Serializable {
 
     Imperial hauteurTrouRetourAir;
 
+    Imperial epaisseurMateriaux;
+
+    double poidsMateriaux;
+
+    double poidsMaxPanneau;
+
     ArrayList<Cote> cotes;
 
     public Salle(ArrayList<Cote> cotes) {
@@ -35,6 +41,9 @@ public class Salle implements Serializable {
         this.hauteurRetourAir = new Imperial(5);
         this.hauteurTrouRetourAir = new Imperial(4);
         this.positionRetourAir = new Imperial(5);
+        this.epaisseurMateriaux = new Imperial(0 , 1, 8);
+        poidsMateriaux = 6.3;
+        poidsMaxPanneau = 250;
         setCotes(cotes);
     }
     public ArrayList<Polygone> polygonePlan(){
@@ -689,13 +698,42 @@ public class Salle implements Serializable {
         return ElementSelectionne;
     }
 
-    public void setElementSelectionne(){
-        this.ElementSelectionne = null;
-    }
+    //public void setElementSelectionne(){
+        //this.ElementSelectionne = null;
+   // }
 
 
     public void dragAndDrop(Imperial diffX, Imperial diffY){
         //TODO prend imperial initial de l'objet et ajoute ou enlève la différence du drag.
 
+    }
+
+    public Imperial getEpaisseurMateriaux() {
+        return epaisseurMateriaux;
+    }
+
+    public void setEpaisseurMateriaux(Imperial epaisseurMateriaux) {
+        this.epaisseurMateriaux = epaisseurMateriaux;
+    }
+
+    public double getPoidsMateriaux() {
+        return poidsMateriaux;
+    }
+
+    public double getPoidsParPouce()
+    {
+        return poidsMateriaux / 144;
+    }
+
+    public void setPoidsMateriaux(double poidsMateriaux) {
+        this.poidsMateriaux = poidsMateriaux;
+    }
+
+    public double getPoidsMaxPanneau() {
+        return poidsMaxPanneau;
+    }
+
+    public void setPoidsMaxPanneau(double poidsMaxPanneau) {
+        this.poidsMaxPanneau = poidsMaxPanneau;
     }
 }

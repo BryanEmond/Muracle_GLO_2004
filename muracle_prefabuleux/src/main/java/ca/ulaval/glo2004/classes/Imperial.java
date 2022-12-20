@@ -197,12 +197,21 @@ public class Imperial implements Comparable<Imperial>,Serializable {
         return imp;
     }
 
-    public Imperial clone()
-    {
+    public Imperial clone() {
         return new Imperial(entier, numerateur, denominateur);
     }
 
     public Imperial abs() {
         return new Imperial(Math.abs(this.entier), Math.abs(this.numerateur), Math.abs(this.denominateur));
     }
+
+    public static Imperial fromValue(double value)
+    {
+       int entier = (int) value;
+       int denominateur = 1024;
+       int numerateur = (int) ((value - entier) * denominateur);
+
+       return new Imperial(entier, numerateur, denominateur);
+    }
+
 }

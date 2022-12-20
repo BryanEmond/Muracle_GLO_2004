@@ -18,7 +18,7 @@ public class AfficheurVueDecoupage extends Afficheur{
 
     @Override
     public void affiche(Graphics g) {
-        ArrayList<ArrayList> murPolygone = this.mur.genererpolygonesElevationDecoupage();
+        ArrayList<ArrayList<Polygone>> murPolygone = this.mur.genererpolygonesElevationDecoupage();
         for(ArrayList<Polygone> list : murPolygone){
             dessinerPolygones(g, list);
         }

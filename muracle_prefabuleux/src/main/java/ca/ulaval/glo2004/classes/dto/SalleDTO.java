@@ -16,15 +16,22 @@ public class SalleDTO implements Serializable {
     Imperial positionRetourAir;
     Imperial hauteurTrouRetourAir;
 
+    Imperial epaisseurMateriaux;
+
+    private double poidsMateriaux;
+    private double poidsMaxPanneau;
+
     public SalleDTO(Salle salle)
     {
         this(salle.getLargeur().clone(), salle.getProfondeur().clone(), salle.getHauteur().clone(),
                 salle.getEpaisseurMurs().clone(), salle.getLargeurPliSoudure().clone(), salle.getAnglePliSoudure(),
-                salle.getHauteurRetourAir().clone(), salle.getPositionRetourAir().clone(), salle.getHauteurTrouRetourAir().clone());
+                salle.getHauteurRetourAir().clone(), salle.getPositionRetourAir().clone(), salle.getHauteurTrouRetourAir().clone(),
+                salle.getEpaisseurMateriaux().clone(), salle.getPoidsMateriaux(), salle.getPoidsMaxPanneau());
     }
 
     public SalleDTO(Imperial largeur, Imperial profondeur, Imperial hauteur, Imperial epaisseurMurs, Imperial largeurPli,
-                    int anglePliSoudure, Imperial hauteurRetourAir, Imperial positionRetourAir, Imperial hauteurTrouRetourAir) {
+                    int anglePliSoudure, Imperial hauteurRetourAir, Imperial positionRetourAir, Imperial hauteurTrouRetourAir,
+                    Imperial epaisseurMateriaux, double poidsMateriaux, double poidsMaxPanneau) {
         this.largeur = largeur;
         this.profondeur = profondeur;
         this.hauteur = hauteur;
@@ -34,6 +41,9 @@ public class SalleDTO implements Serializable {
         this.hauteurRetourAir = hauteurRetourAir;
         this.positionRetourAir = positionRetourAir;
         this.hauteurTrouRetourAir = hauteurTrouRetourAir;
+        this.epaisseurMateriaux = epaisseurMateriaux;
+        this.poidsMateriaux = poidsMateriaux;
+        this.poidsMaxPanneau = poidsMaxPanneau;
     }
 
     public Imperial getLargeur() {
@@ -70,5 +80,25 @@ public class SalleDTO implements Serializable {
 
     public Imperial getHauteurTrouRetourAir() {
         return hauteurTrouRetourAir;
+    }
+
+    public Imperial getEpaisseurMateriaux() {
+        return epaisseurMateriaux;
+    }
+
+    public double getPoidsMateriaux() {
+        return poidsMateriaux;
+    }
+
+    public void setPoidsMateriaux(double poidsMateriaux) {
+        this.poidsMateriaux = poidsMateriaux;
+    }
+
+    public double getPoidsMaxPanneau() {
+        return poidsMaxPanneau;
+    }
+
+    public void setPoidsMaxPanneau(double poidsMaxPanneau) {
+        this.poidsMaxPanneau = poidsMaxPanneau;
     }
 }

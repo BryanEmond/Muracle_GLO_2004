@@ -273,7 +273,11 @@ public class Cote extends Element implements Serializable {
         for (Accessoire accessoire: accessoires) {
             accessoire.genererPolygoneELV(exterieur);
             ArrayList<Double> coins = accessoire.mPolygoneElevation.getCoinsDouble();
-            if(point.getFormeNormal() >= coins.get(0) && point.getFormeNormal() <= coins.get(1)) return true;
+            Double coin1 = coins.get(0);
+            Double coin2 = coins.get(1);
+            coin1 = coin1 + getmSalle().getEpaisseurMurs().getFormeNormal();
+            coin2 = coin2 + getmSalle().getEpaisseurMurs().getFormeNormal();
+            if(point.getFormeNormal() >= coin1 && point.getFormeNormal() <= coin2) return true;
         }
         return false;
     }

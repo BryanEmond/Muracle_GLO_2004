@@ -14,6 +14,7 @@ public class DrawingPanel extends JPanel {
     private Afficheur afficheur;
 
     private Afficheur afficheurCote;
+    private Afficheur afficheurGridPlacement;
 
     public DrawingPanel(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
@@ -21,12 +22,14 @@ public class DrawingPanel extends JPanel {
 
         this.setBorder(new EmptyBorder(50, 10, 10, 10));
         afficheur = new AfficheurVueDessus(mainWindow.gestionnaireSalle.getSalleActive());
+        afficheurGridPlacement = new AfficheurGridPlacement(false,mainWindow);
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.clearRect(0, 0, this.getWidth(), this.getHeight());
+        afficheurGridPlacement.affiche(g);
         afficheur.affiche(g);
     }
 
@@ -40,6 +43,12 @@ public class DrawingPanel extends JPanel {
     public void setAfficheur(Afficheur afficheur) {
 
         this.afficheur = afficheur;
+        mainWindow.mainPanel.validate();
+        mainWindow.mainPanel.repaint();
+    }
+    public void setAfficheurGridPlacement(Afficheur afficheurGridPlacement) {
+
+        this.afficheurGridPlacement = afficheurGridPlacement;
         mainWindow.mainPanel.validate();
         mainWindow.mainPanel.repaint();
     }

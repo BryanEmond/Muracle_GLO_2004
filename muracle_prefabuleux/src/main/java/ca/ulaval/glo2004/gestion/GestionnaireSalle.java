@@ -6,6 +6,7 @@ import ca.ulaval.glo2004.classes.*;
 import ca.ulaval.glo2004.classes.dto.SalleDTO;
 import ca.ulaval.glo2004.classes.dto.SeparateurDTO;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ public class GestionnaireSalle implements Serializable{
     private boolean addToNextMur = false;
     private boolean isbtnDecoupageVisible = false;
     private Imperial largeurRetourAir;
+    private Imperial spaceBetween;
     private Mur murSelectionner;
 
     Stack<Salle> undoList = new Stack<>();
@@ -80,6 +82,7 @@ public class GestionnaireSalle implements Serializable{
         mn2.setRetourAir(true);
         this.mMurCourant = mn2;
         this.mSeparateur = sn2;
+        setSpaceBetween(new Imperial(5));
     }
 
     public void enregistrerSalle(String path)
@@ -484,6 +487,12 @@ public class GestionnaireSalle implements Serializable{
         if(salle.getPositionRetourAir().getValue() + salle.getHauteurRetourAir().getValue() > salle.getHauteur().getValue() - 1)
             return 4;
 
+        if(salle.getPoidsMateriaux() < 0)
+            return 5;
+
+        if(salle.getPoidsMaxPanneau() < 0)
+            return 6;
+
         this.salleActive.setHauteur(salle.getHauteur());
         this.salleActive.setLargeur(salle.getLargeur());
         this.salleActive.setProfondeur(salle.getProfondeur());
@@ -493,6 +502,9 @@ public class GestionnaireSalle implements Serializable{
         this.salleActive.setHauteurRetourAir(salle.getHauteurRetourAir());
         this.salleActive.setPositionRetourAir(salle.getPositionRetourAir());
         this.salleActive.setHauteurTrouRetourAir(salle.getHauteurTrouRetourAir());
+        this.salleActive.setEpaisseurMateriaux(salle.getEpaisseurMateriaux());
+        this.salleActive.setPoidsMateriaux(salle.getPoidsMateriaux());
+        this.salleActive.setPoidsMaxPanneau(salle.getPoidsMaxPanneau());
 
         updateSalle();
         return 0;
@@ -821,7 +833,53 @@ public class GestionnaireSalle implements Serializable{
 
     }
 
+    public boolean exporterPanneau(String cheminFichier, Mur mur, boolean panneauInterieur) throws IOException {
+        if(!mur.estAssezLeger(panneauInterieur))
+            return false;
+
+        int indexPolygones = panneauInterieur ? 1 : 0;
+        ArrayList<Polygone> polygones = mur.genererpolygonesElevationDecoupage().get(indexPolygones);
+
+        ExporteurSVG.EnregistrerSVG(cheminFichier, polygones);
+        return true;
+    }
+
     public void setBtnDecoupageVisible(boolean bool){this.isbtnDecoupageVisible = bool;}
     public boolean getBtnDecoupageVisible(){return this.isbtnDecoupageVisible;}
 
+    public static ArrayList<Polygone> genererGridPlacement(int x, int y, int lenght, int width, Imperial spaceBetween){
+        PointImperial pointImperialPanelDepart = Conversion.getConversion().trouverCoordonneImperial(x,y);
+        PointImperial pointImperialPanelFin = Conversion.getConversion().trouverCoordonneImperial(lenght,width);
+        PointImperial pointImperialFin;
+        Imperial space = spaceBetween;
+        ArrayList<Polygone> polygones = new ArrayList<Polygone>();
+        do{
+            ArrayList<PointImperial> pointImperials = new ArrayList<>();
+            PointImperial pointImperialDebut = new PointImperial(pointImperialPanelDepart.getmX().add(space),pointImperialPanelDepart.getmY());
+            pointImperialFin = new PointImperial(pointImperialPanelDepart.getmX().add(space),pointImperialPanelFin.getmY());
+            pointImperials.add(pointImperialDebut);
+            pointImperials.add(pointImperialFin);
+            polygones.add(new Polygone(Color.LIGHT_GRAY,pointImperials));
+            space = space.add(spaceBetween);
+        }while(pointImperialFin.getmX().compareTo(pointImperialPanelFin.getmX()) == -1);
+        space = spaceBetween;
+        do{
+            ArrayList<PointImperial> pointImperials = new ArrayList<>();
+            PointImperial pointImperialDebut = new PointImperial(pointImperialPanelDepart.getmX(),pointImperialPanelDepart.getmY().add(space));
+            pointImperialFin = new PointImperial(pointImperialPanelFin.getmX(),pointImperialPanelDepart.getmY().add(space));
+            pointImperials.add(pointImperialDebut);
+            pointImperials.add(pointImperialFin);
+            polygones.add(new Polygone(Color.LIGHT_GRAY,pointImperials));
+            space = space.add(spaceBetween);
+        }while(pointImperialFin.getmY().compareTo(pointImperialPanelFin.getmY()) == -1);
+        return polygones;
+    }
+
+    public Imperial getSpaceBetween() {
+        return spaceBetween;
+    }
+
+    public void setSpaceBetween(Imperial spaceBetween) {
+        this.spaceBetween = spaceBetween;
+    }
 }
