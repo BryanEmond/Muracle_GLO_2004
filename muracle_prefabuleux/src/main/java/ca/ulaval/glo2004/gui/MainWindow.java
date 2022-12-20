@@ -681,6 +681,14 @@ public class MainWindow {
 
                                 System.out.println("GRANDEUR LISTE ACCESSOIRE ; " + mur2.accessoires().size());
                                 if(mur2.accessoires().size() == 0){
+                                    try {
+                                        gestionnaireSalle.ajouterSalleStack(Utilitaire.CopySalle(gestionnaireSalle.getSalleActive()));
+                                    } catch (IOException ex) {
+                                        throw new RuntimeException(ex);
+                                    } catch (ClassNotFoundException ex) {
+                                        throw new RuntimeException(ex);
+                                    }
+
                                 mur1.setRetourAir(false);
                                 mur2.setRetourAir(true);
                                 mainPanel.validate();

@@ -422,6 +422,12 @@ public class GestionnaireSalle implements Serializable{
         }
     }
 
+    public void ajouterSalleStack(Salle salle) throws IOException, ClassNotFoundException {
+        if(undoList.size() != 0) {
+            undoList.add(salle);
+        }
+    }
+
     public void changement(Salle salle) {
         undoList.add(salle);
     }
